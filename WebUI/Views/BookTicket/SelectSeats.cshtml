@@ -1,0 +1,226 @@
+﻿@model Models.DTO.MovieBooking
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Select Seats</title>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(a => a.SeatNo)
+        @Html.HiddenFor(a => a.hdnAlreadySelectedSeats)
+        @Html.HiddenFor(a => a.ScreenTimingConfigID_FK, htmlAttributes: new { @id = "hdnScreenTimingConfigID_FK" })
+
+        <div class="BookTicket-Form">
+
+            <div id="seatContainer" class="seatContainer" style="opacity: .9; pointer-events: none;" disabled="disabled">
+
+                <div id="divParentRecliner">
+                    <div class="row">
+                        <h5 class="col-sm-3">Recliner (Rs. @Model.screenDetail.PriceRecliner)</h5><h6 style="color:red;margin-left: -80px;" class="col-sm-4" id="labelRecliner"></h6>
+                    </div>
+                    <div id="divRecliner">
+                        @for (int i = 1; i <= Model.screenDetail.NoOfSeatsRecliner; i++)
+                        {
+                            <div class="seat seatRecliner">
+                                <h6 style="margin: 10px 0px 0px 0px;" data-attr-seatNo="R_@i">R @i</h6> <i class="fas fa-couch"></i>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div id="divParentPlatinum">
+                    <hr />
+                    <div class="row">
+                        <h5 class="col-sm-3">Platinum (Rs. @Model.screenDetail.PricePlatinum)</h5><h6 style="color:red;margin-left: -80px;" class="col-sm-4" id="labelPlatinum"></h6>
+                    </div>
+                    <div id="divPlatinum">
+                        @for (int i = 1; i <= Model.screenDetail.NoOfSeatsPlatinum; i++)
+                        {
+                            <div class="seat seatPlatinum">
+                                <h6 style="margin: 10px 0px 0px 0px;" data-attr-seatNo="P_@i">P @i</h6> <i class="fas fa-chair"></i>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div id="divParentGold">
+                    <hr />
+                    <div class="row">
+                        <h5 class="col-sm-3">Gold (Rs. @Model.screenDetail.PriceGold)</h5><h6 style="color:red;margin-left: -80px;" class="col-sm-4" id="labelGold"></h6>
+                    </div>
+                    <div id="divGold">
+                        @for (int i = 1; i <= Model.screenDetail.NoOfSeatsGold; i++)
+                        {
+                            <div class="seat seatGold">
+                                <h6 style="margin: 10px 0px 0px 0px;" data-attr-seatNo="G_@i">G @i</h6> <i class="fas fa-chair"></i>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div id="divParentSilver">
+                    <hr />
+                    <div class="row">
+                        <h5 class="col-sm-3">Silver (Rs. @Model.screenDetail.PriceSilver)</h5><h6 style="color:red;margin-left: -80px;" class="col-sm-4" id="labelSilver"></h6>
+                    </div>
+                    <div id="divSilver">
+                        @for (int i = 1; i <= Model.screenDetail.NoOfSeatsSilver; i++)
+                        {
+                            <div class="seat seatSilver">
+                                <h6 style="margin: 10px 0px 0px 0px;" data-attr-seatNo="S_@i">S @i</h6> <i class="fas fa-chair"></i>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <br /><br />
+
+                <div>
+                    <center>
+                        <p>Screen This Side <i class="fas fa-arrow-down"></i></p>
+                    </center>
+                    <div class="col-sm-12">
+                        <hr style="height:5px; background-color:darkslategray" />
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NoOfSeats, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.NoOfSeats, new { htmlAttributes = new { @class = "form-control", @placeholder = "Max. of 10 seats can be selected", @id = "txtNoOfSeats", @required = "required" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SeatCategory, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.SeatCategory, new SelectList(Model.lstSeatCategory, "Value", "Text"), "Select Category", new { @class = "form-control", @required = "required", @onchange = "OnChangeSeatCategory(this)", @id = "ddlSeatCategory" })
+                    </div>
+                </div>
+                <center class="form-group" style="margin-top:15px">
+                    <input value="Proceed To Payment" onclick="ProceedToCheckout('MovieTickets')" class="btn btn-success" />
+                </center>
+            </div>
+        </div>
+    }
+
+    <br /><br /><br /><br />
+
+
+                      <script>
+        $(document).ready(function () {
+            selectedSeatNo = "";
+            $(".seat").on("click", function () {
+
+                if ($(this).hasClass("seatSelected")) {
+                    $(this).removeClass("seatSelected");
+                    selectedSeatNo = selectedSeatNo.replace(($(this).find("h6").attr("data-attr-seatNo")), "").replace(" ,", "").replace(", ", "");
+                }
+                else {
+                    var NoOfSeats = $("#txtNoOfSeats").val();
+                    if (NoOfSeats == 0 || NoOfSeats == "") {
+                        alert("Please Select Number of Seats.");
+                        return false;
+                    }
+                    else {
+                        if ($(".seatSelected").length >= NoOfSeats) {
+                            alert("Only " + NoOfSeats + " can be selected.");
+                            return false;
+                        }
+
+                        var seatValue = $(this).find("h6").attr("data-attr-seatNo");
+
+                        if (selectedSeatNo == null || selectedSeatNo == undefined || selectedSeatNo == "") {
+                            selectedSeatNo += (seatValue + ", ");
+                        }
+                        else {
+                            if ($(".seatSelected").length >= NoOfSeats - 1) {
+                                selectedSeatNo += (seatValue);
+                            }
+                            else {
+                                selectedSeatNo += (seatValue + ", ");
+                            }
+                        }
+
+                        $("#SeatNo").val("");
+                        $("#SeatNo").val(selectedSeatNo);
+                        $(this).addClass("seatSelected");
+                    }
+                }
+            });
+        });
+
+        function AutoSelectSeat() {
+            var AlreadySelectedSeats = $("#hdnAlreadySelectedSeats").val().split(",");
+            AlreadySelectedSeats.forEach(function (item, arr, index) {
+                item = item.replace('"', "").replace(" ", "")
+                var SeatNo = "";
+                $(`.seat`).each(function (inx) {
+                    SeatNo = $(this).find("h6").attr("data-attr-seatno");
+                    if (SeatNo == item) {
+                        $(this).addClass("alreadySeatSelected").attr("style", "pointer-events:none;");
+                    }
+                })
+            });
+
+            if (parseInt('@Model.screenDetail.NoOfSeatsRecliner') - parseInt($("#divRecliner > .alreadySeatSelected").length) <= 2) {
+                $("#labelRecliner").text("(Almost Full..!!)");
+            }
+            else if (parseInt('@Model.screenDetail.NoOfSeatsRecliner') - parseInt($("#divRecliner > .alreadySeatSelected").length) <= 8) {
+                $("#labelRecliner").text("(Filling Up Fast..!!)");
+            }
+            else if (parseInt('@Model.screenDetail.NoOfSeatsRecliner') / 2 <= parseInt($("#divRecliner > .alreadySeatSelected").length)) {
+                $("#labelRecliner").text("(50% Full..!!)");
+            }
+            else {
+                $("#labelRecliner").text("(Available)").attr("style", "color:green; margin-left: -80px;");
+            }
+
+            if (parseInt('@Model.screenDetail.NoOfSeatsPlatinum') - parseInt($("#divPlatinum > .alreadySeatSelected").length) <= 2) {
+                $("#labelPlatinum").text("(Almost Full..!!)");
+            }
+            else if (parseInt('@Model.screenDetail.NoOfSeatsPlatinum') - parseInt($("#divPlatinum > .alreadySeatSelected").length) <= 8) {
+                $("#labelPlatinum").text("(Filling Up Fast..!!)");
+            }
+            else {
+                $("#labelPlatinum").text("(Available)").attr("style", "color:green; margin-left: -80px;");
+            }
+
+            if (parseInt('@Model.screenDetail.NoOfSeatsGold') - parseInt($("#divGold > .alreadySeatSelected").length) <= 2) {
+                $("#labelGold").text("(Almost Full..!!)");
+            }
+            else if (parseInt('@Model.screenDetail.NoOfSeatsGold') - parseInt($("#divGold > .alreadySeatSelected").length) <= 8) {
+                $("#labelGold").text("(Filling Up Fast..!!)");
+            }
+            else {
+                $("#labelGold").text("(Available)").attr("style", "color:green; margin-left: -110px;");
+            }
+
+            if (parseInt('@Model.screenDetail.NoOfSeatsSilver') - parseInt($("#divSilver > .alreadySeatSelected").length) <= 2) {
+                $("#labelSilver").text("(Almost Full..!!)");
+            }
+            else if (parseInt('@Model.screenDetail.NoOfSeatsSilver') - parseInt($("#divSilver > .alreadySeatSelected").length) <= 8) {
+                $("#labelSilver").text("(Filling Up Fast..!!)");
+            }
+            else {
+                $("#labelSilver").text("(Available)").attr("style", "color:green; margin-left: -100px;");
+            }
+
+        }
+        var result = AutoSelectSeat();
+        window.onload = result;
+
+                      </script>
+</body>
+</html>

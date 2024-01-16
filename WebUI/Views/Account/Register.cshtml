@@ -1,0 +1,105 @@
+﻿@model Models.DTO.UserDetails
+
+@{
+    ViewBag.Title = "Register";
+}
+
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "register-form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+<div class="register-form-body">
+    <div >
+        <h2>Register</h2>
+    </div>
+    <div class="row">
+        <div class="form-grp col-sm-4">
+            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label " })
+            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+        </div>
+
+        <div class="form-grp col-sm-4">
+            @Html.LabelFor(model => model.MidName, htmlAttributes: new { @class = "control-label " })
+            @Html.EditorFor(model => model.MidName, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+
+        <div class="form-grp col-sm-4">
+            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label " })
+            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-grp col-sm-4">
+            @Html.LabelFor(model => model.MobileNo, htmlAttributes: new { @class = "control-label " })
+            @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @class = "form-control",@maxlength=10, @required = "required" } })
+        </div>
+
+        <div class="form-grp col-sm-4">
+            @Html.LabelFor(model => model.AadharNumber, htmlAttributes: new { @class = "control-label " })
+            @Html.EditorFor(model => model.AadharNumber, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+        </div>
+
+        <div class="form-grp col-sm-4">
+            @Html.LabelFor(model => model.EmailID, htmlAttributes: new { @class = "control-label " })
+            @Html.EditorFor(model => model.EmailID, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-grp col-sm-4">
+            @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label " })
+            @Html.DropDownListFor(model => model.State, new SelectList(ViewBag.lstStateList, "Value", "Text"), "Please Select State", new { @class = "form-control", @onChange= "GetCity(this)", @required = "required" })
+        </div>
+
+        <div class="form-grp col-sm-4">
+            @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label " })
+            <select class="form-control" id="ddlCity" onChange = "GetPincode(this)" name="City" required>
+            </select>
+        </div>
+
+        <div class="form-grp col-sm-4">
+            @Html.LabelFor(model => model.PinCode, htmlAttributes: new { @class = "control-label " })
+            @Html.EditorFor(model => model.PinCode, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-sm-12">
+            @Html.LabelFor(model => model.FullAddress, htmlAttributes: new { @class = "control-label" })
+            @Html.TextAreaFor(model => model.FullAddress, new { @class = "form-control", @rows = "4", @cols = "100", @required = "required" })
+        </div>
+    </div>
+
+    <center><h3>Credentials</h3></center>
+
+    <div class="row" style="margin-top: -20px;">
+        <hr />
+        <div class="form-grp col-sm-4">
+            @Html.LabelFor(model => model.loginObject.UserName, htmlAttributes: new { @class = "control-label " })
+            @Html.EditorFor(model => model.loginObject.UserName, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+        </div>
+
+        <div class="form-grp col-sm-4">
+            @Html.LabelFor(model => model.loginObject.LoginType, htmlAttributes: new { @class = "control-label " })
+            @Html.DropDownListFor(model => model.loginObject.LoginType, new SelectList(ViewBag.lstLoginType, "Text", "Text"), "Select LoginType", new { @class = "form-control", @required = "required" })
+        </div>
+
+        <div class="form-grp col-sm-4">
+            @Html.LabelFor(model => model.loginObject.Password, htmlAttributes: new { @class = "control-label " })
+            @Html.EditorFor(model => model.loginObject.Password, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+        </div>
+    </div>
+    <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
+    <div class="form-grp">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Sign Up" class="btn btn-success" />
+        </div>
+    </div>
+    <div>
+        @Html.ActionLink("Already Registered? Login Here", "Login")
+    </div>
+</div>
+}

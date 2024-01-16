@@ -1,0 +1,162 @@
+﻿@model Models.DTO.LstOrderDetails
+@{
+    ViewBag.Title = "User's Profile";
+}
+
+<h2> User Profile</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+    </dl>
+</div>
+
+<div class="main-container">
+    <div class="left-container">
+        <div class="user-form-body">
+            <div style="height:10px">
+
+            </div>
+            <div class="row">
+                <div class="form-grp col-sm-3">
+                    @Html.LabelFor(model => model.UserDetails.FirstName, htmlAttributes: new { @class = "control-label " })
+                    @Html.DisplayTextFor(model => model.UserDetails.FirstName)
+                </div>
+
+                <div class="form-grp col-sm-3">
+                    @Html.LabelFor(model => model.UserDetails.MidName, htmlAttributes: new { @class = "control-label " })
+                    @Html.DisplayTextFor(model => model.UserDetails.MidName)
+                </div>
+
+                <div class="form-grp col-sm-3">
+                    @Html.LabelFor(model => model.UserDetails.LastName, htmlAttributes: new { @class = "control-label " })
+                    @Html.DisplayTextFor(model => model.UserDetails.LastName)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-grp col-sm-3">
+                    @Html.LabelFor(model => model.UserDetails.MobileNo, htmlAttributes: new { @class = "control-label " })
+                    @Html.DisplayTextFor(model => model.UserDetails.MobileNo)
+                </div>
+
+                <div class="form-grp col-sm-3">
+                    @Html.LabelFor(model => model.UserDetails.AadharNumber, htmlAttributes: new { @class = "control-label " })
+                    @Html.DisplayTextFor(model => model.UserDetails.AadharNumber)
+                </div>
+
+                <div class="form-grp col-sm-3">
+                    @Html.LabelFor(model => model.UserDetails.EmailID, htmlAttributes: new { @class = "control-label " })
+                    @Html.DisplayTextFor(model => model.UserDetails.EmailID)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-grp col-sm-3">
+                    @Html.LabelFor(model => model.UserDetails.State, htmlAttributes: new { @class = "control-label " })
+                    @Html.DisplayTextFor(model => model.UserDetails.State)
+                </div>
+
+                <div class="form-grp col-sm-3">
+                    @Html.LabelFor(model => model.UserDetails.City, htmlAttributes: new { @class = "control-label " })
+                    @Html.DisplayTextFor(model => model.UserDetails.City)
+                </div>
+
+                <div class="form-grp col-sm-3">
+                    @Html.LabelFor(model => model.UserDetails.PinCode, htmlAttributes: new { @class = "control-label " })
+                    @Html.DisplayTextFor(model => model.UserDetails.PinCode)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-sm-12">
+                    @Html.LabelFor(model => model.UserDetails.FullAddress, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextAreaFor(model => model.UserDetails.FullAddress, new { @class = "form-control", @rows = "4", @cols = "100", @readonly = "readonly" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right-container">
+        <h2> Your Orders</h2>
+        <hr />
+        @if (Model.CartDetails != null && Model.CartDetails.Count > 0)
+        {
+            <table class="table table-bordered table-responsive table-striped">
+                <thead>
+                    <tr>
+                        <th>Serial No.</th>
+                        <th>OrderID</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Last Updated</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 0;
+                        foreach (var cartDetails in Model.CartDetails)
+                        {
+                            i++;
+                                        <tr>
+                                            <td>@i</td>
+                                            <td>@cartDetails.OrderID.ToString().Substring(0, 14) ..</td>
+                                            <td>@cartDetails.TotalAmount</td>
+                                            <td>@cartDetails.OrderDate.ToShortDateString()</td>
+                                            @if (@Convert.ToDateTime(cartDetails.ModifiedDate).ToShortDateString() == "01-01-0001")
+                                            {
+                                                <td>NA</td>
+                                            }
+                                            else
+                                            {
+                                                <td>@Convert.ToDateTime(cartDetails.ModifiedDate).ToShortDateString()</td>
+                                            }
+                                            <td><a href="~/Products/BuyerOrderDetails?orderID=@cartDetails.OrderID"><i class="fas fa-eye"></i></a></td>
+                                        </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            if (User.IsInRole("Admin") || User.IsInRole("Seller"))
+            {
+                <center><p>No Orders, <a href="~/Products/Index">Click Here</a> Check Your Products</p></center>
+            }
+            else if (User.IsInRole("Buyer") || User.IsInRole("BotLogin"))
+            {
+                <center><p>No Orders, <a href="~/Products/userIndex">Click Here</a> to shop Now.</p></center>
+            }
+
+        }
+    </div>
+</div>
+
+<p>
+    @Html.ActionLink("Back to List", "Index","Products")
+</p>
+
+
+<style>
+    table tbody tr td{
+        width:fit-content;
+    }
+    table thead tr {
+        background-color:bisque;
+        text-align:center;
+    }
+
+    th, td {
+        text-align: center;
+    }
+
+    hr{
+        border: 1.25px solid black;
+    }
+    .right-container h2 {
+        margin-top: 5px;
+        margin-bottom: -10px;
+        padding: 5px;
+    }
+</style>

@@ -1,0 +1,173 @@
+﻿@model IEnumerable<Models.DTO.ProductDetails>
+
+@{
+    ViewBag.Title = "Shop";
+    var i = 0;
+    bool IsAuthenticated = User.Identity.IsAuthenticated;
+}
+
+<div class="ProductPage">
+    <div class="Search_Bar">
+        <div class="Search_Bar_Items">
+            <div class="input_Search_Block input">
+                <i class="fas fa-search fa-lg"></i> <input class="input_Search" type="text" id="txtSearch" placeholder="Search Olanthroxx" />
+            </div>
+
+            <div class="input_Search_Block select">
+                <select class="input_Search" type="text" id="txtFilterInbox">
+                    <option value="All">Filter By Category</option>
+                    @foreach (var cat in ViewBag.FilterCategoryList)
+                    {
+                        <option value="@cat.Value">@cat.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="product_Details">
+        @foreach (var item in Model)
+        {
+            i++;
+            <div class="card" id='img_@item.ProductID'>
+                @Html.HiddenFor(modelItem => item.ProductID)
+                <div class="heart_Icon">
+                    <i class='bx bx-heart bx-md'></i>
+                </div>
+                @if (!string.IsNullOrEmpty(item.ImgPath))
+                {
+                    <center><a href="../Products/ViewProductDetails/@item.ProductID"><img src="@Url.Content(@item.ImgPath)"></a></center>
+                }
+                else
+                {
+                    <center><a href="../Products/ViewProductDetails/@item.ProductID"><img src="~/Content/Images/Product.png"></a></center>
+                }
+                <hr />
+                <div class="prod_Desc">
+                    <strong>@Html.ActionLink(item.PName, "ViewProductDetails", new { id = item.ProductID })</strong> | @Html.DisplayFor(modelItem => item.PTitle)
+                </div>
+                <div>
+                    <ul>
+                        <li class="prod_Desc">@item.PDescription.Split('|')[0]</li>
+                    </ul>
+                </div>
+                <div style="text-align: right; margin: -10px 0px;">
+                    @if (item.OverallRating > 0)
+                    {
+                        for (var j = 1; j <= 5; j++)
+                        {
+                            if (j <= item.OverallRating)
+                            {
+                                <span class="fas rating fa-star"></span>
+                            }
+                            else
+                            {
+                                <span class="far fa-star"></span>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <h6><strong>(0 Ratings)</strong></h6>
+                    }
+                </div>
+                @if (item.Quantity >= 5)
+                {
+                    <div class="priceCategory">
+                        <h6 class="priceData" data-attr-price="@item.Price"><strong>Rs. @item.Price</strong></h6>
+                    </div>
+                    <div class="card_Footer">
+                        <button class="add_Cart" href="#" data-attr-MaxQuantity="@item.Quantity" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">Add To Cart</button>
+                    </div>
+                }
+                else if (item.Quantity < 5 && item.Quantity > 0)
+                {
+                    <div class="priceCategory">
+                        <h6 class="priceData" data-attr-price="@item.Price"><strong>Rs. @item.Price</strong></h6><h6 style="color: red; margin: -5px 0px;"> (Only @item.Quantity units available..)</h6>
+                    </div>
+                    <div class="card_Footer">
+                        <button class="add_Cart" href="#" data-attr-MaxQuantity="@item.Quantity" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">Add To Cart</button>
+                    </div>
+                }
+                else if (item.Quantity == 0)
+                {
+                    <div class="priceCategory">
+                        <h6 class="priceData" data-attr-price="@item.Price"><strong>Rs. @item.Price</strong></h6><h6 style="color: red; margin: -5px 0px;">(Out Of Stock)</h6>
+                    </div>
+                    <div class="card_Footer" style="pointer-events:none">
+                        <button class="btn-warning add_Cart" href="#" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">Add To Cart</button>
+                    </div>
+                }
+
+                @Html.HiddenFor(modelItem => item.CategoryID_FK, new { @class = "filterByCategory" })
+            </div>
+        }
+    </div>
+</div>
+
+<!--Cart Modal-->
+<div id="cartPopUp" class="main_Modal">
+    <div class="modal_Body">
+        <div class="modal_Headers">
+            <h2 style="text-align: initial;">Your Cart <i class="fa fa-shopping-cart"></i></h2>
+            <span class="close closeCartBtn" style=" margin-top: 13px;">&times;</span>
+        </div>
+        <div class="modal_Content">
+            <div id="appendCartData"></div>
+        </div>
+        <div class="modal_Footer">
+            <p id="totalCartValue" value="0"></p>
+            <button class="btn-success add_Cart closeModalCart " onclick="ProceedToCheckout('ECommerce')">Checkout</button>
+        </div>
+    </div>
+</div>
+<!--Common Modal-->
+
+
+<script>
+    $(document).ready(function () {
+        $("#txtSearch").val();
+        $("#txtFilterInbox").val();
+        IsAuthenticated = '@IsAuthenticated';
+        $("#txtFilterInbox").on("change", function () {
+            var filterType = $(this).val();
+            if (filterType == "All") {
+                $("div .product_Details .card").each(function (results) {
+                    if (results !== 0) {
+                        $(this).show();
+                    }
+                });
+                return true;
+            }
+
+            $("div .product_Details .card").each(function (results) {
+                if (results !== 0) {
+                    if (filterType != $(this).find(".filterByCategory").val()) {
+                        $(this).hide();
+                    }
+                    else {
+                        $(this).show();
+                    }
+                }
+            });
+        });
+
+        $("#txtSearch").on("keyup", function () {
+            var textEnter = $(this).val();
+            $("div .product_Details .card").each(function (results) {
+                if (results !== 0) {
+                    var id = $(this).find(".prod_Desc").text();
+                    if (id.indexOf(textEnter) !== 0 && id.toLowerCase().indexOf(textEnter.toLowerCase()) < 0) {
+                        $(this).hide();
+                    }
+                    else {
+                        $(this).show();
+                    }
+                }
+            });
+        });
+
+        $("#formYourCart").removeClass("displayNone");
+
+    });
+
+</script>

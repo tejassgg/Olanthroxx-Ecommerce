@@ -1,0 +1,84 @@
+﻿@model Models.DTO.ProductReview
+
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("AddReview", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+
+    @Html.HiddenFor(a => a.ProductID)
+    @Html.HiddenFor(a => a.PName)
+    @Html.HiddenFor(a => a.OrderID)
+    @Html.HiddenFor(a => a.CreatedDate)
+
+    @Model.PName
+
+    <div style=" margin-bottom: -5px; margin-top: -5px; display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+        @Html.LabelFor(model => model.Rating, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div style="text-align: right;">
+            <span class="ratingStar far fa-star" data-attr-value="1"></span>
+            <span class="ratingStar far fa-star" data-attr-value="2"></span>
+            <span class="ratingStar far fa-star" data-attr-value="3"></span>
+            <span class="ratingStar far fa-star" data-attr-value="4"></span>
+            <span class="ratingStar far fa-star" data-attr-value="5"></span>
+        </div>
+        @Html.HiddenFor(a => a.Rating, htmlAttributes: new { @id = "hdnRating" })
+    </div>
+
+    <div class="col-sm-12" style="display: flex;flex-direction: row;margin: 8px 0px;column-gap: 5px;">
+        @Html.LabelFor(model => model.Review, htmlAttributes: new { @class = "control-label" })
+        @Html.TextAreaFor(model => model.Review, new { @class = "form-control", @rows = "3", @cols = "100", @style = "font-size:12px" })
+    </div>
+
+    <div class="col-sm-12" style="display: flex; flex-direction: row; margin: 8px 0px; column-gap: 18px;">
+        <label class="control-label">Product Image</label>
+        <input type="file" name="imgFile" class="btn btn-info" />
+    </div>
+
+    <center>
+        <input type="submit" value="Create" class="submitReviewBtn btn-success" />
+    </center>
+</div>
+}
+<style>
+    .fas {
+        color: orange;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+
+        $(".ratingStar").hover(function () {
+            $(".ratingStar").addClass("far").removeClass("fas");
+
+            $(this).addClass("fas").removeClass("far");
+            $(this).prevAll(".ratingStar").addClass("fas").removeClass("far");
+        });
+
+        $(".ratingStar").click(function () {
+            $("#hdnRating").val(parseInt($(this).attr("data-attr-value")))
+        });
+
+
+        var modal = document.getElementById("addReviewPopUp");
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function () {
+            $("#addReviewPopUp").attr("style", "display:none");
+        }
+        var btn = document.getElementsByClassName("closeModal")[0];
+        btn.onclick = function () {
+            $("#addReviewPopUp").attr("style", "display:none");
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                $("#addReviewPopUp").attr("style", "display:none");
+            }
+        }
+    });
+</script>
+

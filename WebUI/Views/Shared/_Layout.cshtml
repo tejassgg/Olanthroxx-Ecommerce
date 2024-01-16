@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/Content/Site.css" />
+    <link rel="stylesheet" href="~/Content/CSS/Common.css" />
+    <link rel="stylesheet" href="~/Content/CSS/Product.css" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/Payment/Payment.js"></script>
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body style=" background-color: aliceblue; padding-top: -50px; padding-bottom: -20px;">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <form id="formYourCart" class="displayNone">
+            <input type="hidden" id="hdnCartDetails" />
+            <div class="yourCart">
+                <a onclick="OpenCart()">Your Cart<i class="fa fa-shopping-cart" style="font-size:22px"></i></a><a id="txtCartCount"></a>
+            </div>
+        </form>
+    }
+    <div class="wrapper">
+        <input type="checkbox" id="btn" hidden>
+        <label for="btn" class="menu-btn">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-times"></i>
+        </label>
+        <nav id="sidebar" style="z-index:1">
+            <div class="title">
+                <a href="../Products" style="color: white; text-decoration: none;">Olanthroxx</a>
+            </div>
+            <ul class="list-items">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("Admin") || User.IsInRole("BotLogin") || User.IsInRole("Seller"))
+                    {
+                        if (User.IsInRole("Seller"))
+                        {
+                            <li><a href="~/Products/Index?userType=Seller"><i class="fas fa-home"></i>User Dashboard</a></li>
+                        }
+                        else if (User.IsInRole("BotLogin"))
+                        {
+                            <li><a href="~/Products/Index?userType=BotLogin"><i class="fas fa-home"></i>Super Admin Dashboard</a></li>
+                        }
+                        else if (User.IsInRole("Admin"))
+                        {
+                            <li><a href="~/Products/Index?userType=Admin"><i class="fas fa-home"></i>Admin Dashboard</a></li>
+                        }
+                    }
+
+                    <li><a href="~/BookTicket/Index"><i class="fa fa-film"></i>Book Movie Tickets</a></li>
+
+                    if (User.IsInRole("Buyer") || User.IsInRole("BotLogin"))
+                    {
+                        if (User.IsInRole("Buyer"))
+                        {
+                            <li><a href="~/Products/UserIndex?userType=Buyer"><i class="fas fa-shopping-cart"></i>Shop</a></li>
+                        }
+                        else if (User.IsInRole("BotLogin"))
+                        {
+                            <li><a href="~/Products/UserIndex?userType=BotLogin"><i class="fas fa-shopping-cart"></i>Shop</a></li>
+                        }
+                    }
+
+                    if (User.IsInRole("Seller"))
+                    {
+                        <li><a href="~/Account/SellerProfile"><i class="fas fa-user-alt"></i>Dear -  @User.Identity.Name</a></li>
+                    }
+                    else if (User.IsInRole("BotLogin"))
+                    {
+                        <li><a href="~/Account/SellerProfile"><i class="fas fa-user-alt"></i>Seller -  @User.Identity.Name</a></li>
+                        <li><a href="~/Account/UserProfile"><i class="fas fa-user-alt"></i>My Orders</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="~/Account/UserProfile"><i class="fas fa-user-alt"></i>My Orders</a></li>
+                    }
+
+                    <li><a href="~/Budget/Index"><i class="fas fa-wallet"></i>My Budget</a></li>
+
+                    <li><a href="~/Account/Logout"><i class="fas fa-sign-out-alt"></i>Log Out</a></li>
+                }
+                else
+                {
+                    <li><a href="~/Account/Login"><i class="fas fa-sign-in-alt"></i>Login</a></li>
+                }
+                <li><a href="#"><i class="fas fa-address-card"></i>About us</a></li>
+                <li><a href="#"><i class="fas fa-envelope"></i>Contact us</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="body-content">
+        @RenderBody()
+    </div>
+
+    <div style="height:50px">
+
+    </div>
+
+    <footer class="body-footer" style="padding: 18px 25px 25px 25px; z-index: 100 ">
+        <div><p>&copy; @DateTime.Now.Year - Olanthroxx Inc.</p></div>
+    </footer>
+
+    <!--Common Modal-->
+    <div id="commonPopUp" class="modal">
+        <center class="modal-content">
+            <div class="modal-headers modalHeaderCommon" style="padding:0px">
+                <span class="close" style=" margin-top: 13px;">&times;</span>
+                <h2 id="popupHeader" style="text-align: initial;">Modal Header</h2>
+            </div>
+            <div class="modal-body">
+                <div id="popupBodyMsg"></div>
+            </div>
+            <div class="modal-footers modalfooterCommon" style="padding:0px">
+                <div id="popupFooter">
+                    <button class="btn btn-success closeModal" style="margin: 5px -9px 5px 0px;">Close</button>
+                </div>
+            </div>
+        </center>
+    </div>
+    <!--Common Modal-->
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $(document).ready(function () {
+            var modalCart = document.getElementById("cartPopUp");
+            var spanCart = document.getElementsByClassName("closeCartBtn")[0];
+            if (spanCart != undefined) {
+                spanCart.onclick = function () {
+                    $("#cartPopUp").attr("style", "display:none");
+                }
+            }           
+
+            var modal = document.getElementById("commonPopUp");
+            var span = document.getElementsByClassName("close")[0];
+            span.onclick = function () {
+                $("#commonPopUp").attr("style", "display:none");
+            }
+            var btn = document.getElementsByClassName("closeModal")[0];
+            btn.onclick = function () {
+                $("#commonPopUp").attr("style", "display:none");
+            }
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    $("#commonPopUp").attr("style", "display:none");
+                }
+                else if (event.target == modalCart) {
+                    $("#cartPopUp").attr("style", "display:none");
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+﻿@model Models.DTO.PaymentDetail
+
+@{
+    ViewBag.Title = "PaymentSuccessfull";
+}
+
+<h2>Payment Summary</h2>
+
+<center style="top:50%; left:50%">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>OrderID</th>
+                <th>Total Amount</th>
+                <th>Payment Mode</th>
+                <th>Status</th>
+                <th>Transaction No</th>
+                <th>Transaction Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.OrderID</td>
+                <td>@Model.TotalPayableAmount</td>
+                <td>@Model.PaymentModeDetails.PaymentMode</td>
+                <td>@Model.PaymentModeDetails.PaymentStatus</td>
+                <td>@Model.TransactionNo</td>
+                <td>@Model.CreatedDate</td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="javascript:window.print()">
+        Print Order Summary
+    </a>
+</center>

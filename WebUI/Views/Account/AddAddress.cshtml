@@ -1,0 +1,66 @@
+﻿@model Models.DTO.Address
+
+@{
+    Layout = null;
+}
+<form id="addAddressForm"  action="../Account/AddAddress" method="POST">
+    <div class="form-horizontal">
+        <div class="col-sm-12 form-column">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @rows = "3", @cols = "100", @style = "font-size:12px", @required = "required" })
+        </div>
+
+        @Html.HiddenFor(a => a.Type)
+
+        <div class="col-sm-12 form-column">
+            @Html.LabelFor(model => model.StateID, htmlAttributes: new { @class = "control-label " })
+            @Html.DropDownListFor(model => model.StateID, new SelectList(ViewBag.lstStateList, "Value", "Text"), "Please Select State", new { @class = "form-control", @onChange = "GetCity(this)" })
+        </div>
+        <div class="col-sm-12 form-column">
+            @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label " })
+            @Html.DropDownListFor(model => model.City, Enumerable.Empty<SelectListItem>(), htmlAttributes: new { @class = "form-control", @id = "ddlCity" })
+        </div>
+        <div class="col-sm-12 form-column">
+            @Html.LabelFor(model => model.Pincode, htmlAttributes: new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.Pincode, new { @class = "form-control", @rows = "3", @cols = "100", @style = "font-size:12px", @required = "required" })
+        </div>
+        <div class="col-sm-12 form-column">
+            @Html.LabelFor(model => model.Address1, htmlAttributes: new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.Address1, new { @class = "form-control", @rows = "3", @cols = "100", @style = "font-size:12px", @required = "required",@maxlength = 50 })
+        </div>
+        <div class="col-sm-12 form-column">
+            @Html.LabelFor(model => model.Address2, htmlAttributes: new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.Address2, new { @class = "form-control", @rows = "3", @cols = "100", @style = "font-size:12px", @required = "required", @maxlength = 50 })
+        </div>
+        <div class="col-sm-12 form-column">
+            @Html.LabelFor(model => model.Landmark, htmlAttributes: new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.Landmark, new { @class = "form-control", @rows = "3", @cols = "100", @style = "font-size:12px", @required = "required" })
+        </div>
+
+        <center>
+            <input style="width: 65px;" type="button" value="Submit" class="writeReviewBtn btn-success" onclick="SubmitAddress()"/>
+        </center>
+    </div>
+
+</form>
+
+<script>
+    $(document).ready(function () {
+
+        var modal = document.getElementById("addAddressPopUp");
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function () {
+            $("#addAddressPopUp").attr("style", "display:none");
+        }
+        var btn = document.getElementsByClassName("closeModal")[0];
+        btn.onclick = function () {
+            $("#addAddressPopUp").attr("style", "display:none");
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                $("#addAddressPopUp").attr("style", "display:none");
+            }
+        }
+    });
+</script>

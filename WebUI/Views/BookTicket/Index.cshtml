@@ -1,0 +1,36 @@
+﻿@model List<Models.DTO.MovieDetails>
+@{
+    ViewBag.Title = "Movie Tickets";
+}
+
+<h2>Book Movie Tickets</h2>
+<hr />
+
+<div id="divOfferBanner" style="height:250px; background-color:azure">
+
+</div>
+
+<h3>Recommended Movies</h3>
+<div id="divMovieCards" class="movie-card-conatiner">
+    @foreach (var mov in Model)
+    {
+        <div class="movie-card">
+            @Html.HiddenFor(a => mov.MovieID)
+
+            <div class="movie-upper-card">
+                @if (!string.IsNullOrEmpty(mov.ImgPath))
+                {
+                    <center><a href="~/BookTicket/MovieDetails?MovieName=@mov.MovieName"><img src="@Url.Content(mov.ImgPath)" width="200px" height="250px"></a></center>
+                }
+                else
+                {
+                    <center><a href="~/BookTicket/MovieDetails?MovieName=@mov.MovieName"><img src="~/Content/Images/Product.png" width="200px" height="250px"></a></center>
+                }
+            </div>
+            <hr />
+            <p><strong>@mov.MovieName</strong> | @mov.Description</p>
+            <h6>Duration: @mov.Duration mins</h6>
+        </div>
+    }
+</div>
+

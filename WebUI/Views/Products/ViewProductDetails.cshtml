@@ -1,0 +1,462 @@
+﻿@model Models.DTO.ProductDetails
+
+@{
+    ViewBag.Title = "Product Details - " + Model.PName;
+    List<Models.DTO.ProductReview> rating1 = new List<Models.DTO.ProductReview>();
+    List<Models.DTO.ProductReview> rating2 = new List<Models.DTO.ProductReview>();
+    List<Models.DTO.ProductReview> rating3 = new List<Models.DTO.ProductReview>();
+    List<Models.DTO.ProductReview> rating4 = new List<Models.DTO.ProductReview>();
+    List<Models.DTO.ProductReview> rating5 = new List<Models.DTO.ProductReview>();
+    if (Model.lstProductReviews != null && Model.lstProductReviews.Count > 0)
+    {
+        rating1 = Model.lstProductReviews.Where(a => a.Rating == 1).ToList();
+        rating2 = Model.lstProductReviews.Where(a => a.Rating == 2).ToList();
+        rating3 = Model.lstProductReviews.Where(a => a.Rating == 3).ToList();
+        rating4 = Model.lstProductReviews.Where(a => a.Rating == 4).ToList();
+        rating5 = Model.lstProductReviews.Where(a => a.Rating == 5).ToList();
+    }
+}
+<div>
+    <h2>Product Details</h2>
+    <hr />
+    <dl class="dl-horizontal">
+
+        @if (!string.IsNullOrEmpty(Model.ImgPath))
+        {
+            <center><img src="@Url.Content(Model.ImgPath)" width="200px" height="200px" style="border-radius:10px"></center>
+        }
+        else
+        {
+            <center><img src="~/Content/Images/Product.png" width="200px" height="200px"></center>
+        }
+        <dd style="display:none;">
+            @Html.HiddenFor(model => model.ProductID)
+        </dd>
+
+        <dt>
+            Name
+        </dt>
+
+        <dd>
+            @Model.PName
+        </dd>
+
+        <dt>
+            Title
+        </dt>
+
+        <dd>
+            @Model.PTitle
+        </dd>
+
+        <dt>
+            Description
+        </dt>
+
+        <dd>
+            @Model.PDescription
+        </dd>
+
+        <dt>
+            Category
+        </dt>
+
+        <dd>
+            @Model.Category
+        </dd>
+
+        <dt>
+            Quantity
+        </dt>
+
+        <dd>
+            @Model.Quantity
+        </dd>
+
+        <dt>
+            Price
+        </dt>
+
+        <dd>
+            @Model.Price
+        </dd>
+
+        @if (Model.CreatedDate != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </dt>
+
+            <dd>
+                @Model.CreatedDate.ToShortDateString()
+            </dd>
+        }
+        @if (Model.ModifiedDate != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.ModifiedDate)
+            </dt>
+
+            <dd>
+                @Convert.ToDateTime(Model.ModifiedDate).ToShortDateString()
+            </dd>
+        }
+        @if (Model.lstProductReviews != null && Model.lstProductReviews.Count > 0)
+        {
+            <dt>
+                Customer reviews
+            </dt>
+
+            <dd class="tooltips" style="display: flex; z-index:20">
+                <div>
+                    @for (var j = 1; j <= 5; j++)
+                    {
+                        if (j <= Model.OverallRating)
+                        {
+                            <span class="fa fa-star checked"></span>
+                        }
+                        else
+                        {
+                            <span class="fa fa-star"></span>
+                        }
+                    }
+                </div> &nbsp;&nbsp; <a href="#productReviews" style="text-decoration:underline">@Model.lstProductReviews.Count ratings</a>
+
+                <div class="tooltiptext">
+                    <div class="rating">
+                        @if (rating5 != null)
+                        {
+                            <div>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                            </div> <a href="#rating5" style="text-decoration:underline">@rating5.Count ratings</a>
+                        }
+                    </div>
+                    <div class="rating">
+                        @if (rating4 != null)
+                        {
+                            <div>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                            </div> <a href="#rating4" style="text-decoration:underline">@rating4.Count ratings</a>
+                        }
+                    </div>
+                    <div class="rating">
+                        @if (rating3 != null)
+                        {
+                            <div>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                            </div> <a href="#rating3" style="text-decoration:underline">@rating3.Count ratings</a>
+                        }
+                    </div>
+                    <div class="rating">
+                        @if (rating2 != null)
+                        {
+                            <div>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                            </div> <a href="#rating2" style="text-decoration:underline">@rating2.Count ratings</a>
+                        }
+                    </div>
+                    <div class="rating">
+                        @if (rating1 != null)
+                        {
+                            <div>
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                            </div> <a href="#rating1" style="text-decoration:underline">@rating1.Count ratings</a>
+                        }
+                    </div>
+                </div>
+
+            </dd>
+        }
+    </dl>
+
+    @if (Model.LstOtherProducts != null && Model.LstOtherProducts.Count > 0)
+    {
+        <hr />
+        <h4><strong>Other Products by Seller</strong></h4>
+
+        <div class="swiper mySwiper swiper-Container">
+            <div class="swiper-wrapper">
+                @foreach (var prod in Model.LstOtherProducts)
+                {
+                    <div class="swiper-slide">
+                        <div class="slider-Data">
+                            @if (!string.IsNullOrEmpty(prod.ImgPath))
+                            {
+                                <a href="../ViewProductDetails/@prod.ProductID" ><img src="@Url.Content(prod.ImgPath)"></a>
+                            }
+                            else
+                            {
+                                <a href="../ViewProductDetails/@prod.ProductID" ><img src="~/Content/Images/Product.png"></a>
+                            }
+                        <div>
+                            <h5><strong>@prod.PName</strong></h5>
+                            <div>
+                                <ul>
+                                    <li class="splitData">@prod.PDescription.Split('|')[0]</li>
+                                </ul>
+                            </div>
+                            @if (prod.OverallRating > 0)
+                            {
+                                for (var j = 1; j <= 5; j++)
+                                {
+                                    if (j <= prod.OverallRating)
+                                    {
+                                        <span class="fas checked fa-star"></span>
+                                    }
+                                    else
+                                    {
+                                        <span class="far fa-star"></span>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <h6><strong>(0 Ratings)</strong></h6>
+                            }
+                            <p><strong>Rs. </strong>@prod.Price</p>
+                        </div>
+                        </div>
+                        <div style="height:50px">
+
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    }
+
+    @if (Model.lstProductReviews != null && Model.lstProductReviews.Count > 0)
+    {
+        <hr />
+        <h4><strong>Ratings & Reviews</strong></h4>
+        <div style="display: flex; justify-content: center;">
+            <section id="productReviews" class="productReviews">
+                @if (rating5 != null)
+                {
+                    <section id="rating5">
+                        @foreach (var rev in rating5)
+                        {
+                            <div class="reviewContainer">
+                                <div class="review-header">
+                                    <h6 style="color:darkred"><strong>@rev.ReviewerName</strong></h6>
+                                    <hr style="margin:0px" />
+                                </div>
+                                <div class="review-body">
+                                    <p>@rev.Review</p>
+                                    <div style="text-align: right; margin: -30px 0px -5px 0px">
+                                        @for (var i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= rev.Rating)
+                                            {
+                                                <span class="fa fa-star checked"></span>
+                                            }
+                                            else
+                                            {
+                                                <span class="fa fa-star"></span>
+                                            }
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="review-footer text-right">
+                                    <h6>@rev.CreatedDate.ToShortDateString()</h6>
+                                </div>
+                            </div>
+                        }
+                    </section>
+                }
+                @if (rating4 != null)
+                {
+                    <section id="rating4">
+                        @foreach (var rev in rating4)
+                        {
+                            <div class="reviewContainer">
+                                <div class="review-header">
+                                    <h6 style="color:darkred"><strong>@rev.ReviewerName</strong></h6>
+                                    <hr style="margin:0px" />
+                                </div>
+                                <div class="review-body">
+                                    <p>@rev.Review</p>
+                                    <div style="text-align: right; margin: -30px 0px -5px 0px">
+                                        @for (var i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= rev.Rating)
+                                            {
+                                                <span class="fa fa-star checked"></span>
+                                            }
+                                            else
+                                            {
+                                                <span class="fa fa-star"></span>
+                                            }
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="review-footer text-right">
+                                    <h6>@rev.CreatedDate.ToShortDateString()</h6>
+                                </div>
+                            </div>
+                        }
+                    </section>
+                }
+                @if (rating3 != null)
+                {
+                    <section id="rating3">
+                        @foreach (var rev in rating3)
+                        {
+                            <div class="reviewContainer">
+                                <div class="review-header">
+                                    <h6 style="color:darkred"><strong>@rev.ReviewerName</strong></h6>
+                                    <hr style="margin:0px" />
+                                </div>
+                                <div class="review-body">
+                                    <p>@rev.Review</p>
+                                    <div style="text-align: right; margin: -30px 0px -5px 0px">
+                                        @for (var i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= rev.Rating)
+                                            {
+                                                <span class="fa fa-star checked"></span>
+                                            }
+                                            else
+                                            {
+                                                <span class="fa fa-star"></span>
+                                            }
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="review-footer text-right">
+                                    <h6>@rev.CreatedDate.ToShortDateString()</h6>
+                                </div>
+                            </div>
+                        }
+                    </section>
+                }
+                @if (rating2 != null)
+                {
+                    <section id="rating2">
+                        @foreach (var rev in rating2)
+                        {
+                            <div class="reviewContainer">
+                                <div class="review-header">
+                                    <h6 style="color:darkred"><strong>@rev.ReviewerName</strong></h6>
+                                    <hr style="margin:0px" />
+                                </div>
+                                <div class="review-body">
+                                    <p>@rev.Review</p>
+                                    <div style="text-align: right; margin: -30px 0px -5px 0px">
+                                        @for (var i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= rev.Rating)
+                                            {
+                                                <span class="fa fa-star checked"></span>
+                                            }
+                                            else
+                                            {
+                                                <span class="fa fa-star"></span>
+                                            }
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="review-footer text-right">
+                                    <h6>@rev.CreatedDate.ToShortDateString()</h6>
+                                </div>
+                            </div>
+                        }
+                    </section>
+                }
+                @if (rating1 != null)
+                {
+                    <section id="rating1">
+                        @foreach (var rev in rating1)
+                        {
+                            <div class="reviewContainer">
+                                <div class="review-header">
+                                    <h6 style="color:darkred"><strong>@rev.ReviewerName</strong></h6>
+                                    <hr style="margin:0px" />
+                                </div>
+                                <div class="review-body">
+                                    <p>@rev.Review</p>
+                                    <div style="text-align: right; margin: -30px 0px -5px 0px">
+                                        @for (var i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= rev.Rating)
+                                            {
+                                                <span class="fa fa-star checked"></span>
+                                            }
+                                            else
+                                            {
+                                                <span class="fa fa-star"></span>
+                                            }
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="review-footer text-right">
+                                    <h6>@rev.CreatedDate.ToShortDateString()</h6>
+                                </div>
+                            </div>
+                        }
+                    </section>
+                }
+            </section>
+        </div>
+    }
+
+</div>
+<p>
+    @if (User.Identity.IsAuthenticated)
+    {
+        @Html.ActionLink("Back to List", "Index")
+    }
+    else
+    {
+        @Html.ActionLink("Back to List", "UserIndex")
+    }
+
+</p>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+<script>
+    var swiper = new Swiper(".mySwiper", {
+        slidesPerView: 1,
+        spaceBetween: 30,
+        keyboard: {
+            enabled: true,
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+    });
+</script>

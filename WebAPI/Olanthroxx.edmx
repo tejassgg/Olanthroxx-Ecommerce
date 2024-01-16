@@ -1,0 +1,1414 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="OlanthroxxModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="tblAddress">
+          <Key>
+            <PropertyRef Name="AddressID" />
+          </Key>
+          <Property Name="AddressID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="10" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="CityID" Type="int" Nullable="false" />
+          <Property Name="StateID" Type="int" Nullable="false" />
+          <Property Name="Pincode" Type="int" Nullable="false" />
+          <Property Name="FullAddress" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Address1" Type="nvarchar" MaxLength="50" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="50" />
+          <Property Name="Landmark" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblApplicationSetting">
+          <Key>
+            <PropertyRef Name="KeyID" />
+          </Key>
+          <Property Name="KeyID" Type="int" Nullable="false" />
+          <Property Name="KeyName" Type="nvarchar" MaxLength="20" />
+          <Property Name="KeyValue" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblBudgetDetails">
+          <Key>
+            <PropertyRef Name="BudgetID" />
+          </Key>
+          <Property Name="BudgetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Amount" Type="int" Nullable="false" />
+          <Property Name="Balance" Type="int" Nullable="false" />
+          <Property Name="AccountID_FK" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblCategory">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryType" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblExpense">
+          <Key>
+            <PropertyRef Name="ExpID" />
+          </Key>
+          <Property Name="ExpID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BudgetID_FK" Type="int" Nullable="false" />
+          <Property Name="ExpName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Amount" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblForgotPasswordHistory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AttemptNo" Type="int" Nullable="false" />
+          <Property Name="MaxNoOfAttempts" Type="int" Nullable="false" />
+          <Property Name="Key" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ExpiryTime" Type="datetime" Nullable="false" />
+          <Property Name="Link" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="PasswordChangedDate" Type="datetime" />
+          <Property Name="IsValid" Type="bit" />
+        </EntityType>
+        <EntityType Name="tblLogs">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdentificationNo" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Data" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblMasCity">
+          <Key>
+            <PropertyRef Name="CityID" />
+          </Key>
+          <Property Name="CityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StateID_FK" Type="int" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="nvarchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="tblMasCommonType">
+          <Key>
+            <PropertyRef Name="CommonID" />
+          </Key>
+          <Property Name="CommonID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="int" />
+          <Property Name="MasterType" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="150" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="tblMasState">
+          <Key>
+            <PropertyRef Name="StateID" />
+          </Key>
+          <Property Name="StateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="State" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CountryID" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblMovieBookingHistory">
+          <Key>
+            <PropertyRef Name="BookingID" />
+          </Key>
+          <Property Name="BookingID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ScreenTimingConfigID_FK" Type="int" Nullable="false" />
+          <Property Name="MovieName" Type="nvarchar" MaxLength="50" />
+          <Property Name="NoOfSeats" Type="int" Nullable="false" />
+          <Property Name="SeatNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SeatCategory" Type="int" />
+          <Property Name="Amount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="IsUsed" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="QRCodeImageData" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="tblMovieDetails">
+          <Key>
+            <PropertyRef Name="MovieID" />
+          </Key>
+          <Property Name="MovieID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MovieName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Duration" Type="int" Nullable="false" />
+          <Property Name="StarCast" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ImgPath" Type="nvarchar" MaxLength="150" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsOutOfTheater" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="ReleaseDate" Type="datetime" />
+          <Property Name="BGImgPath" Type="nvarchar" MaxLength="150" />
+          <Property Name="Language" Type="nvarchar" MaxLength="100" />
+          <Property Name="MovieType" Type="nvarchar" MaxLength="100" />
+          <Property Name="IsAdult" Type="bit" />
+          <Property Name="TrailerLink" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblMovieScreenTimingConfig">
+          <Key>
+            <PropertyRef Name="ScreenTimingConfigID" />
+          </Key>
+          <Property Name="ScreenTimingConfigID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MovieID_FK" Type="int" Nullable="false" />
+          <Property Name="ScreenID_FK" Type="int" Nullable="false" />
+          <Property Name="TimingID" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="MovieDate" Type="date" />
+        </EntityType>
+        <EntityType Name="tblOrderDetails">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="OrderStatus" Type="int" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="ShippingAddressID_FK" Type="int" />
+          <Property Name="BillingAddressID_FK" Type="int" />
+        </EntityType>
+        <EntityType Name="tblPayment">
+          <Key>
+            <PropertyRef Name="PaymentID" />
+          </Key>
+          <Property Name="PaymentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="TotalPayableAmount" Type="int" Nullable="false" />
+          <Property Name="PaymentMode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PaymentStatus" Type="int" Nullable="false" />
+          <Property Name="PaymentDetails" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="TransactionNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ChequeNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="ChequeDate" Type="datetime" />
+          <Property Name="AccountNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="IFSC_Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="UPI_ID" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="PaymentOf" Type="nvarchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="tblProduct">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PTitle" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="PDescription" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CategoryID_FK" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="SellerName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ImgPath" Type="nvarchar(max)" />
+          <Property Name="DiscountPer" Type="int" />
+        </EntityType>
+        <EntityType Name="tblProductReview">
+          <Key>
+            <PropertyRef Name="ReviewID" />
+          </Key>
+          <Property Name="ReviewID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductID_FK" Type="int" Nullable="false" />
+          <Property Name="OrderID_FK" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Rating" Type="int" Nullable="false" />
+          <Property Name="Review" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="ImgPath" Type="nvarchar" MaxLength="100" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="CreatedDate" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblScreenDetails">
+          <Key>
+            <PropertyRef Name="ScreenID" />
+          </Key>
+          <Property Name="ScreenID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScreenNo" Type="int" Nullable="false" />
+          <Property Name="TheaterID_FK" Type="int" Nullable="false" />
+          <Property Name="NoOfSeatsSilver" Type="int" Nullable="false" />
+          <Property Name="PriceSilver" Type="int" Nullable="false" />
+          <Property Name="NoOfSeatsGold" Type="int" Nullable="false" />
+          <Property Name="PriceGold" Type="int" Nullable="false" />
+          <Property Name="NoOfSeatsPlatinum" Type="int" Nullable="false" />
+          <Property Name="PricePlatinum" Type="int" Nullable="false" />
+          <Property Name="NoOfSeatsRecliner" Type="int" Nullable="false" />
+          <Property Name="PriceRecliner" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblTheaterDetails">
+          <Key>
+            <PropertyRef Name="TheaterID" />
+          </Key>
+          <Property Name="TheaterID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName_FK" Type="nvarchar" MaxLength="20" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NoOfScreens" Type="int" Nullable="false" />
+          <Property Name="Pincode" Type="int" Nullable="false" />
+          <Property Name="Location" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Landmark" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblUser">
+          <Key>
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Name="AccountID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="PasswordSalt" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="PasswordHistory" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="LastPasswordChange" Type="datetime" Nullable="false" />
+          <Property Name="LoginType" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="tblUserDetails">
+          <Key>
+            <PropertyRef Name="UserDetailsID" />
+          </Key>
+          <Property Name="UserDetailsID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountID_FK" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MidName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MobileNo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="EmailID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AadharNumber" Type="nchar" MaxLength="14" />
+          <Property Name="State" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PinCode" Type="int" Nullable="false" />
+          <Property Name="FullAddress" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="CreatedDate" Type="date" Nullable="false" />
+          <Property Name="UserImgPath" Type="nvarchar" MaxLength="120" />
+        </EntityType>
+        <EntityType Name="tblUserSessionDetails">
+          <Key>
+            <PropertyRef Name="SessionID" />
+          </Key>
+          <Property Name="SessionID" Type="int" Nullable="false" />
+          <Property Name="AccountID" Type="int" />
+          <Property Name="SessionDateTime" Type="datetime" />
+          <Property Name="Port" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserType" Type="nvarchar" MaxLength="20" />
+          <Property Name="Username" Type="nvarchar" MaxLength="20" />
+          <Property Name="SessionComments" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <Association Name="FK_tblBudgetDetails_tblUser">
+          <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
+          <End Role="tblBudgetDetails" Type="Self.tblBudgetDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="tblBudgetDetails">
+              <PropertyRef Name="AccountID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblMasCity_tblMasState">
+          <End Role="tblMasState" Type="Self.tblMasState" Multiplicity="1" />
+          <End Role="tblMasCity" Type="Self.tblMasCity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMasState">
+              <PropertyRef Name="StateID" />
+            </Principal>
+            <Dependent Role="tblMasCity">
+              <PropertyRef Name="StateID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblMovieBookingHistory_tblMovieScreenTimingConfig">
+          <End Role="tblMovieScreenTimingConfig" Type="Self.tblMovieScreenTimingConfig" Multiplicity="1" />
+          <End Role="tblMovieBookingHistory" Type="Self.tblMovieBookingHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMovieScreenTimingConfig">
+              <PropertyRef Name="ScreenTimingConfigID" />
+            </Principal>
+            <Dependent Role="tblMovieBookingHistory">
+              <PropertyRef Name="ScreenTimingConfigID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblMovieScreenTimingConfig_tblMovieDetails">
+          <End Role="tblMovieDetails" Type="Self.tblMovieDetails" Multiplicity="1" />
+          <End Role="tblMovieScreenTimingConfig" Type="Self.tblMovieScreenTimingConfig" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMovieDetails">
+              <PropertyRef Name="MovieID" />
+            </Principal>
+            <Dependent Role="tblMovieScreenTimingConfig">
+              <PropertyRef Name="MovieID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblMovieScreenTimingConfig_tblScreenDetails">
+          <End Role="tblScreenDetails" Type="Self.tblScreenDetails" Multiplicity="1" />
+          <End Role="tblMovieScreenTimingConfig" Type="Self.tblMovieScreenTimingConfig" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblScreenDetails">
+              <PropertyRef Name="ScreenID" />
+            </Principal>
+            <Dependent Role="tblMovieScreenTimingConfig">
+              <PropertyRef Name="ScreenID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblOrderDetails_tblProduct">
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="1" />
+          <End Role="tblOrderDetails" Type="Self.tblOrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProduct">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="tblOrderDetails">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProduct_tblCategory">
+          <End Role="tblCategory" Type="Self.tblCategory" Multiplicity="1" />
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCategory">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="tblProduct">
+              <PropertyRef Name="CategoryID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblProductReview_tblProduct">
+          <End Role="tblProduct" Type="Self.tblProduct" Multiplicity="1" />
+          <End Role="tblProductReview" Type="Self.tblProductReview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProduct">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="tblProductReview">
+              <PropertyRef Name="ProductID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblScreenDetails_tblTheaterDetails">
+          <End Role="tblTheaterDetails" Type="Self.tblTheaterDetails" Multiplicity="1" />
+          <End Role="tblScreenDetails" Type="Self.tblScreenDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblTheaterDetails">
+              <PropertyRef Name="TheaterID" />
+            </Principal>
+            <Dependent Role="tblScreenDetails">
+              <PropertyRef Name="TheaterID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUserDetails_tblUser">
+          <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
+          <End Role="tblUserDetails" Type="Self.tblUserDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="tblUserDetails">
+              <PropertyRef Name="AccountID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="OlanthroxxModelStoreContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblAddress" EntityType="Self.tblAddress" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblApplicationSetting" EntityType="Self.tblApplicationSetting" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblBudgetDetails" EntityType="Self.tblBudgetDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblCategory" EntityType="Self.tblCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblExpense" EntityType="Self.tblExpense" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblForgotPasswordHistory" EntityType="Self.tblForgotPasswordHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblLogs" EntityType="Self.tblLogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblMasCity" EntityType="Self.tblMasCity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblMasCommonType" EntityType="Self.tblMasCommonType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblMasState" EntityType="Self.tblMasState" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblMovieBookingHistory" EntityType="Self.tblMovieBookingHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblMovieDetails" EntityType="Self.tblMovieDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblMovieScreenTimingConfig" EntityType="Self.tblMovieScreenTimingConfig" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblOrderDetails" EntityType="Self.tblOrderDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblPayment" EntityType="Self.tblPayment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblProduct" EntityType="Self.tblProduct" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblProductReview" EntityType="Self.tblProductReview" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblScreenDetails" EntityType="Self.tblScreenDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTheaterDetails" EntityType="Self.tblTheaterDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUserDetails" EntityType="Self.tblUserDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUserSessionDetails" EntityType="Self.tblUserSessionDetails" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tblBudgetDetails_tblUser" Association="Self.FK_tblBudgetDetails_tblUser">
+            <End Role="tblUser" EntitySet="tblUser" />
+            <End Role="tblBudgetDetails" EntitySet="tblBudgetDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblMasCity_tblMasState" Association="Self.FK_tblMasCity_tblMasState">
+            <End Role="tblMasState" EntitySet="tblMasState" />
+            <End Role="tblMasCity" EntitySet="tblMasCity" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblMovieBookingHistory_tblMovieScreenTimingConfig" Association="Self.FK_tblMovieBookingHistory_tblMovieScreenTimingConfig">
+            <End Role="tblMovieScreenTimingConfig" EntitySet="tblMovieScreenTimingConfig" />
+            <End Role="tblMovieBookingHistory" EntitySet="tblMovieBookingHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblMovieScreenTimingConfig_tblMovieDetails" Association="Self.FK_tblMovieScreenTimingConfig_tblMovieDetails">
+            <End Role="tblMovieDetails" EntitySet="tblMovieDetails" />
+            <End Role="tblMovieScreenTimingConfig" EntitySet="tblMovieScreenTimingConfig" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblMovieScreenTimingConfig_tblScreenDetails" Association="Self.FK_tblMovieScreenTimingConfig_tblScreenDetails">
+            <End Role="tblScreenDetails" EntitySet="tblScreenDetails" />
+            <End Role="tblMovieScreenTimingConfig" EntitySet="tblMovieScreenTimingConfig" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblOrderDetails_tblProduct" Association="Self.FK_tblOrderDetails_tblProduct">
+            <End Role="tblProduct" EntitySet="tblProduct" />
+            <End Role="tblOrderDetails" EntitySet="tblOrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProduct_tblCategory" Association="Self.FK_tblProduct_tblCategory">
+            <End Role="tblCategory" EntitySet="tblCategory" />
+            <End Role="tblProduct" EntitySet="tblProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblProductReview_tblProduct" Association="Self.FK_tblProductReview_tblProduct">
+            <End Role="tblProduct" EntitySet="tblProduct" />
+            <End Role="tblProductReview" EntitySet="tblProductReview" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblScreenDetails_tblTheaterDetails" Association="Self.FK_tblScreenDetails_tblTheaterDetails">
+            <End Role="tblTheaterDetails" EntitySet="tblTheaterDetails" />
+            <End Role="tblScreenDetails" EntitySet="tblScreenDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUserDetails_tblUser" Association="Self.FK_tblUserDetails_tblUser">
+            <End Role="tblUser" EntitySet="tblUser" />
+            <End Role="tblUserDetails" EntitySet="tblUserDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OlanthroxxModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="tblApplicationSetting">
+          <Key>
+            <PropertyRef Name="KeyID" />
+          </Key>
+          <Property Name="KeyID" Type="Int32" Nullable="false" />
+          <Property Name="KeyName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="KeyValue" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tblLog">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdentificationNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Data" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="tblMasCommonType">
+          <Key>
+            <PropertyRef Name="CommonID" />
+          </Key>
+          <Property Name="CommonID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="Int32" />
+          <Property Name="MasterType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="tblUser">
+          <Key>
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Name="AccountID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Guid" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PasswordSalt" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="PasswordHistory" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastPasswordChange" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LoginType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblUserDetails" Relationship="OlanthroxxModel.FK_tblUserDetails_tblUser" FromRole="tblUser" ToRole="tblUserDetail" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="tblBudgetDetails" Relationship="OlanthroxxModel.FK_tblBudgetDetails_tblUser" FromRole="tblUser" ToRole="tblBudgetDetail" />
+        </EntityType>
+        <EntityType Name="tblUserSessionDetail">
+          <Key>
+            <PropertyRef Name="SessionID" />
+          </Key>
+          <Property Name="SessionID" Type="Int32" Nullable="false" />
+          <Property Name="AccountID" Type="Int32" />
+          <Property Name="SessionDateTime" Type="DateTime" Precision="3" />
+          <Property Name="Port" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="SessionComments" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="OlanthroxxEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="tblApplicationSettings" EntityType="Self.tblApplicationSetting" />
+          <EntitySet Name="tblLogs" EntityType="Self.tblLog" />
+          <EntitySet Name="tblMasCommonTypes" EntityType="Self.tblMasCommonType" />
+          <EntitySet Name="tblUsers" EntityType="Self.tblUser" />
+          <EntitySet Name="tblUserSessionDetails" EntityType="Self.tblUserSessionDetail" />
+          <EntitySet Name="tblCategories" EntityType="OlanthroxxModel.tblCategory" />
+          <EntitySet Name="tblPayments" EntityType="OlanthroxxModel.tblPayment" />
+          <EntitySet Name="tblUserDetails" EntityType="OlanthroxxModel.tblUserDetail" />
+          <AssociationSet Name="FK_tblUserDetails_tblUser" Association="OlanthroxxModel.FK_tblUserDetails_tblUser">
+            <End Role="tblUser" EntitySet="tblUsers" />
+            <End Role="tblUserDetail" EntitySet="tblUserDetails" />
+          </AssociationSet>
+          <EntitySet Name="tblMasStates" EntityType="OlanthroxxModel.tblMasState" />
+          <EntitySet Name="tblForgotPasswordHistories" EntityType="OlanthroxxModel.tblForgotPasswordHistory" />
+          <EntitySet Name="tblExpenses" EntityType="OlanthroxxModel.tblExpense" />
+          <EntitySet Name="tblBudgetDetails" EntityType="OlanthroxxModel.tblBudgetDetail" />
+          <AssociationSet Name="FK_tblBudgetDetails_tblUser" Association="OlanthroxxModel.FK_tblBudgetDetails_tblUser">
+            <End Role="tblUser" EntitySet="tblUsers" />
+            <End Role="tblBudgetDetail" EntitySet="tblBudgetDetails" />
+          </AssociationSet>
+          <EntitySet Name="tblProducts" EntityType="OlanthroxxModel.tblProduct" />
+          <AssociationSet Name="FK_tblProduct_tblCategory" Association="OlanthroxxModel.FK_tblProduct_tblCategory">
+            <End Role="tblCategory" EntitySet="tblCategories" />
+            <End Role="tblProduct" EntitySet="tblProducts" />
+          </AssociationSet>
+          <EntitySet Name="tblProductReviews" EntityType="OlanthroxxModel.tblProductReview" />
+          <AssociationSet Name="FK_tblProductReview_tblProduct" Association="OlanthroxxModel.FK_tblProductReview_tblProduct">
+            <End Role="tblProduct" EntitySet="tblProducts" />
+            <End Role="tblProductReview" EntitySet="tblProductReviews" />
+          </AssociationSet>
+          <EntitySet Name="tblMasCities" EntityType="OlanthroxxModel.tblMasCity" />
+          <AssociationSet Name="FK_tblMasCity_tblMasState" Association="OlanthroxxModel.FK_tblMasCity_tblMasState">
+            <End Role="tblMasState" EntitySet="tblMasStates" />
+            <End Role="tblMasCity" EntitySet="tblMasCities" />
+          </AssociationSet>
+          <EntitySet Name="tblAddresses" EntityType="OlanthroxxModel.tblAddress" />
+          <EntitySet Name="tblOrderDetails" EntityType="OlanthroxxModel.tblOrderDetail" />
+          <AssociationSet Name="FK_tblOrderDetails_tblProduct" Association="OlanthroxxModel.FK_tblOrderDetails_tblProduct">
+            <End Role="tblProduct" EntitySet="tblProducts" />
+            <End Role="tblOrderDetail" EntitySet="tblOrderDetails" />
+          </AssociationSet>
+          <EntitySet Name="tblTheaterDetails" EntityType="OlanthroxxModel.tblTheaterDetail" />
+          <EntitySet Name="tblMovieDetails" EntityType="OlanthroxxModel.tblMovieDetail" />
+          <EntitySet Name="tblMovieBookingHistories" EntityType="OlanthroxxModel.tblMovieBookingHistory" />
+          <EntitySet Name="tblMovieScreenTimingConfigs" EntityType="OlanthroxxModel.tblMovieScreenTimingConfig" />
+          <EntitySet Name="tblScreenDetails" EntityType="OlanthroxxModel.tblScreenDetail" />
+          <AssociationSet Name="FK_tblMovieBookingHistory_tblMovieScreenTimingConfig" Association="OlanthroxxModel.FK_tblMovieBookingHistory_tblMovieScreenTimingConfig">
+            <End Role="tblMovieScreenTimingConfig" EntitySet="tblMovieScreenTimingConfigs" />
+            <End Role="tblMovieBookingHistory" EntitySet="tblMovieBookingHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblMovieScreenTimingConfig_tblMovieDetails" Association="OlanthroxxModel.FK_tblMovieScreenTimingConfig_tblMovieDetails">
+            <End Role="tblMovieDetail" EntitySet="tblMovieDetails" />
+            <End Role="tblMovieScreenTimingConfig" EntitySet="tblMovieScreenTimingConfigs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblMovieScreenTimingConfig_tblScreenDetails" Association="OlanthroxxModel.FK_tblMovieScreenTimingConfig_tblScreenDetails">
+            <End Role="tblScreenDetail" EntitySet="tblScreenDetails" />
+            <End Role="tblMovieScreenTimingConfig" EntitySet="tblMovieScreenTimingConfigs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblScreenDetails_tblTheaterDetails" Association="OlanthroxxModel.FK_tblScreenDetails_tblTheaterDetails">
+            <End Role="tblTheaterDetail" EntitySet="tblTheaterDetails" />
+            <End Role="tblScreenDetail" EntitySet="tblScreenDetails" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="tblCategory">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+          </Key>
+          <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblProducts" Relationship="OlanthroxxModel.FK_tblProduct_tblCategory" FromRole="tblCategory" ToRole="tblProduct" />
+        </EntityType>
+        <EntityType Name="tblPayment">
+          <Key>
+            <PropertyRef Name="PaymentID" />
+          </Key>
+          <Property Name="PaymentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="Guid" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="TotalPayableAmount" Type="Int32" Nullable="false" />
+          <Property Name="PaymentMode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PaymentStatus" Type="Int32" Nullable="false" />
+          <Property Name="PaymentDetails" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TransactionNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="ChequeNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ChequeDate" Type="DateTime" Precision="3" />
+          <Property Name="AccountNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UPI_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IFSC_Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PaymentOf" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblUserDetail">
+          <Key>
+            <PropertyRef Name="UserDetailsID" />
+          </Key>
+          <Property Name="UserDetailsID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountID_FK" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MidName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MobileNo" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="EmailID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AadharNumber" Type="String" MaxLength="14" FixedLength="true" Unicode="true" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PinCode" Type="Int32" Nullable="false" />
+          <Property Name="FullAddress" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="tblUser" Relationship="OlanthroxxModel.FK_tblUserDetails_tblUser" FromRole="tblUserDetail" ToRole="tblUser" />
+          <Property Name="UserImgPath" Type="String" MaxLength="120" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_tblUserDetails_tblUser">
+          <End Type="OlanthroxxModel.tblUser" Role="tblUser" Multiplicity="1" />
+          <End Type="OlanthroxxModel.tblUserDetail" Role="tblUserDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="tblUserDetail">
+              <PropertyRef Name="AccountID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblMasState">
+          <Key>
+            <PropertyRef Name="StateID" />
+          </Key>
+          <Property Name="StateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CountryID" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="tblMasCities" Relationship="OlanthroxxModel.FK_tblMasCity_tblMasState" FromRole="tblMasState" ToRole="tblMasCity" />
+        </EntityType>
+        <EntityType Name="tblForgotPasswordHistory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AttemptNo" Type="Int32" Nullable="false" />
+          <Property Name="MaxNoOfAttempts" Type="Int32" Nullable="false" />
+          <Property Name="ExpiryTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Link" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Key" Type="Guid" Nullable="false" />
+          <Property Name="PasswordChangedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsValid" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="tblExpense">
+          <Key>
+            <PropertyRef Name="ExpID" />
+          </Key>
+          <Property Name="ExpID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BudgetID_FK" Type="Int32" Nullable="false" />
+          <Property Name="ExpName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblBudgetDetail">
+          <Key>
+            <PropertyRef Name="BudgetID" />
+          </Key>
+          <Property Name="BudgetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Int32" Nullable="false" />
+          <Property Name="Balance" Type="Int32" Nullable="false" />
+          <Property Name="AccountID_FK" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblUser" Relationship="OlanthroxxModel.FK_tblBudgetDetails_tblUser" FromRole="tblBudgetDetail" ToRole="tblUser" />
+        </EntityType>
+        <Association Name="FK_tblBudgetDetails_tblUser">
+          <End Type="OlanthroxxModel.tblUser" Role="tblUser" Multiplicity="1" />
+          <End Type="OlanthroxxModel.tblBudgetDetail" Role="tblBudgetDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="tblBudgetDetail">
+              <PropertyRef Name="AccountID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblProduct">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PTitle" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PDescription" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CategoryID_FK" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="SellerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ImgPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblCategory" Relationship="OlanthroxxModel.FK_tblProduct_tblCategory" FromRole="tblProduct" ToRole="tblCategory" />
+          <NavigationProperty Name="tblProductReviews" Relationship="OlanthroxxModel.FK_tblProductReview_tblProduct" FromRole="tblProduct" ToRole="tblProductReview" />
+          <NavigationProperty Name="tblOrderDetails" Relationship="OlanthroxxModel.FK_tblOrderDetails_tblProduct" FromRole="tblProduct" ToRole="tblOrderDetail" />
+          <Property Name="DiscountPer" Type="Int32" />
+        </EntityType>
+        <Association Name="FK_tblProduct_tblCategory">
+          <End Type="OlanthroxxModel.tblCategory" Role="tblCategory" Multiplicity="1" />
+          <End Type="OlanthroxxModel.tblProduct" Role="tblProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCategory">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="tblProduct">
+              <PropertyRef Name="CategoryID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblProductReview">
+          <Key>
+            <PropertyRef Name="ReviewID" />
+          </Key>
+          <Property Name="ReviewID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductID_FK" Type="Int32" Nullable="false" />
+          <Property Name="OrderID_FK" Type="Guid" Nullable="false" />
+          <Property Name="Rating" Type="Int32" Nullable="false" />
+          <Property Name="Review" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ImgPath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="tblProduct" Relationship="OlanthroxxModel.FK_tblProductReview_tblProduct" FromRole="tblProductReview" ToRole="tblProduct" />
+        </EntityType>
+        <Association Name="FK_tblProductReview_tblProduct">
+          <End Type="OlanthroxxModel.tblProduct" Role="tblProduct" Multiplicity="1" />
+          <End Type="OlanthroxxModel.tblProductReview" Role="tblProductReview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProduct">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="tblProductReview">
+              <PropertyRef Name="ProductID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblMasCity">
+          <Key>
+            <PropertyRef Name="CityID" />
+          </Key>
+          <Property Name="CityID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StateID_FK" Type="Int32" Nullable="false" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblMasState" Relationship="OlanthroxxModel.FK_tblMasCity_tblMasState" FromRole="tblMasCity" ToRole="tblMasState" />
+        </EntityType>
+        <Association Name="FK_tblMasCity_tblMasState">
+          <End Type="OlanthroxxModel.tblMasState" Role="tblMasState" Multiplicity="1" />
+          <End Type="OlanthroxxModel.tblMasCity" Role="tblMasCity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMasState">
+              <PropertyRef Name="StateID" />
+            </Principal>
+            <Dependent Role="tblMasCity">
+              <PropertyRef Name="StateID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblAddress">
+          <Key>
+            <PropertyRef Name="AddressID" />
+          </Key>
+          <Property Name="AddressID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CityID" Type="Int32" Nullable="false" />
+          <Property Name="StateID" Type="Int32" Nullable="false" />
+          <Property Name="Pincode" Type="Int32" Nullable="false" />
+          <Property Name="FullAddress" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Address1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Landmark" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tblOrderDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="Guid" Nullable="false" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OrderStatus" Type="Int32" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ShippingAddressID_FK" Type="Int32" />
+          <Property Name="BillingAddressID_FK" Type="Int32" />
+          <NavigationProperty Name="tblProduct" Relationship="OlanthroxxModel.FK_tblOrderDetails_tblProduct" FromRole="tblOrderDetail" ToRole="tblProduct" />
+        </EntityType>
+        <Association Name="FK_tblOrderDetails_tblProduct">
+          <End Type="OlanthroxxModel.tblProduct" Role="tblProduct" Multiplicity="1" />
+          <End Type="OlanthroxxModel.tblOrderDetail" Role="tblOrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblProduct">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="tblOrderDetail">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblTheaterDetail">
+          <Key>
+            <PropertyRef Name="TheaterID" />
+          </Key>
+          <Property Name="TheaterID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName_FK" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NoOfScreens" Type="Int32" Nullable="false" />
+          <Property Name="Pincode" Type="Int32" Nullable="false" />
+          <Property Name="Location" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Landmark" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblScreenDetails" Relationship="OlanthroxxModel.FK_tblScreenDetails_tblTheaterDetails" FromRole="tblTheaterDetail" ToRole="tblScreenDetail" />
+        </EntityType>
+        <EntityType Name="tblMovieDetail">
+          <Key>
+            <PropertyRef Name="MovieID" />
+          </Key>
+          <Property Name="MovieID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MovieName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Duration" Type="Int32" Nullable="false" />
+          <Property Name="StarCast" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ImgPath" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsOutOfTheater" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ReleaseDate" Type="DateTime" Precision="3" />
+          <Property Name="BGImgPath" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Language" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MovieType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsAdult" Type="Boolean" />
+          <Property Name="TrailerLink" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblMovieScreenTimingConfigs" Relationship="OlanthroxxModel.FK_tblMovieScreenTimingConfig_tblMovieDetails" FromRole="tblMovieDetail" ToRole="tblMovieScreenTimingConfig" />
+        </EntityType>
+        <EntityType Name="tblMovieBookingHistory">
+          <Key>
+            <PropertyRef Name="BookingID" />
+          </Key>
+          <Property Name="BookingID" Type="Guid" Nullable="false" />
+          <Property Name="ScreenTimingConfigID_FK" Type="Int32" Nullable="false" />
+          <Property Name="MovieName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NoOfSeats" Type="Int32" Nullable="false" />
+          <Property Name="SeatNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SeatCategory" Type="Int32" />
+          <Property Name="Amount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="IsUsed" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="tblMovieScreenTimingConfig" Relationship="OlanthroxxModel.FK_tblMovieBookingHistory_tblMovieScreenTimingConfig" FromRole="tblMovieBookingHistory" ToRole="tblMovieScreenTimingConfig" />
+          <Property Name="QRCodeImageData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tblMovieScreenTimingConfig">
+          <Key>
+            <PropertyRef Name="ScreenTimingConfigID" />
+          </Key>
+          <Property Name="ScreenTimingConfigID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MovieID_FK" Type="Int32" Nullable="false" />
+          <Property Name="ScreenID_FK" Type="Int32" Nullable="false" />
+          <Property Name="TimingID" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="MovieDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="tblMovieBookingHistories" Relationship="OlanthroxxModel.FK_tblMovieBookingHistory_tblMovieScreenTimingConfig" FromRole="tblMovieScreenTimingConfig" ToRole="tblMovieBookingHistory" />
+          <NavigationProperty Name="tblMovieDetail" Relationship="OlanthroxxModel.FK_tblMovieScreenTimingConfig_tblMovieDetails" FromRole="tblMovieScreenTimingConfig" ToRole="tblMovieDetail" />
+          <NavigationProperty Name="tblScreenDetail" Relationship="OlanthroxxModel.FK_tblMovieScreenTimingConfig_tblScreenDetails" FromRole="tblMovieScreenTimingConfig" ToRole="tblScreenDetail" />
+        </EntityType>
+        <EntityType Name="tblScreenDetail">
+          <Key>
+            <PropertyRef Name="ScreenID" />
+          </Key>
+          <Property Name="ScreenID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScreenNo" Type="Int32" Nullable="false" />
+          <Property Name="TheaterID_FK" Type="Int32" Nullable="false" />
+          <Property Name="NoOfSeatsSilver" Type="Int32" Nullable="false" />
+          <Property Name="PriceSilver" Type="Int32" Nullable="false" />
+          <Property Name="NoOfSeatsGold" Type="Int32" Nullable="false" />
+          <Property Name="PriceGold" Type="Int32" Nullable="false" />
+          <Property Name="NoOfSeatsPlatinum" Type="Int32" Nullable="false" />
+          <Property Name="PricePlatinum" Type="Int32" Nullable="false" />
+          <Property Name="NoOfSeatsRecliner" Type="Int32" Nullable="false" />
+          <Property Name="PriceRecliner" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tblMovieScreenTimingConfigs" Relationship="OlanthroxxModel.FK_tblMovieScreenTimingConfig_tblScreenDetails" FromRole="tblScreenDetail" ToRole="tblMovieScreenTimingConfig" />
+          <NavigationProperty Name="tblTheaterDetail" Relationship="OlanthroxxModel.FK_tblScreenDetails_tblTheaterDetails" FromRole="tblScreenDetail" ToRole="tblTheaterDetail" />
+        </EntityType>
+        <Association Name="FK_tblMovieBookingHistory_tblMovieScreenTimingConfig">
+          <End Type="OlanthroxxModel.tblMovieScreenTimingConfig" Role="tblMovieScreenTimingConfig" Multiplicity="1" />
+          <End Type="OlanthroxxModel.tblMovieBookingHistory" Role="tblMovieBookingHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMovieScreenTimingConfig">
+              <PropertyRef Name="ScreenTimingConfigID" />
+            </Principal>
+            <Dependent Role="tblMovieBookingHistory">
+              <PropertyRef Name="ScreenTimingConfigID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblMovieScreenTimingConfig_tblMovieDetails">
+          <End Type="OlanthroxxModel.tblMovieDetail" Role="tblMovieDetail" Multiplicity="1" />
+          <End Type="OlanthroxxModel.tblMovieScreenTimingConfig" Role="tblMovieScreenTimingConfig" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMovieDetail">
+              <PropertyRef Name="MovieID" />
+            </Principal>
+            <Dependent Role="tblMovieScreenTimingConfig">
+              <PropertyRef Name="MovieID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblMovieScreenTimingConfig_tblScreenDetails">
+          <End Type="OlanthroxxModel.tblScreenDetail" Role="tblScreenDetail" Multiplicity="1" />
+          <End Type="OlanthroxxModel.tblMovieScreenTimingConfig" Role="tblMovieScreenTimingConfig" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblScreenDetail">
+              <PropertyRef Name="ScreenID" />
+            </Principal>
+            <Dependent Role="tblMovieScreenTimingConfig">
+              <PropertyRef Name="ScreenID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblScreenDetails_tblTheaterDetails">
+          <End Type="OlanthroxxModel.tblTheaterDetail" Role="tblTheaterDetail" Multiplicity="1" />
+          <End Type="OlanthroxxModel.tblScreenDetail" Role="tblScreenDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblTheaterDetail">
+              <PropertyRef Name="TheaterID" />
+            </Principal>
+            <Dependent Role="tblScreenDetail">
+              <PropertyRef Name="TheaterID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OlanthroxxModelStoreContainer" CdmEntityContainer="OlanthroxxEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="OlanthroxxModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblApplicationSettings">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblApplicationSetting">
+              <MappingFragment StoreEntitySet="tblApplicationSetting">
+                <ScalarProperty Name="KeyID" ColumnName="KeyID" />
+                <ScalarProperty Name="KeyName" ColumnName="KeyName" />
+                <ScalarProperty Name="KeyValue" ColumnName="KeyValue" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblLogs">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblLog">
+              <MappingFragment StoreEntitySet="tblLogs">
+                <ScalarProperty Name="LogID" ColumnName="LogID" />
+                <ScalarProperty Name="IdentificationNo" ColumnName="IdentificationNo" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblMasCommonTypes">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblMasCommonType">
+              <MappingFragment StoreEntitySet="tblMasCommonType">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CommonID" ColumnName="CommonID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="MasterType" ColumnName="MasterType" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUsers">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblUser">
+              <MappingFragment StoreEntitySet="tblUser">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="PasswordHistory" ColumnName="PasswordHistory" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="LastPasswordChange" ColumnName="LastPasswordChange" />
+                <ScalarProperty Name="LoginType" ColumnName="LoginType" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUserSessionDetails">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblUserSessionDetail">
+              <MappingFragment StoreEntitySet="tblUserSessionDetails">
+                <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="SessionDateTime" ColumnName="SessionDateTime" />
+                <ScalarProperty Name="Port" ColumnName="Port" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="SessionComments" ColumnName="SessionComments" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCategories">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblCategory">
+              <MappingFragment StoreEntitySet="tblCategory">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CategoryType" ColumnName="CategoryType" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPayments">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblPayment">
+              <MappingFragment StoreEntitySet="tblPayment">
+                <ScalarProperty Name="PaymentOf" ColumnName="PaymentOf" />
+                <ScalarProperty Name="IFSC_Code" ColumnName="IFSC_Code" />
+                <ScalarProperty Name="UPI_ID" ColumnName="UPI_ID" />
+                <ScalarProperty Name="AccountNo" ColumnName="AccountNo" />
+                <ScalarProperty Name="ChequeDate" ColumnName="ChequeDate" />
+                <ScalarProperty Name="ChequeNo" ColumnName="ChequeNo" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="TransactionNo" ColumnName="TransactionNo" />
+                <ScalarProperty Name="PaymentDetails" ColumnName="PaymentDetails" />
+                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+                <ScalarProperty Name="PaymentMode" ColumnName="PaymentMode" />
+                <ScalarProperty Name="TotalPayableAmount" ColumnName="TotalPayableAmount" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUserDetails">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblUserDetail">
+              <MappingFragment StoreEntitySet="tblUserDetails">
+                <ScalarProperty Name="UserImgPath" ColumnName="UserImgPath" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="FullAddress" ColumnName="FullAddress" />
+                <ScalarProperty Name="PinCode" ColumnName="PinCode" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="AadharNumber" ColumnName="AadharNumber" />
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MidName" ColumnName="MidName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="AccountID_FK" ColumnName="AccountID_FK" />
+                <ScalarProperty Name="UserDetailsID" ColumnName="UserDetailsID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblMasStates">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblMasState">
+              <MappingFragment StoreEntitySet="tblMasState">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="StateID" ColumnName="StateID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblForgotPasswordHistories">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblForgotPasswordHistory">
+              <MappingFragment StoreEntitySet="tblForgotPasswordHistory">
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="PasswordChangedDate" ColumnName="PasswordChangedDate" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="ExpiryTime" ColumnName="ExpiryTime" />
+                <ScalarProperty Name="MaxNoOfAttempts" ColumnName="MaxNoOfAttempts" />
+                <ScalarProperty Name="AttemptNo" ColumnName="AttemptNo" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblExpenses">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblExpense">
+              <MappingFragment StoreEntitySet="tblExpense">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="ExpName" ColumnName="ExpName" />
+                <ScalarProperty Name="BudgetID_FK" ColumnName="BudgetID_FK" />
+                <ScalarProperty Name="ExpID" ColumnName="ExpID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblBudgetDetails">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblBudgetDetail">
+              <MappingFragment StoreEntitySet="tblBudgetDetails">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="AccountID_FK" ColumnName="AccountID_FK" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="BudgetID" ColumnName="BudgetID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblProducts">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblProduct">
+              <MappingFragment StoreEntitySet="tblProduct">
+                <ScalarProperty Name="DiscountPer" ColumnName="DiscountPer" />
+                <ScalarProperty Name="ImgPath" ColumnName="ImgPath" />
+                <ScalarProperty Name="SellerName" ColumnName="SellerName" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="CategoryID_FK" ColumnName="CategoryID_FK" />
+                <ScalarProperty Name="PDescription" ColumnName="PDescription" />
+                <ScalarProperty Name="PTitle" ColumnName="PTitle" />
+                <ScalarProperty Name="PName" ColumnName="PName" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblProductReviews">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblProductReview">
+              <MappingFragment StoreEntitySet="tblProductReview">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ImgPath" ColumnName="ImgPath" />
+                <ScalarProperty Name="Review" ColumnName="Review" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="OrderID_FK" ColumnName="OrderID_FK" />
+                <ScalarProperty Name="ProductID_FK" ColumnName="ProductID_FK" />
+                <ScalarProperty Name="ReviewID" ColumnName="ReviewID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblMasCities">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblMasCity">
+              <MappingFragment StoreEntitySet="tblMasCity">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="StateID_FK" ColumnName="StateID_FK" />
+                <ScalarProperty Name="CityID" ColumnName="CityID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblAddresses">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblAddress">
+              <MappingFragment StoreEntitySet="tblAddress">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Landmark" ColumnName="Landmark" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="FullAddress" ColumnName="FullAddress" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="StateID" ColumnName="StateID" />
+                <ScalarProperty Name="CityID" ColumnName="CityID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblOrderDetails">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblOrderDetail">
+              <MappingFragment StoreEntitySet="tblOrderDetails">
+                <ScalarProperty Name="BillingAddressID_FK" ColumnName="BillingAddressID_FK" />
+                <ScalarProperty Name="ShippingAddressID_FK" ColumnName="ShippingAddressID_FK" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTheaterDetails">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblTheaterDetail">
+              <MappingFragment StoreEntitySet="tblTheaterDetails">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Landmark" ColumnName="Landmark" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="NoOfScreens" ColumnName="NoOfScreens" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UserName_FK" ColumnName="UserName_FK" />
+                <ScalarProperty Name="TheaterID" ColumnName="TheaterID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblMovieDetails">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblMovieDetail">
+              <MappingFragment StoreEntitySet="tblMovieDetails">
+                <ScalarProperty Name="TrailerLink" ColumnName="TrailerLink" />
+                <ScalarProperty Name="IsAdult" ColumnName="IsAdult" />
+                <ScalarProperty Name="MovieType" ColumnName="MovieType" />
+                <ScalarProperty Name="Language" ColumnName="Language" />
+                <ScalarProperty Name="BGImgPath" ColumnName="BGImgPath" />
+                <ScalarProperty Name="ReleaseDate" ColumnName="ReleaseDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsOutOfTheater" ColumnName="IsOutOfTheater" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ImgPath" ColumnName="ImgPath" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="StarCast" ColumnName="StarCast" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="MovieName" ColumnName="MovieName" />
+                <ScalarProperty Name="MovieID" ColumnName="MovieID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblMovieBookingHistories">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblMovieBookingHistory">
+              <MappingFragment StoreEntitySet="tblMovieBookingHistory">
+                <ScalarProperty Name="QRCodeImageData" ColumnName="QRCodeImageData" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsUsed" ColumnName="IsUsed" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="SeatCategory" ColumnName="SeatCategory" />
+                <ScalarProperty Name="SeatNo" ColumnName="SeatNo" />
+                <ScalarProperty Name="NoOfSeats" ColumnName="NoOfSeats" />
+                <ScalarProperty Name="MovieName" ColumnName="MovieName" />
+                <ScalarProperty Name="ScreenTimingConfigID_FK" ColumnName="ScreenTimingConfigID_FK" />
+                <ScalarProperty Name="BookingID" ColumnName="BookingID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblMovieScreenTimingConfigs">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblMovieScreenTimingConfig">
+              <MappingFragment StoreEntitySet="tblMovieScreenTimingConfig">
+                <ScalarProperty Name="MovieDate" ColumnName="MovieDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="TimingID" ColumnName="TimingID" />
+                <ScalarProperty Name="ScreenID_FK" ColumnName="ScreenID_FK" />
+                <ScalarProperty Name="MovieID_FK" ColumnName="MovieID_FK" />
+                <ScalarProperty Name="ScreenTimingConfigID" ColumnName="ScreenTimingConfigID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblScreenDetails">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblScreenDetail">
+              <MappingFragment StoreEntitySet="tblScreenDetails">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="PriceRecliner" ColumnName="PriceRecliner" />
+                <ScalarProperty Name="NoOfSeatsRecliner" ColumnName="NoOfSeatsRecliner" />
+                <ScalarProperty Name="PricePlatinum" ColumnName="PricePlatinum" />
+                <ScalarProperty Name="NoOfSeatsPlatinum" ColumnName="NoOfSeatsPlatinum" />
+                <ScalarProperty Name="PriceGold" ColumnName="PriceGold" />
+                <ScalarProperty Name="NoOfSeatsGold" ColumnName="NoOfSeatsGold" />
+                <ScalarProperty Name="PriceSilver" ColumnName="PriceSilver" />
+                <ScalarProperty Name="NoOfSeatsSilver" ColumnName="NoOfSeatsSilver" />
+                <ScalarProperty Name="TheaterID_FK" ColumnName="TheaterID_FK" />
+                <ScalarProperty Name="ScreenNo" ColumnName="ScreenNo" />
+                <ScalarProperty Name="ScreenID" ColumnName="ScreenID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

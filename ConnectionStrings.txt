@@ -1,0 +1,4 @@
+<connectionStrings>
+    <!--<add name="OlanthroxxEntities" connectionString="metadata=res://*/Olanthroxx.csdl|res://*/Olanthroxx.ssdl|res://*/Olanthroxx.msl; provider=System.Data.SqlClient; provider connection string=&quot;data source=olanthroxx.database.windows.net; initial catalog=olanthroxx; user id=tejassgg; password=june@2014; MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />-->
+    <add name="OlanthroxxEntities" connectionString="metadata=res://*/Olanthroxx.csdl|res://*/Olanthroxx.ssdl|res://*/Olanthroxx.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=TEJASSGG\SQLEXPRESS;initial catalog=Olanthroxx;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+  </connectionStrings>

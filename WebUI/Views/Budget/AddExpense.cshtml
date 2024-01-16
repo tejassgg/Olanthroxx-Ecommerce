@@ -1,0 +1,33 @@
+﻿@model Models.DTO.Expense
+
+@using (Html.BeginForm("AddExpense", "Budget", FormMethod.Post, new { @id = "frmExpense" }))
+{
+    @Html.AntiForgeryToken()
+    <h4 >Expense</h4>
+    <hr/>
+
+    <div>
+        <div class="form-group col-sm-6">
+            @Html.LabelFor(model => model.ExpName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.EditorFor(model => model.ExpName, new { htmlAttributes = new { @class = "form-control", @placeholder = "e.g., Coffee" } })
+        </div>
+        <div class="form-group col-sm-6">
+            @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @type = "number", @class = "form-control", @placeholder = "e.g., Rs. 500" } })
+        </div>
+        @if (ViewBag.lstBudgetTypes != null && ViewBag.lstBudgetTypes.Count > 0)
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.Budget, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.DropDownListFor(model => model.BudgetID_FK, new SelectList(ViewBag.lstBudgetTypes, "Value", "Text"), "Please Select Budget", new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input id="addExpense" type="submit" value="Add Expense" class="btn btn-success" />
+                </div>
+            </div>
+        }
+    </div>
+
+}

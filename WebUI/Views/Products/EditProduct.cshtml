@@ -1,0 +1,111 @@
+﻿@model Models.DTO.ProductDetails
+
+@{
+    ViewBag.Title = "EditProduct";
+}
+
+<h2>Update Product Details</h2>
+
+
+@using (Html.BeginForm("EditProduct", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger", @id = "txtValidationSummary" })
+    @Html.HiddenFor(model => model.ProductID)
+    <div class="form-group">
+        <label class="control-label col-md-2">Product Name</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.PName, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">Product Title</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.PTitle, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">Product Description</label>
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.PDescription, new { @class = "form-control", @cols = 80, @rows = 10 })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">Product Category</label>
+        <div class="col-md-10">
+            <select name="CategoryID_FK" class="form-control">
+                @foreach (var item in ViewBag.CategoryList)
+                {
+                    if (item.Value == Model.CategoryID_FK)
+                    {
+                        <option value="@item.Value" selected="selected">@item.Text </option>
+                    }
+                    else
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">Product Quantity</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">Product Price</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">Product Image</label>
+        <div class="col-md-10">
+            <input type="file" name="imgFile" class="btn btn-info" value="@Model.ImgPath" />
+        </div>
+    </div>
+
+    @Html.HiddenFor(a => a.ImgPath)
+
+    @if (!string.IsNullOrEmpty(Model.ImgPath))
+    {
+        <div class="form-group">
+            <img src="@Url.Content(Model.ImgPath)" width="200px" />
+        </div>
+    }
+    else
+    {
+        <div class="form-group">
+            <img src="~/Content/Images/Product.png" width="200px" />
+        </div>
+    }
+
+
+    @Html.HiddenFor(model => model.ImgPath)
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Update" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

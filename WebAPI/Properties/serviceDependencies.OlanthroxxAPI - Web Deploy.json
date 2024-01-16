@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/olanthroxx/databases/olanthroxx",
+      "type": "mssql.azure",
+      "connectionId": "OlanthroxxEntities"
+    }
+  }
+}

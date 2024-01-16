@@ -1,0 +1,99 @@
+﻿@model Models.DTO.MovieDetails
+
+@{
+    ViewBag.Title = Model.MovieName + " - Details | Reviews";
+}
+
+<h2>@Model.MovieName</h2>
+
+
+<form action="~/BookTicket/BookTicket?MovieID=@Model.MovieID">
+    <hr />
+    <dl class="dl-horizontal">
+
+        @Html.HiddenFor(a => a.MovieID)
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Duration) Mins
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StarCast)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StarCast)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Language)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Language)
+        </dd>
+
+        @if (Model.IsAdult)
+        {
+            <dd>
+                A
+            </dd>
+        }
+        else
+        {
+            <dd>
+                UA
+            </dd>
+        }
+
+        <dd>
+            @if (!Model.IsOutOfTheater)
+            {
+                <strong class="text-warning">In Cinemas</strong>
+            }
+            else
+            {
+                <strong class="text-warning">Out Of Cinemas</strong>
+            }
+        </dd>
+        <dd>
+            @if (!string.IsNullOrEmpty(Model.ImgPath))
+            {
+                <center><img src="@Url.Content(Model.ImgPath)" width="200px" height="200px"></center>
+            }
+            else
+            {
+                <center><img src="~/Content/Images/Product.png" width="200px" height="200px"></center>
+            }
+        </dd>
+
+        @*<dt>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.IsActive)
+            </dd>*@
+        <dd>
+            @if (!Model.IsOutOfTheater)
+            {
+                <button type="submit" class="btn btn-danger"> Book Tickets</button>
+            }
+        </dd>
+    </dl>
+</form>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

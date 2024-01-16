@@ -1,0 +1,33 @@
+﻿@model Models.DTO.MovieDetails
+
+@{
+    ViewBag.Title = Model.MovieName + " - Book Tickets";
+    var Timings = Model.MovieScreenTimingConfigs.OrderByDescending(a => a.ScreenID_FK).ToList();
+}
+
+<h2>@Model.MovieName</h2>
+
+@if (Timings != null && Timings.Count() > 0)
+{
+    <div class="movie-lower-card">
+
+        @for (int i = 0; i < Timings.Count(); i++)
+        {
+            <p><strong>@Convert.ToDateTime(Timings[i].MovieDate).ToString("dd-MMM-yyyy")</strong></p>
+            <button onclick="OpenSelectSeats(this, 'divOpenSelectSeat_@Timings[i].ScreenID_FK')" data-attr-value="@Timings[i].ScreenTimingConfigID" class="btn addToCartBtn">@Timings[i].TimingFrom</button>
+            if ((i > 0 && Timings[i - 1].ScreenID_FK != Timings[i].ScreenID_FK) || Timings.Count() == 1 || Timings.Where(a => a.ScreenID_FK == Timings[i].ScreenID_FK).Count() == 1)
+            {
+                <p><strong>@Timings[i].TheaterName</strong> - @Timings[i].TheaterLandmark</p>
+                <hr />
+                <div class="displayNone divOpenSelectSeat"  id="divOpenSelectSeat_@Timings[i].ScreenID_FK">
+
+                </div>
+            }
+        }
+
+    </div>
+}
+else
+{
+    <h3>No Slots Are Available..!!</h3>
+}

@@ -1,0 +1,167 @@
+﻿@model Models.DTO.BudgetData
+
+@{
+    ViewBag.Title = "Budget";
+    Models.DTO.Expense objExp = new Models.DTO.Expense();
+    Models.DTO.Budget objBud = new Models.DTO.Budget();
+
+    int Calculate(int a, int b)
+    {
+        return a - b;
+    }
+
+    if (Model.lstBudgetTypes != null && Model.lstBudgetTypes.Count > 0)
+    {
+        ViewBag.lstBudgetTypes = Model.lstBudgetTypes;
+    }
+
+}
+
+<div class="text-left" style=" display: flex; justify-content: flex-start; align-items: center; ">
+    <h2 style="font-size:25px">Welcome Back, </h2><h1 style="color:cyan;">@User.Identity.Name</h1>
+</div>
+
+<div class="">
+    <div class="row" style=" display: flex; flex-direction: row; justify-content: center; column-gap: 120px; ">
+        <div class="col-sm-5" style="width: 500px; height: 270px; background-color:aliceblue; border-radius: 15px">
+            @Html.Partial("AddBudget", objBud)
+        </div>
+        <div class="col-sm-5" style="width: 500px; height: 270px; background-color: aliceblue; border-radius: 15px">
+            @Html.Partial("AddExpense", objExp)
+        </div>
+    </div>
+    <hr />
+    <div>
+        <h3>Existing Budgets</h3>
+        <div style=" display: grid; grid-template-columns: 30% 30% 30%; ">
+            @if (Model.lstBudget != null && Model.lstBudget.Count > 0)
+            {
+
+                var i = 1;
+                foreach (var budget in Model.lstBudget)
+                {
+                    if (i % 2 == 0)
+                    {
+                        <div style="border: 2px solid red; border-radius:10px; width:300px; height: auto; padding:10px; margin:5px">
+                            <div style=" display: flex; flex-direction: row; justify-content: space-between; ">
+                                <h4>@budget.Name</h4>
+                                <h6>Rs. @budget.Amount Budgeted</h6>
+                            </div>
+                            <div class="slidecontainer" style="pointer-events:none">
+                                <input type="range" min="-@budget.Amount" max="0" value="-@budget.Balance" class="slider-color" id="myRange">
+                            </div>
+                            <div style=" display: flex; flex-direction: row; justify-content: space-between; ">
+                                <h6>Rs. @Calculate(Convert.ToInt32(budget.Amount), Convert.ToInt32(budget.Balance)) spent</h6>
+                                <h6>Rs. @budget.Balance remaining</h6>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="border: 2px solid orange; border-radius:10px; width:300px; height: auto; padding:10px; margin:5px">
+                            <div style=" display: flex; flex-direction: row; justify-content: space-between; ">
+                                <h4>@budget.Name</h4>
+                                <h6>Rs. @budget.Amount Budgeted</h6>
+                            </div>
+                            <div class="slidecontainer" style="pointer-events:none">
+                                <input type="range" min="-@budget.Amount" max="0" value="-@budget.Balance" class="slider-color" id="myRange">
+                            </div>
+                            <div style=" display: flex; flex-direction: row; justify-content: space-between; ">
+                                <h6>Rs. @Calculate(Convert.ToInt32(budget.Amount), Convert.ToInt32(budget.Balance)) spent</h6>
+                                <h6>Rs. @budget.Balance remaining</h6>
+                            </div>
+                        </div>
+                    }
+
+                    i++;
+                }
+            }
+        </div>
+    </div>
+    <hr />
+    <div>
+        <h3>Recent Expenses</h3>
+        <center>
+            @if (Model.lstExpense != null && Model.lstExpense.Count > 0)
+            {
+                <table class="table table-responsive table-striped" style=" width: 70%; background-color: aliceblue; border-radius: 10px; ">
+                    <thead>
+                        <tr>
+                            <th>Expense</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Budget</th>
+                            <th style="text-align:center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var exp in Model.lstExpense)
+                        {
+                            <tr>
+                                <td>@exp.ExpName</td>
+                                <td>@exp.Amount</td>
+                                <td>@exp.CreatedDate.ToShortDateString()</td>
+                                <td>@exp.Budget</td>
+                                <td style="text-align:center"><a class="text-center"><i class="fas fa-trash"></i></a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </center>
+    </div>
+    <div style="height:50px">
+
+    </div>
+</div>
+
+<style>
+    hr {
+        border: 1.25px solid black;
+    }
+    h6 {
+        font-size: 10px;
+    }
+
+    .slidecontainer {
+        width: 100%; /* Width of the outside container */
+    }
+
+    /* The slider itself */
+    .slider {
+        -webkit-appearance: none; /* Override default CSS styles */
+        appearance: none;
+        width: 100%; /* Full-width */
+        height: 25px; /* Specified height */
+        background: #d3d3d3; /* Grey background */
+        outline: none; /* Remove outline */
+        opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+        -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+        transition: opacity .2s;
+    }
+        /* Mouse-over effects */
+        .slider:hover {
+            opacity: 1; /* Fully shown on mouse-over */
+        }
+
+        /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none; /* Override default look */
+            appearance: none;
+            width: 25px; /* Set a specific slider handle width */
+            height: 25px; /* Slider handle height */
+            background: #04AA6D; /* Green background */
+            cursor: pointer; /* Cursor on hover */
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px; /* Set a specific slider handle width */
+            height: 25px; /* Slider handle height */
+            background: #04AA6D; /* Green background */
+            cursor: pointer; /* Cursor on hover */
+        }
+    .addBudget{
+        display: flex;
+        align-items: center;
+    }
+</style>
