@@ -12,6 +12,34 @@ var selectedSeatNo = "";
 var MovieDetails = [];
 var Data;
 
+window.onload = function () {
+    
+    refreshCart();
+
+}
+
+function refreshCart() {
+    var strMsg = "";
+    if (JSON.parse(localStorage.getItem("CartDetails")) != null && JSON.parse(localStorage.getItem("CartDetails")) != []) {
+        CartDetails = JSON.parse(localStorage.getItem("CartDetails"));
+        TotalAmount = 0;
+        TotalCartItems = 0;
+        CartDetails.forEach(function (item) {
+            strMsg += '<div class="cart-table" id="' + item.ProductID + '"><div class="cart_Image"><img src=' + $("#img_" + item.ProductID + " img").attr("src") + '></div><div><strong class="splitData">' + item.Name + '</strong><h6>Rs.' + item.Price + '</h6><p style="text-align:bottom">Qty:- ' + item.Quantity + '</p></div><div class="cart-details-action" ><a href="#" style="writing-mode:vertical-lr" onclick="removeItemFromCart(' + item.ProductID + ',' + item.Quantity + ',' + item.Price + ')"><i class="fas fa-trash"></i></a></div></div>';
+            TotalAmount += item.Amount;
+            TotalCartItems += item.Quantity;
+            $(".add_Cart_" + item.ProductID).addClass("displayNone");
+            $(".cart_Count_" + item.ProductID).removeClass("displayNone");
+            $("#item_Counter_" + item.ProductID).val(item.Quantity);
+        });
+
+        $("#appendCartData").empty().append(strMsg);
+
+        $("#totalCartValue").empty().append('Total Cart Value:- <strong>Rs.' + TotalAmount + '</strong>');
+        $("#txtCartCount").text("(" + TotalCartItems + ")");
+    }
+}
+
 function OnChangePaymentMode(obj) {
     var PaymentMode = $(obj).val();
 
@@ -55,8 +83,6 @@ function AddtoCart(obj, pName, pId, pQuantity, pPrice) {
     var currentCount = 0;
     var appendString = "";
 
-    console.log($("#img_" + pId + " img").attr("src"));
-
     if (CartDetails != [] && CartDetails != "[]" && CartDetails != null && CartDetails != undefined && CartDetails.length > 0) {
         CartDetails.forEach(function (item, index, arr) {
             if (item.ProductID == pId) {
@@ -80,27 +106,39 @@ function AddtoCart(obj, pName, pId, pQuantity, pPrice) {
             return item.ProductID !== parseInt(pId)
         });
 
-        reCalculateCart(pId, prevItemCount, pPrice);
+        reCalculateCart(pId, prevItemCount, pPrice, "removeAll");
 
         var cartObj = {
             ProductID: parseInt(pId),
             Quantity: currentCount,
-            Amount: pPrice * currentCount
+            Amount: pPrice * currentCount,
+            Price: pPrice,
+            Name: pName
         };
 
         CartDetails.push(cartObj);
-        appendString = '<div class="cart-table" id="' + pId + '"><div class="cart-product-image"><img src=' + $("#img_" + pId + " img").attr("src") + '/></div><div><strong class="splitData">' + pName + '</strong><h6>Rs.' + pPrice + '</h6><p style="text-align:bottom">Qty:- ' + currentCount + '</p></div><div class="cart-details-action" style="margin: auto; width: 50 %;" ><a href="#" style="writing-mode:vertical-lr" onclick="removeItemFromCart(' + pId + ',' + currentCount + ',' + pPrice + ')"><i class="fas fa-trash"></i></a></div></div>';
+        appendString = '<div class="cart-table" id="' + pId + '"><div class="cart_Image"><img src=' + $("#img_" + pId + " img").attr("src") + '></div><div><strong class="splitData">' + pName + '</strong><h6>Rs.' + pPrice + '</h6><p style="text-align:bottom">Qty:- ' + currentCount + '</p></div><div class="cart-details-action" ><a href="#" style="writing-mode:vertical-lr" onclick="removeItemFromCart(' + pId + ',' + currentCount + ',' + pPrice + ')"><i class="fas fa-trash"></i></a></div></div>';
         TotalAmount += pPrice * currentCount;
         TotalCartItems += currentCount;
+
+        $(".add_Cart_" + pId).addClass("displayNone");
+        $(".cart_Count_" + pId).removeClass("displayNone");
+        $("#item_Counter_" + pId).val(currentCount);
     }
     else {
+        $(".add_Cart_" + pId).addClass("displayNone");
+        $(".cart_Count_" + pId).removeClass("displayNone");
+        $("#item_Counter_" + pId).val(pQuantity);
+
         var cartObj = {
             ProductID: parseInt(pId),
             Quantity: pQuantity,
-            Amount: pPrice * pQuantity
+            Amount: pPrice * pQuantity,
+            Price: pPrice,
+            Name: pName
         };
         CartDetails.push(cartObj);
-        appendString = '<div class="cart-table" id="' + pId + '"><div class="cart-product-image"><img src=' + $("#img_" + pId + " img").attr("src") + '/></div><div><strong class="splitData">' + pName + '</strong><h6>Rs.' + pPrice + '</h6><p style="text-align:bottom">Qty:- ' + pQuantity + '</p></div><div class="cart-details-action" style="margin: auto; width: 50 %;" ><a href="#" style="writing-mode:vertical-lr" onclick="removeItemFromCart(' + pId + ',' + pQuantity + ',' + pPrice + ')"><i class="fas fa-trash"></i></a></div></div>';
+        appendString = '<div class="cart-table" id="' + pId + '"><div class="cart_Image"><img src=' + $("#img_" + pId + " img").attr("src") + '></div><div><strong class="splitData">' + pName + '</strong><h6>Rs.' + pPrice + '</h6><p style="text-align:bottom">Qty:- ' + pQuantity + '</p></div><div class="cart-details-action" ><a href="#" style="writing-mode:vertical-lr" onclick="removeItemFromCart(' + pId + ',' + pQuantity + ',' + pPrice + ')"><i class="fas fa-trash"></i></a></div></div>';
         TotalAmount += pPrice * pQuantity;
         TotalCartItems += pQuantity;
     }
@@ -109,13 +147,48 @@ function AddtoCart(obj, pName, pId, pQuantity, pPrice) {
     $("#totalCartValue").empty().append('Total Cart Value:- <strong>Rs.' + TotalAmount + '</strong>');
     $("#txtCartCount").text("(" + TotalCartItems + ")");
 
+    //Set the localStorage
+    localStorage.setItem("CartDetails", JSON.stringify(CartDetails));
 }
 
-function reCalculateCart(pId, pQuantity, pPrice) {
+function reCalculateCart(pId, pQuantity, pPrice, fromWhere) {
     TotalCartItems -= pQuantity;
     TotalAmount -= pPrice * pQuantity;
     $("#totalCartValue").empty().append('Total Cart Value:- <strong>Rs.' + TotalAmount + '</strong>');
-    $("#" + pId).remove();
+    if (fromWhere == "removeAll")
+        $("#" + pId).remove();    
+}
+
+function removeItem(pId, pQuantity, pPrice) {
+
+    var CurrentItem = CartDetails.find(a => a.ProductID == pId);
+    if (CurrentItem != null) {
+        if (CurrentItem.Quantity > 1) {
+            CurrentItem.Quantity -= pQuantity;
+            CurrentItem.Amount = CurrentItem.Quantity * pPrice;
+            $(".add_Cart_" + pId).addClass("displayNone");
+            $(".cart_Count_" + pId).removeClass("displayNone");
+            $("#item_Counter_" + pId).val(CurrentItem.Quantity);
+            reCalculateCart(pId, pQuantity, pPrice, "removeOneItem");
+            $("#txtCartCount").text("(" + TotalCartItems + ")");
+        }
+        else {
+            $(".add_Cart_" + pId).removeClass("displayNone");
+            $(".cart_Count_" + pId).addClass("displayNone");
+            $("#item_Counter_" + pId).val(0);
+            reCalculateCart(pId, pQuantity, pPrice, "removeAll");
+            if (TotalCartItems < 1)
+                $("#txtCartCount").text("");
+            else
+                $("#txtCartCount").text("(" + TotalCartItems + ")");
+            CartDetails = CartDetails.filter(function (item) {
+                return item.ProductID !== parseInt(pId)
+            });
+        }
+        //Update the localStorage
+        localStorage.setItem("CartDetails", JSON.stringify(CartDetails));
+        refreshCart();
+    }
 }
 
 function removeItemFromCart(pId, pQuantity, pPrice) {
@@ -128,6 +201,9 @@ function removeItemFromCart(pId, pQuantity, pPrice) {
     TotalAmount -= pPrice * pQuantity;
     $("#totalCartValue").empty().append('Total Cart Value:- <strong>Rs.' + TotalAmount + '</strong>');
     $("#" + pId).remove();
+
+    //Update the localStorage
+    localStorage.setItem("CartDetails", JSON.stringify(CartDetails));
 }
 
 function ProceedToCheckout(PaymentOf) {
@@ -325,6 +401,8 @@ $("#paymentPageForm").submit(function (e) {
                 popupHeader = "Alert";
                 btnText = "OrderDetails";
                 openSuccessModal(strMsg, colorTheme, popupHeader, btnText, data.OrderID);
+                CartDetails = [];
+                localStorage.setItem("CartDetails", CartDetails);
             }
             else {
                 var strMsg, colorTheme, popupHeader, btnText;
@@ -368,9 +446,10 @@ function SubmitAddress() {
     });
 };
 
-function OpenCart() {
+function OpenCart() {    
+    var strMsg="";
     if (CartDetails == [] || CartDetails == "[]" || CartDetails == null || CartDetails == undefined || CartDetails.length <= 0) {
-        var strMsg, colorTheme, popupHeader, btnText;
+        var colorTheme, popupHeader, btnText;
         strMsg = "Please Add Items To The Cart..!! ";
         colorTheme = "fail";
         popupHeader = "Alert";

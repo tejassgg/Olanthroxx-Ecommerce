@@ -76,7 +76,14 @@
                         <h6 class="priceData" data-attr-price="@item.Price"><strong>Rs. @item.Price</strong></h6>
                     </div>
                     <div class="card_Footer">
-                        <button class="add_Cart" href="#" data-attr-MaxQuantity="@item.Quantity" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">Add To Cart</button>
+                        <button class="add_Cart add_Cart_@item.ProductID" href="#" data-attr-MaxQuantity="@item.Quantity" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">Add To Cart</button>
+
+                        <div class="cart_Count_@item.ProductID displayNone">
+                            <button class="cart_Count"onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">+</button>
+                            <input class="cart_Count cart_Count_Inverse" id="item_Counter_@item.ProductID" value="0"/>
+                            <button class="cart_Count" onclick="removeItem(@item.ProductID, 1, @item.Price)">-</button>
+                        </div>                        
+                        
                     </div>
                 }
                 else if (item.Quantity < 5 && item.Quantity > 0)
@@ -85,7 +92,13 @@
                         <h6 class="priceData" data-attr-price="@item.Price"><strong>Rs. @item.Price</strong></h6><h6 style="color: red; margin: -5px 0px;"> (Only @item.Quantity units available..)</h6>
                     </div>
                     <div class="card_Footer">
-                        <button class="add_Cart" href="#" data-attr-MaxQuantity="@item.Quantity" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">Add To Cart</button>
+                        <button class="add_Cart add_Cart_@item.ProductID" href="#" data-attr-MaxQuantity="@item.Quantity" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">Add To Cart</button>
+                        
+                        <div class="cart_Count_@item.ProductID displayNone">
+                            <button class="cart_Count" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">+</button>
+                            <input class="cart_Count cart_Count_Inverse" id="item_Counter_@item.ProductID" value="0" />
+                            <button class="cart_Count" onclick="removeItem(@item.ProductID, 1, @item.Price)">-</button>
+                        </div>
                     </div>
                 }
                 else if (item.Quantity == 0)
@@ -94,7 +107,13 @@
                         <h6 class="priceData" data-attr-price="@item.Price"><strong>Rs. @item.Price</strong></h6><h6 style="color: red; margin: -5px 0px;">(Out Of Stock)</h6>
                     </div>
                     <div class="card_Footer" style="pointer-events:none">
-                        <button class="btn-warning add_Cart" href="#" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">Add To Cart</button>
+                        <button class="btn-warning add_Cart add_Cart_@item.ProductID" href="#" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">Add To Cart</button>
+
+                        <div class="cart_Count_@item.ProductID displayNone">
+                            <button class="cart_Count" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">+</button>
+                            <input class="cart_Count cart_Count_Inverse" id="item_Counter_@item.ProductID" value="0" />
+                            <button class="cart_Count" onclick="removeItem(@item.ProductID, 1, @item.Price)">-</button>
+                        </div>
                     </div>
                 }
 
@@ -109,7 +128,7 @@
     <div class="modal_Body">
         <div class="modal_Headers">
             <h2 style="text-align: initial;">Your Cart <i class="fa fa-shopping-cart"></i></h2>
-            <span class="close closeCartBtn" style=" margin-top: 13px;">&times;</span>
+            <span class="closeCartBtn">&times;</span>
         </div>
         <div class="modal_Content">
             <div id="appendCartData"></div>
