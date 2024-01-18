@@ -12,10 +12,8 @@ var selectedSeatNo = "";
 var MovieDetails = [];
 var Data;
 
-window.onload = function () {
-    
+window.onload = function () {    
     refreshCart();
-
 }
 
 function refreshCart() {

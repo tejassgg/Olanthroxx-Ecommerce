@@ -304,3 +304,142 @@ option {
     text-decoration: none;
     cursor: pointer;
 }
+
+.signin_Form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 15px;
+    background-color: #eeeded;
+    width: 30%;
+    align-self: center;
+    padding:10px;
+}
+
+.form_Input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    border-radius: 10px;
+    text-decoration: none;
+    background-color: #fff;
+    border: 0px;
+    padding: 2px 15px;
+    margin: 10px;
+}
+/*.form_Input>button{
+    border:0;
+    background-color:transparent;
+}*/
+
+.login_Buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main_SignIn_Form {
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form_Control {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 10px;
+    outline: none;
+    text-decoration: none;
+    background-color: #fff;
+    font-size: 16px;
+    border: 0px;
+}
+
+.form_Input:focus-within {
+    border: 1px solid #03AFFF;
+}
+
+.login_Submit {
+    color: #fff;
+    border: 0px;
+    float: right;
+    font-size: 16px;
+    padding: 8px 10px;
+    font-weight: 700;
+    text-align: center;
+    width: fit-content;
+    border-radius: 5px;
+    background-color: #03AFFF;
+    cursor: pointer;
+    width: fit-content;
+    margin: 15px;
+}
+
+.other_Options{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    cursor:pointer;
+}
+
+.other_Options > span {
+    border: 1.5px solid #252525;
+    border-radius: 40%;
+    padding: 8px;
+    height: 50px;
+    aspect-ratio:1/1;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.other_Options svg{
+    height: 25px;
+}
+
+.or_Options {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.or_Options hr{
+    width:20%;
+    border: .5px solid #000;
+    opacity: 0.3;
+}
+
+
+.register_Form {
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register_Form_Body {
+    border-radius: 15px;
+    padding: 10px;
+    background-color: #eeeded;
+    padding: 15px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.row_Input{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.full_Address{
+    width: 100%;
+}

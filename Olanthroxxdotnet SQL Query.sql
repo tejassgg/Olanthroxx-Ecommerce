@@ -16,4 +16,4 @@ select * from tblMovieScreenTimingConfig where ScreenTimingConfigID = 10003
 
 select a.Address1, a.Address2 from tblAddress as a INNER JOIN tblOrderDetails as b on a.AddressID = b.BillingAddressID_FK
 
---UPDATE tblMovieScreenTimingConfig SET MovieDate = '2023-10-19' where ScreenTimingConfigID = 10003
+--UPDATE tblMovieScreenTimingConfig SET MovieDate = '2024-01-18' where ScreenTimingConfigID = 10003
