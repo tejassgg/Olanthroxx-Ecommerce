@@ -43,7 +43,7 @@
             @Html.DropDownListFor(model => model.State, new SelectList(ViewBag.lstStateList, "Value", "Text"), "Please Select State", new { @class = "form_Control", @onChange = "GetCity(this)", @required = "required" })
         </div>
 
-        <div class="form_Input">
+        <div class="form_Input asd">
             <select class="form_Control" id="ddlCity" onChange="GetPincode(this)" name="City" required>
                 <option>Please Select City</option>
             </select>
