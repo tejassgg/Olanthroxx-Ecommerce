@@ -53,6 +53,7 @@ namespace WebUI.Controllers
                 return RedirectToAction("UserIndex");
 
             var ProductList = GetProductDetails(userType.ToLower(), "index");
+            ViewBag.userType = userType;
             return View(ProductList);
         }
 

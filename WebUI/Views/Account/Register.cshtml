@@ -43,7 +43,7 @@
             @Html.DropDownListFor(model => model.State, new SelectList(ViewBag.lstStateList, "Value", "Text"), "Please Select State", new { @class = "form_Control", @onChange = "GetCity(this)", @required = "required" })
         </div>
 
-        <div class="form_Input asd">
+        <div class="form_Input">
             <select class="form_Control" id="ddlCity" onChange="GetPincode(this)" name="City" required>
                 <option>Please Select City</option>
             </select>
@@ -78,7 +78,7 @@
             @Html.EditorFor(model => model.loginObject.Password, new { htmlAttributes = new { @class = "form_Control", @required = "required", @placeholder = "Password", @type = "password" } })
         </div>
     </div>
-    
+
     <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
     <button type="submit" class="login_Submit">Sign Up</button>
     @Html.ActionLink("Already Registered? Login Here", "Login")

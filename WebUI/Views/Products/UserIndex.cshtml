@@ -157,17 +157,18 @@
                 });
                 return true;
             }
-
-            $("div .product_Details .card").each(function (results) {
-                if (results !== 0) {
-                    if (filterType != $(this).find(".filterByCategory").val()) {
-                        $(this).hide();
+            else {
+                $("div .product_Details .card").each(function (results) {
+                    if (results !== 0) {
+                        if (filterType != $(this).find(".filterByCategory").val()) {
+                            $(this).hide();
+                        }
+                        else {
+                            $(this).show();
+                        }
                     }
-                    else {
-                        $(this).show();
-                    }
-                }
-            });
+                });
+            }
         });
 
         $("#txtSearch").on("keyup", function () {

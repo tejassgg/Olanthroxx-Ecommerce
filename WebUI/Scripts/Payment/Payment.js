@@ -34,7 +34,8 @@ function refreshCart() {
         $("#appendCartData").empty().append(strMsg);
 
         $("#totalCartValue").empty().append('Total Cart Value:- <strong>Rs.' + TotalAmount + '</strong>');
-        $("#txtCartCount").text("(" + TotalCartItems + ")");
+        if (TotalCartItems > 0)
+            $("#txtCartCount").text("(" + TotalCartItems + ")");
     }
 }
 
@@ -510,4 +511,10 @@ function OnChangeSeatCategory(obj) {
     });
     selectedSeatNo = "";
     $("#seatContainer").removeAttr("style");
+}
+
+function getImagePreview(event) {
+    var img = URL.createObjectURL(event.target.files[0]);
+
+    $("#imgPreview").removeClass("hidden").append("<img class='product_Img' src='" + img + "' />");
 }

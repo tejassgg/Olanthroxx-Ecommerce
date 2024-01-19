@@ -4,76 +4,52 @@
     ViewBag.Title = "AddProduct";
 }
 
-<h2>Add Product</h2>
-
-
-@using (Html.BeginForm("AddProduct", "Products", FormMethod.Post, new {enctype = "multipart/form-data"}))
+@using (Html.BeginForm("AddProduct", "Products", FormMethod.Post, new {enctype = "multipart/form-data", @class = "addProduct_Form" }))
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <hr />
+<div class="addProduct_Form_Div">
+    <h2>Add Product</h2>
     @Html.ValidationSummary(true, "", new { @class = "text-danger", @id = "txtValidationSummary" })
-    <div class="form-group">
-        <label class="control-label col-md-2">Product Name</label>
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.PName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.PName, "", new { @class = "text-danger" })
+
+    <div class="row_Input">
+        <div class="form_Input">
+            @Html.EditorFor(model => model.PName, new { htmlAttributes = new { @class = "form_Control", @placeholder = "Name", @required = "required" } })
+        </div>
+
+        <div class="form_Input">
+            @Html.EditorFor(model => model.PTitle, new { htmlAttributes = new { @class = "form_Control", @placeholder = "Title", @required = "required" } })
         </div>
     </div>
 
-    <div class="form-group">
-        <label class="control-label col-md-2">Product Title</label>
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.PTitle, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.PTitle, "", new { @class = "text-danger" })
+    <div class="row_Input">
+        <div class="form_Input full_Address">
+            @Html.TextAreaFor(model => model.PDescription, new { @class = "form_Control", @rows = "4", @cols = "100", @placeholder = "Description", @required = "required" })
         </div>
     </div>
 
-    <div class="form-group">
-        <label class="control-label col-md-2">Product Description</label>
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.PDescription, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.PDescription, "", new { @class = "text-danger" })
+    <div class="row_Input">
+        <div class="form_Input">
+            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form_Control", @placeholder = "Quantity", @required = "required" } })
+        </div>
+
+        <div class="form_Input">
+            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form_Control", @placeholder = "Price", @required = "required" } })
         </div>
     </div>
 
-    <div class="form-group">
-        <label class="control-label col-md-2">Product Category</label>
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.CategoryID_FK, new SelectList(ViewBag.CategoryList, "Value", "Text"), "Please Select Category", new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.CategoryID_FK, "", new { @class = "text-danger" })
+    <div class="row_Input">
+        <input type="file" name="imgFile" class="login_Submit" onchange="getImagePreview(event)" />
+        <div class="form_Input">
+            @Html.DropDownListFor(model => model.CategoryID_FK, new SelectList(ViewBag.CategoryList, "Value", "Text"), "Please Select Category", new { @class = "form_Control", @placeholder = "Select Category", @required = "required" })
         </div>
     </div>
 
-    <div class="form-group">
-        <label class="control-label col-md-2">Product Quantity</label>
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
-        </div>
+    <div class="row_Input">
+        <div class="form_Input hidden" id="imgPreview"></div>
     </div>
 
-    <div class="form-group">
-        <label class="control-label col-md-2">Product Price</label>
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-md-2">Product Image</label>
-        <div class="col-md-10">
-            <input type="file" name="imgFile" class="btn btn-info" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Add" class="btn btn-success" />
-        </div>
-    </div>
-
+    <button type="submit" class="login_Submit">Add Product</button>
 </div>
 }
 

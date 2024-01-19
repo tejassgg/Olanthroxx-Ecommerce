@@ -17,15 +17,12 @@
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body style=" background-color: aliceblue; padding-top: -50px; padding-bottom: -20px;">
-    @if (User.Identity.IsAuthenticated)
-    {
-        <form id="formYourCart" class="displayNone">
-            <input type="hidden" id="hdnCartDetails" />
-            <div class="yourCart">
-                <a onclick="OpenCart()">Your Cart<i class="fa fa-shopping-cart" style="font-size:22px"></i></a><a id="txtCartCount"></a>
-            </div>
-        </form>
-    }
+    <form id="formYourCart" class="displayNone">
+        <input type="hidden" id="hdnCartDetails" />
+        <div class="yourCart">
+            <a onclick="OpenCart()">Your Cart<i class="fa fa-shopping-cart" style="font-size:22px"></i></a><a id="txtCartCount"></a>
+        </div>
+    </form>
     <div class="wrapper">
         <input type="checkbox" id="btn" hidden>
         <label for="btn" class="menu-btn">
