@@ -522,6 +522,55 @@ option {
     justify-content: space-between;
 }
 
-.width_100{
-    width:100%;
+
+.addProduct_Btn{
+    color: #252525;
+    transition: .4s;
+}
+.addProduct_Btn:hover{
+    text-decoration:none;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.page_Header{
+    margin-top: 3%;
+}
+
+.product_List_Table {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #eeeded;
+    border-radius: 15px;
+}
+
+thead, tbody {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+tr {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 5% 10% 15% 25% 15% 10% 10% 10%;
+}
+td, th {
+    width: max-content;
+    font-size: 18px;
+}
+
+.product_List_Table th, .product_List_Table td {
+    padding: 15px;
+}
+
+
+td>a>i{
+    padding: 5px;
+    color:#03AFFF;
 }

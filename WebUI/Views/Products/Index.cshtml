@@ -1,92 +1,95 @@
 ﻿@model IEnumerable<Models.DTO.ProductDetails>
 
 @{
-    ViewBag.Title = "DashBoard - " + ViewBag.userType;
+    ViewBag.Title = ViewBag.userType + " - Dashboard";
     var i = 0;
 }
 
-<h2>Product List</h2>
+<h2 class="page_Header">Product List</h2>
 
-<p>
-    @Html.ActionLink("Add New", "AddProduct")
-</p>
-<table class="table">
-    <tr>
-        <th style="display:none;">
-            ProductID
-        </th>
-        <th>
-            Sr.
-        </th>
-        <th>
-            Name
-        </th>
-        <th>
-            Title
-        </th>
-        <th>
-            Description
-        </th>
-        <th>
-            Category
-        </th>
-        <th style="display:none;">
-            Category ID
-        </th>
-        <th>
-            Quantity
-        </th>
-        <th>
-            Price
-        </th>
-        <th>
-            Action
-        </th>
-    </tr>
+<a class="login_Submit addProduct_Btn" href="@Url.Action("/AddProduct")"><i class="fas fa-plus"></i> &nbsp; New Product</a>
 
-    @foreach (var item in Model)
-    {
-        i++;
+<table class="product_List_Table">
+    <thead>
         <tr>
-            <td style="display:none;">
-                @Html.HiddenFor(modelItem => item.ProductID)
-            </td>
-            <td>
-                @i
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PName)
-            </td>
-            @if (item.PTitle.Length > 15)
-            {
-                <td>@item.PTitle.Substring(0, 15) ..</td>
-            }
-            else
-            {
-                <td>@item.PTitle</td>
-            }
-            
-            <td>
-                @item.PDescription.Substring(0, 40) ..
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category)
-            </td>
-            <td style="display:none;">
-                @Html.DisplayFor(modelItem => item.CategoryID_FK)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "EditProduct", new { id = item.ProductID }) |
-                @Html.ActionLink("Details", "ViewProductDetails", new { id = item.ProductID })
-                @*@Html.ActionLink("Delete", "DeleteProduct", new { id = item.ProductID })*@
-            </td>
+            <th style="display: none; padding: 15px;">
+                ProductID
+            </th>
+            <th>
+                Sr.
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Category
+            </th>
+            <th style="display:none;">
+                Category ID
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Action
+            </th>
         </tr>
-    }
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            i++;
+            <tr>
+                <td style="display:none;">
+                    @Html.HiddenFor(modelItem => item.ProductID)
+                </td>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PName)
+                </td>
+                @if (item.PTitle.Length > 15)
+                {
+                    <td>@item.PTitle.Substring(0, 15) ..</td>
+                }
+                else
+                {
+                    <td>@item.PTitle</td>
+                }
+
+                <td>
+                    @item.PDescription.Substring(0, 40) ..
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td style="display:none;">
+                    @Html.DisplayFor(modelItem => item.CategoryID_FK)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <a href="@Url.Action("EditProduct", new { id = item.ProductID })"><i class="fas fa-pen"></i></a> &nbsp; |
+                    <a href="@Url.Action("ViewProductDetails", new { id = item.ProductID })"><i class="fas fa-info"></i></a> &nbsp; |
+                    <a href="@Url.Action("DeleteProduct", new { id = item.ProductID })"><i class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
 
 </table>
