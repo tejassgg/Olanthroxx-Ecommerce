@@ -310,7 +310,7 @@ option {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    border-radius: 15px;
+    border-radius: 10px;
     background-color: #eeeded;
     width: 30%;
     align-self: center;
@@ -420,7 +420,7 @@ option {
 }
 
 .register_Form_Body {
-    border-radius: 15px;
+    border-radius: 10px;
     padding: 10px;
     background-color: #eeeded;
     padding: 15px;
@@ -441,63 +441,6 @@ option {
     width: 100%;
 }
 
-@media (max-width: 768px) {
-
-    .Search_Bar {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: fit-content;
-        margin-bottom: 30px;
-    }
-
-    .Search_Bar_Items {
-        width: 100%;
-        height: 100%;
-        display: grid;
-        grid-template-columns: 60% 40%;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .product_Details {
-        width: 100%;
-        display: grid;
-        grid-template-columns: auto;
-        gap: 10px;
-    }
-
-    .input_Search_Block {
-        width:100%;
-        border-radius: 8px;
-        padding: 0px 15px;
-        background-color: #fff;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        box-shadow: 5px 10px 30px rgba(0,0,0,0.2);
-    }
-
-    .input_Search {
-        border: 0;
-        width: 100%;
-        height: 100%;
-        padding: 8px;
-        font-size: 16px;
-        outline: none;
-    }
-
-    .modal_Body {
-        width: 80%;
-    }
-
-}
-
-.form_Input input[type="file"]{
-    outline:none;
-}
-
 .product_Img{
     width: 250px;
     aspect-ratio: 1/1;
@@ -510,7 +453,7 @@ option {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    border-radius: 15px;
+    border-radius: 10px;
     background-color: #eeeded;
     width: 45%;
     align-self: center;
@@ -544,7 +487,7 @@ option {
     justify-content: center;
     align-items: center;
     background-color: #eeeded;
-    border-radius: 15px;
+    border-radius: 10px;
 }
 
 thead, tbody {
@@ -569,8 +512,122 @@ td, th {
     padding: 15px;
 }
 
-
 td>a>i{
     padding: 5px;
     color:#03AFFF;
+}
+
+@media (max-width: 768px) {
+
+    .Search_Bar {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: fit-content;
+        margin-bottom: 30px;
+    }
+
+    .Search_Bar_Items {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-columns: 60% 40%;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .product_Details {
+        width: 100%;
+        display: grid;
+        grid-template-columns: auto;
+        gap: 10px;
+    }
+
+    .input_Search_Block {
+        width: 100%;
+        border-radius: 8px;
+        padding: 0px 15px;
+        background-color: #fff;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        box-shadow: 5px 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .input_Search {
+        border: 0;
+        width: 100%;
+        height: 100%;
+        padding: 8px;
+        font-size: 16px;
+        outline: none;
+    }
+
+    .modal_Body {
+        width: 80%;
+    }
+
+    .signin_Form {
+        width: 100%;
+    }
+
+    .form_Input {
+        width: 70%;
+    }
+
+    .register_Form_Body {
+        border-radius: 10px;
+        background-color: #eeeded;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .row_Input {
+        width: 100%;
+    }
+
+    .register_Form_Body .form_Input {
+        width: 100%;
+        margin: 3px;
+    }
+
+    .register_Form_Body .form_Input input, .register_Form_Body .form_Input select {
+        font-size: 12px;
+    }
+
+    .addProduct_Form_Div {
+        width: 100%;
+    }
+
+    .movie-card-conatiner {
+        grid-template-columns: auto;
+    }
+    .mobile_Hidden{
+        display:none;
+    }
+
+    tr {
+        grid-template-columns: auto auto auto auto;
+    }
+
+    /*thead>tr {
+        width: 100%;
+        grid-template-columns: 10% 30% 30% 30%;
+    }
+    tbody > tr {
+        width: 100%;
+        grid-template-columns: 10% 40% 10% 40%;
+    }*/
+
+    td,th{
+        font-size: 12px;
+    }
+
+}
+
+.form_Input input[type="file"] {
+    outline: none;
 }

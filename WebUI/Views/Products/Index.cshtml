@@ -12,7 +12,7 @@
 <table class="product_List_Table">
     <thead>
         <tr>
-            <th style="display: none; padding: 15px;">
+            <th style="display: none;">
                 ProductID
             </th>
             <th>
@@ -21,13 +21,13 @@
             <th>
                 Name
             </th>
-            <th>
+            <th class="mobile_Hidden">
                 Title
             </th>
-            <th>
-                Description
+            <th class="mobile_Hidden">
+                Desc
             </th>
-            <th>
+            <th class="mobile_Hidden">
                 Category
             </th>
             <th style="display:none;">
@@ -36,7 +36,7 @@
             <th>
                 Quantity
             </th>
-            <th>
+            <th class="mobile_Hidden">
                 Price
             </th>
             <th>
@@ -57,27 +57,27 @@
                     @i
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PName)
+                    @item.PName.Substring(0, 10)
                 </td>
-                @if (item.PTitle.Length > 15)
+                @if (item.PTitle.Length > 10)
                 {
-                    <td>@item.PTitle.Substring(0, 15) ..</td>
+                    <td class="mobile_Hidden">@item.PTitle.Substring(0, 10) ..</td>
                 }
                 else
                 {
-                    <td>@item.PTitle</td>
+                    <td class="mobile_Hidden">@item.PTitle</td>
                 }
 
-                <td>
+                <td class="mobile_Hidden">
                     @item.PDescription.Substring(0, 40) ..
                 </td>
-                <td>
+                <td class="mobile_Hidden">
                     @Html.DisplayFor(modelItem => item.Category)
                 </td>
                 <td style="display:none;">
                     @Html.DisplayFor(modelItem => item.CategoryID_FK)
                 </td>
-                <td>
+                <td class="mobile_Hidden">
                     @Html.DisplayFor(modelItem => item.Quantity)
                 </td>
                 <td>
