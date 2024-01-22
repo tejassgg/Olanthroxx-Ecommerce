@@ -78,6 +78,8 @@ public partial class OlanthroxxEntities : DbContext
 
     public virtual DbSet<tblScreenDetail> tblScreenDetails { get; set; }
 
+    public virtual DbSet<tblTempCartDetail> tblTempCartDetails { get; set; }
+
 }
 
 }

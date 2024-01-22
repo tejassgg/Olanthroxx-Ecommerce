@@ -38,6 +38,8 @@
         <AssociationConnector Association="OlanthroxxModel.FK_tblMovieScreenTimingConfig_tblMovieDetails" />
         <AssociationConnector Association="OlanthroxxModel.FK_tblMovieScreenTimingConfig_tblScreenDetails" />
         <AssociationConnector Association="OlanthroxxModel.FK_tblScreenDetails_tblTheaterDetails" />
+        <EntityTypeShape EntityType="OlanthroxxModel.tblTempCartDetail" Width="1.5" PointX="7" PointY="16.25" />
+        <AssociationConnector Association="OlanthroxxModel.FK_tblTempCartDetails_tblUser" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

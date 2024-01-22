@@ -626,6 +626,9 @@ td>a>i{
         font-size: 12px;
     }
 
+    .addProduct_Btn {
+        font-size: 14px;
+    }
 }
 
 .form_Input input[type="file"] {

@@ -26,6 +26,8 @@ public partial class tblUser
 
         this.tblBudgetDetails = new HashSet<tblBudgetDetail>();
 
+        this.tblTempCartDetails = new HashSet<tblTempCartDetail>();
+
     }
 
 
@@ -58,6 +60,10 @@ public partial class tblUser
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<tblBudgetDetail> tblBudgetDetails { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<tblTempCartDetail> tblTempCartDetails { get; set; }
 
 }
 

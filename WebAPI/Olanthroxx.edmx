@@ -264,6 +264,18 @@
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="tblTempCartDetails">
+          <Key>
+            <PropertyRef Name="CartID" />
+          </Key>
+          <Property Name="CartID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountID_FK" Type="int" Nullable="false" />
+          <Property Name="TempCartDetails" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SessionID" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsUsed" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UsedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="tblTheaterDetails">
           <Key>
             <PropertyRef Name="TheaterID" />
@@ -433,6 +445,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblTempCartDetails_tblUser">
+          <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
+          <End Role="tblTempCartDetails" Type="Self.tblTempCartDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="tblTempCartDetails">
+              <PropertyRef Name="AccountID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblUserDetails_tblUser">
           <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
           <End Role="tblUserDetails" Type="Self.tblUserDetails" Multiplicity="*" />
@@ -465,6 +489,7 @@
           <EntitySet Name="tblProduct" EntityType="Self.tblProduct" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblProductReview" EntityType="Self.tblProductReview" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblScreenDetails" EntityType="Self.tblScreenDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTempCartDetails" EntityType="Self.tblTempCartDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblTheaterDetails" EntityType="Self.tblTheaterDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUser" EntityType="Self.tblUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUserDetails" EntityType="Self.tblUserDetails" Schema="dbo" store:Type="Tables" />
@@ -504,6 +529,10 @@
           <AssociationSet Name="FK_tblScreenDetails_tblTheaterDetails" Association="Self.FK_tblScreenDetails_tblTheaterDetails">
             <End Role="tblTheaterDetails" EntitySet="tblTheaterDetails" />
             <End Role="tblScreenDetails" EntitySet="tblScreenDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTempCartDetails_tblUser" Association="Self.FK_tblTempCartDetails_tblUser">
+            <End Role="tblUser" EntitySet="tblUser" />
+            <End Role="tblTempCartDetails" EntitySet="tblTempCartDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_tblUserDetails_tblUser" Association="Self.FK_tblUserDetails_tblUser">
             <End Role="tblUser" EntitySet="tblUser" />
@@ -570,6 +599,7 @@
           <NavigationProperty Name="tblUserDetails" Relationship="OlanthroxxModel.FK_tblUserDetails_tblUser" FromRole="tblUser" ToRole="tblUserDetail" />
           <Property Name="IsActive" Type="Boolean" />
           <NavigationProperty Name="tblBudgetDetails" Relationship="OlanthroxxModel.FK_tblBudgetDetails_tblUser" FromRole="tblUser" ToRole="tblBudgetDetail" />
+          <NavigationProperty Name="tblTempCartDetails" Relationship="OlanthroxxModel.FK_tblTempCartDetails_tblUser" FromRole="tblUser" ToRole="tblTempCartDetail" />
         </EntityType>
         <EntityType Name="tblUserSessionDetail">
           <Key>
@@ -646,6 +676,11 @@
           <AssociationSet Name="FK_tblScreenDetails_tblTheaterDetails" Association="OlanthroxxModel.FK_tblScreenDetails_tblTheaterDetails">
             <End Role="tblTheaterDetail" EntitySet="tblTheaterDetails" />
             <End Role="tblScreenDetail" EntitySet="tblScreenDetails" />
+          </AssociationSet>
+          <EntitySet Name="tblTempCartDetails" EntityType="OlanthroxxModel.tblTempCartDetail" />
+          <AssociationSet Name="FK_tblTempCartDetails_tblUser" Association="OlanthroxxModel.FK_tblTempCartDetails_tblUser">
+            <End Role="tblUser" EntitySet="tblUsers" />
+            <End Role="tblTempCartDetail" EntitySet="tblTempCartDetails" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="tblCategory">
@@ -1039,6 +1074,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="tblTempCartDetail">
+          <Key>
+            <PropertyRef Name="CartID" />
+          </Key>
+          <Property Name="CartID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountID_FK" Type="Int32" Nullable="false" />
+          <Property Name="TempCartDetails" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SessionID" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsUsed" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblUser" Relationship="OlanthroxxModel.FK_tblTempCartDetails_tblUser" FromRole="tblTempCartDetail" ToRole="tblUser" />
+        </EntityType>
+        <Association Name="FK_tblTempCartDetails_tblUser">
+          <End Type="OlanthroxxModel.tblUser" Role="tblUser" Multiplicity="1" />
+          <End Type="OlanthroxxModel.tblTempCartDetail" Role="tblTempCartDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUser">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="tblTempCartDetail">
+              <PropertyRef Name="AccountID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1385,6 +1445,19 @@
                 <ScalarProperty Name="TheaterID_FK" ColumnName="TheaterID_FK" />
                 <ScalarProperty Name="ScreenNo" ColumnName="ScreenNo" />
                 <ScalarProperty Name="ScreenID" ColumnName="ScreenID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTempCartDetails">
+            <EntityTypeMapping TypeName="OlanthroxxModel.tblTempCartDetail">
+              <MappingFragment StoreEntitySet="tblTempCartDetails">
+                <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsUsed" ColumnName="IsUsed" />
+                <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+                <ScalarProperty Name="TempCartDetails" ColumnName="TempCartDetails" />
+                <ScalarProperty Name="AccountID_FK" ColumnName="AccountID_FK" />
+                <ScalarProperty Name="CartID" ColumnName="CartID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

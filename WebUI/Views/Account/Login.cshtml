@@ -24,7 +24,7 @@
     </div>
 
     <div class="login_Buttons">
-        <button type="submit" class="login_Submit">Login</button>
+        <button type="submit" class="login_Submit addProduct_Btn">Login</button>
         @Html.ActionLink("New User? Register Here", "Register")
     </div>    
 
@@ -70,6 +70,9 @@
         if ($("#txtValidationSummary ul li").text() != null && $("#txtValidationSummary ul li").text() != "") {
             $("#forgotPassword").removeAttr("class");
         }
+
+        localStorage.clear();
+
     });
 </script>
 

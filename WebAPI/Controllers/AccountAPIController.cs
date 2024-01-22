@@ -48,6 +48,17 @@ namespace WebAPI.Controllers
             {
                 if (User.LoginType != constants.BotLoginType)
                 {
+                    User.tempCartDetails = new TempCartDetails();
+                    User.tempCartDetails = entities.tblTempCartDetails.Where(a => a.AccountID_FK == User.AccountID && a.IsUsed == false).
+                        Select(x => new TempCartDetails
+                        {
+                            TempCartDetailsString = x.TempCartDetails,
+                            SessionID = x.SessionID,
+                            IsUsed = x.IsUsed,
+                            CreatedDate = x.CreatedDate,
+                            UsedDate = x.UsedDate
+                        }).FirstOrDefault();
+
                     if (!User.IsActive)
                     {
                         return BadRequest("Please activate user using the verification link sent on to your registered Email ID.");
@@ -56,7 +67,7 @@ namespace WebAPI.Controllers
                     {
                         if (encryptDecrypt.Encrypt(userDetails.Password + User.PasswordSalt.Replace(" ", ""), constants.EncryptTypePass) == User.Password)
                         {
-                            return Ok(new UserLoginObject { UserName = User.UserName, LoginType = User.LoginType });
+                            return Ok(new UserLoginObject { UserName = User.UserName, LoginType = User.LoginType, tempCartDetails = User.tempCartDetails ?? null });
                         }
                         return BadRequest("Invalid Credentials.");
                     }

@@ -57,10 +57,14 @@ namespace WebUI.Controllers
                 if (result.IsSuccessStatusCode)
                 {
                     FormsAuthentication.SetAuthCookie(userDetails.UserName, false);  //rememberMe functionality
+                    
                     if (userDetails.LoginType == "Admin" || userDetails.LoginType == "BotLogin" || userDetails.LoginType == "Seller")
                     {
                         return RedirectToAction("Index", "Products", new { userType = userDetails.LoginType });
                     }
+                    if (userDetails.tempCartDetails != null)
+                        ViewBag.tempCartDetails = userDetails.tempCartDetails.TempCartDetailsString;
+
                     return RedirectToAction("UserIndex", "Products", new { userType = userDetails.LoginType });
                 }
             }

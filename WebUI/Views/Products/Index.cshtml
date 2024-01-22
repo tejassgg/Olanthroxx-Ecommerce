@@ -57,11 +57,11 @@
                     @i
                 </td>
                 <td>
-                    @item.PName.Substring(0, 10)
+                    @item.PName
                 </td>
-                @if (item.PTitle.Length > 10)
+                @if (item.PTitle.Length > 15)
                 {
-                    <td class="mobile_Hidden">@item.PTitle.Substring(0, 10) ..</td>
+                    <td class="mobile_Hidden">@item.PTitle.Substring(0, 15) ..</td>
                 }
                 else
                 {

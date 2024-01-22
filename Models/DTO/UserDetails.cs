@@ -20,6 +20,7 @@ namespace Models.DTO
         public string Password { get; set; }
         public bool IsActive { get; set; }
         public string Message { get; set; }
+        public TempCartDetails tempCartDetails { get; set; }
     }
 
     public class UserDetails

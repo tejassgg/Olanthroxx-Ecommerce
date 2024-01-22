@@ -4,6 +4,8 @@
     ViewBag.Title = "Shop";
     var i = 0;
     bool IsAuthenticated = User.Identity.IsAuthenticated;
+    var datas = ViewBag.tempCartDetails;
+
 }
 
 <div class="ProductPage">
@@ -144,6 +146,16 @@
 
 <script>
     $(document).ready(function () {
+
+        debugger;
+
+        var tempDetails = '@datas';
+        console.log(tempDetails);
+
+        if (tempDetails != null && tempDetails != "") {
+            localStorage.setItem("CartDetails", tempDetails);
+        }
+
         $("#txtSearch").val();
         $("#txtFilterInbox").val();
         IsAuthenticated = '@IsAuthenticated';

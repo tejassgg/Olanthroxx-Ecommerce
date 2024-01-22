@@ -18,4 +18,21 @@ namespace Models.DTO
         public DateTime? ModifiedDate { get; set; }
         public List<OrderDetails> lstOrderDetails { get; set; }
     }
+
+    public class TempCartDetails
+    {
+        public int CartID { get; set; }
+
+        public int AccountID_FK { get; set; }
+
+        public string TempCartDetailsString { get; set; }
+
+        public string SessionID { get; set; }
+
+        public bool IsUsed { get; set; }
+
+        public System.DateTime CreatedDate { get; set; }
+
+        public Nullable<System.DateTime> UsedDate { get; set; }
+    }
 }

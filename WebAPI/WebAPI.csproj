@@ -247,6 +247,9 @@
     <Compile Include="tblScreenDetail.cs">
       <DependentUpon>Olanthroxx.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblTempCartDetail.cs">
+      <DependentUpon>Olanthroxx.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblTheaterDetail.cs">
       <DependentUpon>Olanthroxx.tt</DependentUpon>
     </Compile>

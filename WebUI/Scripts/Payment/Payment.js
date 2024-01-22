@@ -516,5 +516,5 @@ function OnChangeSeatCategory(obj) {
 function getImagePreview(event) {
     var img = URL.createObjectURL(event.target.files[0]);
 
-    $("#imgPreview").removeClass("hidden").append("<img class='product_Img' src='" + img + "' />");
+    $("#imgPreview").removeClass("hidden").empty().append("<img class='product_Img' src='" + img + "' />");
 }
