@@ -1,0 +1,46 @@
+﻿@model List<Models.DTO.TheaterDetails>
+
+@{
+    ViewBag.Title = "Theatre Details";
+    var i = 0;
+}
+
+<div class="all_Theatre">
+    <div class="all_theatreDetails">
+        @foreach (var item in Model)
+        {
+            i++;
+            <div class="addTheatre-card" id='img_@item.TheaterID'>
+                @Html.HiddenFor(modelItem => item.TheaterID)
+                <div class="heart_Icon">
+                    <i class='bx bx-edit bx-md'></i>
+                </div>
+                @if (!string.IsNullOrEmpty(item.ImgPath))
+                {
+                    <center><a href="../BookTicket/TheatreDetails/@item.TheaterID.ToString()"><img src="@Url.Content(@item.ImgPath)"></a></center>
+                }
+                else
+                {
+                    <center><a href="../BookTicket/TheatreDetails/@item.TheaterID.ToString()"><img src="~/Content/Images/Product.png"></a></center>
+                }
+                <hr />
+                <div class="prod_Desc">
+                    <strong>@Html.ActionLink(item.Name, "TheatreDetails", new { id = item.TheaterID.ToString() })</strong> | @Html.DisplayFor(modelItem => item.Location)
+                </div>
+                @Html.DisplayFor(modelItem => item.Landmark )
+            </div>
+        }
+        <div class="addTheatre-card">
+            <center ><a href="../BookTicket/AddTheatreDetails"><img style="width:150px; aspect-ratio:1/1;" src="~/Content/Images/AddTheatre.png"></a></center>
+            <hr />
+            <div class="prod_Desc">
+                <strong>Add New Theatre</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

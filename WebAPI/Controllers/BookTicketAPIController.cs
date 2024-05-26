@@ -1,6 +1,7 @@
 ﻿using Models.DTO;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -171,7 +172,6 @@ namespace WebAPI.Controllers
             return Ok(hdnAlreadySelectedSeats);
         }
 
-
         [HttpPost]
         [Route("API/BookTicket/GetCalculateMovieTicketCost")]
         public MovieBooking GetCalculateMovieTicketCost(MovieBooking movie)
@@ -201,6 +201,179 @@ namespace WebAPI.Controllers
             movie.Amount = movie.NoOfSeats * (TicketPrice);
 
             return movie;
+        }
+
+        [HttpGet]
+        [Route("API/BookTicket/GetUsersTheatreDetails/{UserID}")]
+        public List<TheaterDetails> GetUsersTheatreDetails(string UserID)
+        {
+            var theatreDetails = new List<TheaterDetails>();
+            if (!string.IsNullOrEmpty(UserID))
+            {
+                theatreDetails = (from obj in entities.tblTheaterDetails
+                                  where obj.UserName_FK == UserID
+                                  select new TheaterDetails
+                                  {
+                                      TheaterID  = obj.TheaterID,
+                                      UserName_FK = obj.UserName_FK,
+                                      Name = obj.Name,
+                                      NoOfScreens =obj.NoOfScreens,
+                                      Pincode = obj.Pincode,
+                                      Location = obj.Location,
+                                      Landmark = obj.Landmark,
+                                      IsActive = obj.IsActive,
+                                      ImgPath = obj.ImgPath
+                                  }).ToList();
+            }
+            return theatreDetails;
+        }
+
+        [HttpGet]
+        [Route("API/BookTicket/GetTheatreDetailsByID/{TheatreID}")]
+        public TheaterDetails GetTheatreDetailsByID(int TheatreID)
+        {
+            var theatreDetail = new TheaterDetails();
+            if (!string.IsNullOrEmpty(TheatreID.ToString()))
+            {
+                theatreDetail = (from obj in entities.tblTheaterDetails
+                                  where obj.TheaterID == TheatreID && obj.IsActive == true
+                                  select new TheaterDetails
+                                  {
+                                      TheaterID = obj.TheaterID,
+                                      UserName_FK = obj.UserName_FK,
+                                      Name = obj.Name,
+                                      NoOfScreens = obj.NoOfScreens,
+                                      Pincode = obj.Pincode,
+                                      Location = obj.Location,
+                                      Landmark = obj.Landmark,
+                                      IsActive = obj.IsActive,
+                                      ImgPath = obj.ImgPath,
+                                  }).ToList().FirstOrDefault();
+                if (theatreDetail != null)
+                {
+                    theatreDetail.lstScreens = (from obj in entities.tblScreenDetails
+                                                where obj.TheaterID_FK == TheatreID
+                                                select new ScreenDetail
+                                                {
+                                                    ScreenID = obj.ScreenID,
+                                                    ScreenNo = obj.ScreenNo,
+                                                    NoOfSeatsSilver = obj.NoOfSeatsSilver,
+                                                    PriceSilver = obj.PriceSilver,
+                                                    NoOfSeatsGold = obj.NoOfSeatsGold,
+                                                    PriceGold = obj.PriceGold,
+                                                    NoOfSeatsPlatinum = obj.NoOfSeatsPlatinum,
+                                                    PricePlatinum = obj.PricePlatinum,
+                                                    NoOfSeatsRecliner = obj.NoOfSeatsRecliner,
+                                                    PriceRecliner = obj.PriceRecliner,
+                                                }).ToList();
+                }
+            }
+            
+            return theatreDetail;
+        }
+
+        [HttpPost]
+        [Route("API/BookTicket/AddTheatreDetails")]
+        public IHttpActionResult AddTheatreDetails(TheaterDetails obj)
+        {
+            var dbObj = new tblTheaterDetail
+            {
+                UserName_FK = obj.UserName_FK,
+                Name = obj.Name,
+                IsActive = true,
+                Landmark = obj.Landmark,
+                Location = obj.Location,
+                NoOfScreens = obj.NoOfScreens,
+                CreatedDate = DateTime.Now,
+                Pincode = obj.Pincode,
+                ImgPath = obj.ImgPath,
+            };
+            entities.tblTheaterDetails.Add(dbObj);
+
+            int success = entities.SaveChanges();
+            if (success > 0)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        [HttpPost]
+        [Route("API/BookTicket/AddNewScreen")]
+        public IHttpActionResult AddNewScreen(ScreenDetail obj)
+        {
+            int ScreenNo = 1;
+            var data = entities.tblScreenDetails.Where(a => a.TheaterID_FK == obj.TheaterID_FK).OrderByDescending(a=>a.ScreenNo).FirstOrDefault();
+            if( data != null)
+            {
+                ScreenNo = data.ScreenNo + 1;
+            }
+            var dbObj = new tblScreenDetail
+            {
+                TheaterID_FK = obj.TheaterID_FK,
+                ScreenNo = ScreenNo,
+                NoOfSeatsSilver = obj.NoOfSeatsSilver,
+                PriceSilver = obj.PriceSilver,
+                NoOfSeatsGold = obj.NoOfSeatsGold,
+                PriceGold = obj.PriceGold,
+                NoOfSeatsPlatinum = obj.NoOfSeatsPlatinum,
+                PricePlatinum = obj.PricePlatinum,
+                NoOfSeatsRecliner = obj.NoOfSeatsRecliner,
+                PriceRecliner = obj.PriceRecliner,
+                CreatedDate = DateTime.Now,
+            };
+            entities.tblScreenDetails.Add(dbObj);
+
+            int success = entities.SaveChanges();
+            if (success > 0)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("API/BookTicket/GetScreenDetailByID/{ScreenID}")]
+        public ScreenDetail GetScreenDetailByID(int ScreenID)
+        {
+            ScreenDetail screen = new ScreenDetail();
+            screen = (from obj in entities.tblScreenDetails
+                      join obj1 in entities.tblTheaterDetails on obj.TheaterID_FK equals obj1.TheaterID
+                      where obj.ScreenID == ScreenID
+                      select new ScreenDetail
+                      {
+                          ScreenID = obj.ScreenID,
+                          ScreenNo = obj.ScreenNo,
+                          NoOfSeatsSilver = obj.NoOfSeatsSilver,
+                          PriceSilver = obj.PriceSilver,
+                          NoOfSeatsGold = obj.NoOfSeatsGold,
+                          PriceGold = obj.PriceGold,
+                          NoOfSeatsPlatinum = obj.NoOfSeatsPlatinum,
+                          PricePlatinum = obj.PricePlatinum,
+                          NoOfSeatsRecliner = obj.NoOfSeatsRecliner,
+                          PriceRecliner = obj.PriceRecliner,
+                          TheatreName = obj1.Name
+                      }).ToList().FirstOrDefault();
+            if (screen != null)
+            {
+                screen.lstMovieDetails = new List<MovieDetails>();
+                screen.lstMovieDetails = GetMovieDetailsList();
+                screen.lstMovieScreenTimingConfig = new List<MovieScreenTimingConfig>();
+
+                if (screen.lstMovieDetails != null && screen.lstMovieDetails.Count() > 0)
+                {
+                    foreach(var item in screen.lstMovieDetails)
+                    {
+                        item.MovieScreenTimingConfigs = new List<MovieScreenTimingConfig>();
+                        item.MovieScreenTimingConfigs = GetMovieScreenTimingConfig(item.MovieID);
+                        screen.lstMovieScreenTimingConfig.AddRange(item.MovieScreenTimingConfigs);
+                    }
+                }
+                screen.lstMovieScreenTimingConfig = screen.lstMovieScreenTimingConfig.Where(a => a.ScreenID_FK == ScreenID).ToList();
+            }
+
+                
+            return screen;
         }
 
     }

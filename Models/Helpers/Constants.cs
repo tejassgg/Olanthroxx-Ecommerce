@@ -25,5 +25,8 @@ namespace WebAPI.Helpers
         public string ProductReviewImagePath = "~/Content/Images/ProductReviews";
         public string AddressType = "AddressType";
         public string AddressTypeBilling = "Billing";
+        public string TheatreImagePath = "~/Content/Images/Theatres";
+        public string MyTheatreURL = ConfigurationManager.AppSettings["WebUIURL"].ToString() + "BookTicket/TheatreDetails";
+        
     }
 }

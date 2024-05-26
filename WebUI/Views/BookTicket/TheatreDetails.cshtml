@@ -1,0 +1,87 @@
+﻿@model Models.DTO.TheaterDetails
+
+@{
+    ViewBag.Title = Model.Name + " - Details";
+    var i = 0;
+}
+
+<div class="all_Theatre">
+    <h2>Theatre Details</h2>
+    <hr />
+    <dl class="dl-horizontal">
+
+        @if (!string.IsNullOrEmpty(Model.ImgPath))
+        {
+            <center><img src="@Url.Content(Model.ImgPath)" width="200px" height="200px" style="border-radius:10px"></center>
+        }
+        else
+        {
+            <center><img src="~/Content/Images/Product.png" width="200px" height="200px"></center>
+        }
+        <dd style="display:none;">
+            @Html.HiddenFor(model => model.TheaterID)
+        </dd>
+
+        <dt>
+            Name
+        </dt>
+        <dd>
+            @Model.Name
+        </dd>
+
+        <dt>
+            Address
+        </dt>
+        <dd>
+            @Model.Landmark, @Model.Location
+        </dd>
+
+        <dt>
+            No Of Screens
+        </dt>
+        <dd  id="NoOfScreens">
+            @Model.NoOfScreens
+        </dd>
+
+        <dt>
+            PinCode
+        </dt>
+        <dd>
+            @Model.Pincode
+        </dd>
+    </dl>
+
+    <h2>Screen Details</h2>
+    <div class="all_Theatre">
+        <div class="all_theatreDetails">
+            @foreach (var item in Model.lstScreens)
+            {
+                i++;
+                <div class="addTheatre-card" id='img_@item.ScreenID'>
+                    @Html.HiddenFor(modelItem => item.ScreenID)
+                    <div class="heart_Icon">
+                        <i class='bx bx-edit bx-md'></i>
+                    </div>
+                    <center><a href="../ScreenDetails/@item.ScreenID.ToString()"><img src="~/Content/Images/Product.png"></a></center>
+                    <hr />
+                    <div class="prod_Desc">
+                        <strong>@Html.ActionLink("Screen " + item.ScreenNo.ToString(), "ScreenDetails", new { id = item.ScreenID })</strong>
+                    </div>
+                </div>
+            }
+            <div class="addTheatre-card">
+                <center><a onclick="AddNewScreen(@Model.TheaterID)"><img style="width:150px; aspect-ratio:1/1;" src="~/Content/Images/AddTheatre.png"></a></center>
+                <hr />
+                <div class="prod_Desc">
+                    <strong>Add New Screen</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<p>
+    @Html.ActionLink("Back", "Index")
+</p>

@@ -89,24 +89,27 @@ namespace WebUI.Controllers
             responseTask.Wait();
             var result = responseTask.Result;
 
-            var readResult = result.Content.ReadAsStringAsync();
-            readResult.Wait();
-            var stringData = readResult.Result;
-
-            var user = JsonConvert.DeserializeObject<UserLoginObject>(stringData);
-
-            if(!string.IsNullOrEmpty(user.Message))
+            if (result.IsSuccessStatusCode)
             {
-                ViewBag.Message = user.Message;
-                if (result.IsSuccessStatusCode)
+                var readResult = result.Content.ReadAsStringAsync();
+                readResult.Wait();
+                var stringData = readResult.Result;
+
+                var user = JsonConvert.DeserializeObject<UserLoginObject>(stringData);
+
+                if (!string.IsNullOrEmpty(user.Message))
                 {
-                    return View("CommonValidationPrinter");
+                    ViewBag.Message = user.Message;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        return View("CommonValidationPrinter");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", user.Message);
+                        return View();
+                    }
                 }
-                else
-                {
-                    ModelState.AddModelError("", user.Message);
-                    return View();
-                }   
             }
             ModelState.AddModelError("", "Error in Registrating User..!!");
             return View();

@@ -1,0 +1,83 @@
+﻿@model Models.DTO.ScreenDetail
+
+@{
+    ViewBag.Title ="Screen Details";
+    var i = 0;
+}
+
+<div class="all_Theatre">
+    <h2>@Model.TheatreName - Screen @Model.ScreenNo </h2>
+    <hr />
+    <dl class="dl-horizontal">
+        <dd style="display:none;">
+            @Html.HiddenFor(model => model.ScreenID)
+        </dd>
+
+        <dt>
+            Seats for Recliner - 
+        </dt>
+        <dd>
+            @Model.NoOfSeatsRecliner | at Rs. @Model.PriceRecliner
+        </dd>
+
+        <dt>
+            Seats for Platinum -
+        </dt>
+        <dd>
+            @Model.NoOfSeatsPlatinum | at Rs. @Model.PricePlatinum
+        </dd>
+
+        <dt>
+            Seats for Gold -
+        </dt>
+        <dd>
+            @Model.NoOfSeatsGold | at Rs. @Model.PriceGold
+        </dd>
+
+        <dt>
+            Seats for Silver -
+        </dt>
+        <dd>
+            @Model.NoOfSeatsRecliner | at Rs. @Model.PriceSilver
+        </dd>
+    </dl>
+
+    <h2>Show Timings </h2>
+    <div class="left-most-container">
+        <a class="login_Submit addProduct_Btn" href="@Url.Action("/AddMovieToScreen/" + Model.ScreenID)"><i class="fas fa-plus"></i> &nbsp; Add Movie to Screen</a>
+    </div>
+    <div class="all_Theatre">
+        <table class="screen_List_Table">
+            <thead>
+                <tr>
+                    <th>Sr No.</th>
+                    <th>Movie Name</th>
+                    <th>Duration</th>
+                    <th>Movie Timing</th>
+                    <th>Movie Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.lstMovieScreenTimingConfig.OrderBy(a=>a.TimingID))
+                {
+                    i++;
+                    <tr>
+                        <td><strong>@i</strong></td>
+                        <td>@Model.lstMovieDetails.Where(a => a.MovieID == item.MovieID_FK).FirstOrDefault().MovieName</td>
+                        <td>@Model.lstMovieDetails.Where(a => a.MovieID == item.MovieID_FK).FirstOrDefault().Duration mins</td>
+                        <td>@item.TimingFrom</td>
+                        <td>@item.MovieDate.ToString().Substring(0,10)</td>
+                        <td><i class="fas fa-pen"></i></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+<p>
+    @Html.ActionLink("Back", "Index")
+</p>

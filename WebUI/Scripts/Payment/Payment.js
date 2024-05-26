@@ -518,3 +518,18 @@ function getImagePreview(event) {
 
     $("#imgPreview").removeClass("hidden").empty().append("<img class='product_Img' src='" + img + "' />");
 }
+
+function AddNewScreen(id) {
+    if (parseInt($(".addTheatre-card").length) - 1 >= parseInt($("#NoOfScreens")[0].innerText)) {
+        alert("No of Screens Cannot Exceed the Theatre's Screen Limit.");
+        return 0;
+    }
+    $.ajax({
+        type: 'GET',
+        url: ("../AddNewScreen/" + id),
+        contentType: "application/json",
+        success: function (result) {
+            $("body").html(result);
+        }
+    });
+}

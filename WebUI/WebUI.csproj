@@ -149,8 +149,16 @@
     <Content Include="Content\CSS\Common.css" />
     <Content Include="Content\CSS\Product.css" />
     <Content Include="Content\flickity.css" />
+    <Content Include="Content\Images\AddTheatre.png" />
     <Content Include="Content\Images\Product.png" />
     <Content Include="Content\Images\Products\379002798Walmart-Aalu.jpg" />
+    <Content Include="Content\Images\Products\sgg1400-OrganicLettuce-8681.jpg" />
+    <Content Include="Content\Images\Products\walmart-OrganicTomato-7265.jpg" />
+    <Content Include="Content\Images\Products\walmart-OrganicTomato-7274.png" />
+    <Content Include="Content\Images\Products\walmart-OrganicTomato-7802.jpeg" />
+    <Content Include="Content\Images\Theatres\tejassgg-CarnivalCinemas-5698.png" />
+    <Content Include="Content\Images\Theatres\tejassgg-HumaCinemas-5968.jpg" />
+    <Content Include="Content\Images\Theatres\tejassgg-MayaCinemas-2784.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -211,6 +219,13 @@
     <Content Include="Views\BookTicket\BookTicket.cshtml" />
     <Content Include="Views\BookTicket\SelectSeats.cshtml" />
     <Content Include="Views\Products\UserIndex.cshtml" />
+    <Content Include="Views\BookTicket\TheatreDetails.cshtml" />
+    <Content Include="Views\BookTicket\UsersTheatreDetails.cshtml" />
+    <Content Include="Views\BookTicket\AddMovieToTheatre.cshtml" />
+    <Content Include="Views\BookTicket\AddTheatreDetails.cshtml" />
+    <Content Include="Views\BookTicket\CommonValidationPrinter.cshtml" />
+    <Content Include="Views\BookTicket\AddNewScreen.cshtml" />
+    <Content Include="Views\BookTicket\ScreenDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

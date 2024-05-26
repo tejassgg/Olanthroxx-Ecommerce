@@ -1,0 +1,65 @@
+﻿@model Models.DTO.ScreenDetail
+
+@{
+    ViewBag.Title = "Add New Screen";
+}
+
+@using (Html.BeginForm("AddNewScreen", "BookTicket", FormMethod.Post, new {@class = "addProduct_Form" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="addProduct_Form_Div">
+    <h2>Add Screen</h2>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger", @id = "txtValidationSummary" })
+    @Html.HiddenFor(model=>model.TheaterID_FK)
+    <div class="row_Input">
+        <div class="form_Input">
+            @Html.EditorFor(model => model.PriceRecliner, new { htmlAttributes = new { @class = "form_Control", @placeholder = "Price for Recliner", @required = "required" } })
+        </div>
+
+        <div class="form_Input">
+            @Html.EditorFor(model => model.NoOfSeatsRecliner, new { htmlAttributes = new { @class = "form_Control", @placeholder = "No Of Seats for Recliner", @required = "required", @type = "number" } })
+        </div>
+    </div>
+
+    <div class="row_Input">
+        <div class="form_Input">
+            @Html.EditorFor(model => model.PricePlatinum, new { htmlAttributes = new { @class = "form_Control", @placeholder = "Price for Platinum", @required = "required" } })
+        </div>
+
+        <div class="form_Input">
+            @Html.EditorFor(model => model.NoOfSeatsPlatinum, new { htmlAttributes = new { @class = "form_Control", @placeholder = "No Of Seats for Platinum", @required = "required", @type = "number" } })
+        </div>
+    </div>
+
+    <div class="row_Input">
+        <div class="form_Input">
+            @Html.EditorFor(model => model.PriceGold, new { htmlAttributes = new { @class = "form_Control", @placeholder = "Price for Gold", @required = "required" } })
+        </div>
+
+        <div class="form_Input">
+            @Html.EditorFor(model => model.NoOfSeatsGold, new { htmlAttributes = new { @class = "form_Control", @placeholder = "No Of Seats for Gold", @required = "required", @type = "number" } })
+        </div>
+    </div>
+
+    <div class="row_Input">
+        <div class="form_Input">
+            @Html.EditorFor(model => model.PriceSilver, new { htmlAttributes = new { @class = "form_Control", @placeholder = "Price for Silver", @required = "required" } })
+        </div>
+
+        <div class="form_Input">
+            @Html.EditorFor(model => model.NoOfSeatsSilver, new { htmlAttributes = new { @class = "form_Control", @placeholder = "No Of Seats for Silver", @required = "required", @type = "number" } })
+        </div>
+    </div>
+
+    <button type="submit" class="login_Submit">Add</button>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

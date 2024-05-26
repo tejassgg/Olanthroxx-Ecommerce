@@ -60,6 +60,9 @@ namespace Models.DTO
         public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public bool IsActive { get; set; }
+        public List<MovieDetails> lstMovieDetails { get; set; }
+        public List<MovieScreenTimingConfig> lstMovieScreenTimingConfig { get; set; }
+        public string TheatreName { get; set; }
     }
 
     public class TheaterDetails
@@ -74,6 +77,8 @@ namespace Models.DTO
         public bool IsActive { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public string ImgPath { get; set; }
+        public List<ScreenDetail> lstScreens { get; set; }
     }
 
     public class MovieBooking

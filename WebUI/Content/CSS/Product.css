@@ -634,3 +634,85 @@ td>a>i{
 .form_Input input[type="file"] {
     outline: none;
 }
+
+.all_Theatre {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.all_theatreDetails {
+    margin: 50px;
+    width: 80%;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    gap: 20px;
+}
+
+.addTheatre-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #eeeded;
+    padding: 8px;
+    border-radius: 12px;
+    background-color: #eeeded;
+    box-shadow: 5px 20px 30px rgba(0,0,0,0.18);
+    transition: 0.5s cubic-bezier(0.6, 0.03, 0.28, 0.98);
+}
+
+.addTheatre-card:hover {
+    transform: scale(1.05);
+}
+
+.addTheatre-card img {
+    height: 150px;
+    width: 250px;
+    mix-blend-mode: multiply;
+    border-radius: 8px;
+}
+
+.addTheatre-card hr {
+    margin-top: 12px;
+    margin-bottom: 10px;
+}
+
+
+.screen_List_Table {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #eeeded;
+    border-radius: 10px;
+}
+.screen_List_Table thead, .screen_List_Table tbody {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.screen_List_Table tr {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto 20% auto auto auto auto;
+}
+
+.screen_List_Table td, .screen_List_Table th {
+    width: max-content;
+    font-size: 18px;
+    padding: 15px;
+    text-align: center;
+}
+
+.left-most-container{
+    width: 80%;
+    float: left;
+}
+

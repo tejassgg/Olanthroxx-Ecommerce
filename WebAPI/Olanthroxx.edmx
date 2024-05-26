@@ -290,6 +290,7 @@
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="ImgPath" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="tblUser">
           <Key>
@@ -949,6 +950,7 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="tblScreenDetails" Relationship="OlanthroxxModel.FK_tblScreenDetails_tblTheaterDetails" FromRole="tblTheaterDetail" ToRole="tblScreenDetail" />
+          <Property Name="ImgPath" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tblMovieDetail">
           <Key>
@@ -1362,6 +1364,7 @@
           <EntitySetMapping Name="tblTheaterDetails">
             <EntityTypeMapping TypeName="OlanthroxxModel.tblTheaterDetail">
               <MappingFragment StoreEntitySet="tblTheaterDetails">
+                <ScalarProperty Name="ImgPath" ColumnName="ImgPath" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />

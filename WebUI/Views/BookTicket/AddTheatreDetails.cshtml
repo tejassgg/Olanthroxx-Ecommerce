@@ -1,0 +1,59 @@
+﻿@model Models.DTO.TheaterDetails
+
+@{
+    ViewBag.Title = "Add Theatre Details";
+}
+
+@using (Html.BeginForm("AddTheatreDetails", "BookTicket", FormMethod.Post, new {enctype = "multipart/form-data", @class = "addProduct_Form" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="addProduct_Form_Div">
+    <h2>Add Theatre</h2>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger", @id = "txtValidationSummary" })
+
+    <div class="row_Input">
+        <div class="form_Input">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form_Control", @placeholder = "Name", @required = "required" } })
+        </div>
+
+        <div class="form_Input">
+            @Html.EditorFor(model => model.NoOfScreens, new { htmlAttributes = new { @class = "form_Control", @placeholder = "NoOfScreens", @required = "required", @type = "number" } })
+        </div>
+    </div>
+
+    <div class="row_Input">
+        <div class="form_Input full_Address">
+            @Html.TextAreaFor(model => model.Location, new { @class = "form_Control", @rows = "4", @cols = "100", @placeholder = "Location", @required = "required" })
+        </div>
+    </div>
+
+    <div class="row_Input">
+        <div class="form_Input">
+            @Html.EditorFor(model => model.Landmark, new { htmlAttributes = new { @class = "form_Control", @placeholder = "Landmark", @required = "required" } })
+        </div>
+
+        <div class="form_Input">
+            @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form_Control", @placeholder = "Pincode", @required = "required", @type = "number" } })
+        </div>
+    </div>
+
+    <div class="row_Input">
+        <input type="file" name="imgFile" class="login_Submit" onchange="getImagePreview(event)" />
+    </div>
+
+    <div class="row_Input">
+        <div class="form_Input hidden" id="imgPreview"></div>
+    </div>
+
+    <button type="submit" class="login_Submit">Add Theatre</button>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

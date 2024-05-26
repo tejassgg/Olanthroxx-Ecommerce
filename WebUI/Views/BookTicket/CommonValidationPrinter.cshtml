@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "CommonValidationPrinter";
+}
+
+<center>
+    <h2>@ViewBag.Message</h2>
+
+    <button class="btn btn-success" onclick="buttonClick('@ViewBag.Link')"> @ViewBag.ButtonName </button>
+</center>
+
+
+<script>
+    function buttonClick(link) {
+        window.location.href = (link)
+    }
+</script>
+

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Principal;
@@ -168,6 +169,154 @@ namespace WebUI.Controllers
 
             return hdnAlreadySelectedSeats;
         }
+
+        public ActionResult TheatreDetails(string id = null)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                TheaterDetails theaterDetail = new TheaterDetails();
+
+                var responseTask = hc.GetAsync("API/BookTicket/GetTheatreDetailsByID/" + id);
+                responseTask.Wait();
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    var readResult = result.Content.ReadAsAsync<TheaterDetails>();
+                    readResult.Wait();
+                    theaterDetail = readResult.Result;
+                }
+
+                return View("TheatreDetails", theaterDetail);
+            }
+            else
+            {
+                List<TheaterDetails> listTheatreDetail = new List<TheaterDetails>();
+
+                var responseTask = hc.GetAsync("API/BookTicket/GetUsersTheatreDetails/" + User.Identity.Name);
+                responseTask.Wait();
+                var result = responseTask.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    var readResult = result.Content.ReadAsAsync<List<TheaterDetails>>();
+                    readResult.Wait();
+                    listTheatreDetail = readResult.Result;
+                }
+
+                return View("UsersTheatreDetails", listTheatreDetail);
+            }
+        }
+
+        public ActionResult AddTheatreDetails()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddTheatreDetails(TheaterDetails obj, HttpPostedFileBase imgFile)
+        {
+            obj.UserName_FK = User.Identity.Name;
+
+            string path = "";
+            Random random = new Random();
+            int rnd = random.Next(1000, 9999);
+            if (imgFile != null && imgFile.ContentLength > 0)
+            {
+                string ext = Path.GetExtension(imgFile.FileName);
+                {
+                    if (ext.ToLower().Equals(".jpg") || ext.ToLower().Equals(".jpeg") || ext.ToLower().Equals(".png"))
+                    {
+                        try
+                        {
+                            string tempFileName = User.Identity.Name + "-" + obj.Name.Replace(" ", "") + "-" + rnd + ext;
+                            path = Path.Combine(Server.MapPath(constants.TheatreImagePath), tempFileName);
+                            imgFile.SaveAs(path);
+                            path = constants.TheatreImagePath + "/" + tempFileName;
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError("", "Some Error Occured While Saving the Image.( " + ex.Message + " )");
+                            return View(obj);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Only .JPG, .JPEG, .PNG format is allowed.");
+                        return View(obj);
+                    }
+                }
+            }
+
+            obj.ImgPath = path;
+
+            var responseTask = hc.PostAsJsonAsync<TheaterDetails>("API/BookTicket/AddTheatreDetails", obj);
+            responseTask.Wait();
+            var result = responseTask.Result;
+
+            if (result.IsSuccessStatusCode)
+            {
+                ViewBag.Message = "Theatre Added Succesfully..!";
+                ViewBag.Link = constants.MyTheatreURL;
+                ViewBag.ButtonName = "Close";
+                return View("CommonValidationPrinter");
+            }
+
+            ViewBag.Message = "Theatre Additon Failed.!";
+            return View();
+        }
+
+        public ActionResult ScreenDetails(int id)
+        {
+            ScreenDetail screen = new ScreenDetail();
+
+            var responseTask = hc.GetAsync("API/BookTicket/GetScreenDetailByID/" + id.ToString());
+            responseTask.Wait();
+            var result = responseTask.Result;
+
+            if (result.IsSuccessStatusCode)
+            {
+                var readResult = result.Content.ReadAsAsync<ScreenDetail>();
+                readResult.Wait();
+                screen = readResult.Result;
+            }
+
+            return View("ScreenDetails", screen);
+        }
+
+        public ActionResult AddMovieToScreen(int id)
+        {
+            return View();
+        }
+
+        public ActionResult AddNewScreen(int id)
+        {
+            var screenDetail = new ScreenDetail();
+            screenDetail.TheaterID_FK = id;
+            return View(screenDetail);
+        }
+
+        [HttpPost]
+        public ActionResult AddNewScreen(ScreenDetail obj)
+        {
+            var responseTask = hc.PostAsJsonAsync<ScreenDetail>("API/BookTicket/AddNewScreen", obj);
+            responseTask.Wait();
+            var result = responseTask.Result;
+
+            if (result.IsSuccessStatusCode)
+            {
+                ViewBag.Message = "Screen Added Succesfully..!";
+                ViewBag.Link = constants.MyTheatreURL + "/" + obj.TheaterID_FK;
+                ViewBag.ButtonName = "Close";
+                return View("CommonValidationPrinter");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Screen Additon Failed. Due to " + result.ReasonPhrase);
+                return View();
+            }
+        }
+
 
     }
 }

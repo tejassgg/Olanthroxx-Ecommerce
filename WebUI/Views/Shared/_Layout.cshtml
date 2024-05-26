@@ -52,6 +52,12 @@
                         }
                     }
 
+                    if (!User.IsInRole("Buyer"))
+                    {
+                        <li><a href="~/BookTicket/TheatreDetails"><i class="fa fa-film"></i>My Theatre</a></li>
+                    }
+
+                    
                     <li><a href="~/BookTicket/Index"><i class="fa fa-film"></i>Book Movie Tickets</a></li>
 
                     if (User.IsInRole("Buyer") || User.IsInRole("BotLogin"))

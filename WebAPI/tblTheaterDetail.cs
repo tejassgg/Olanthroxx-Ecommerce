@@ -47,6 +47,8 @@ public partial class tblTheaterDetail
 
     public Nullable<System.DateTime> ModifiedDate { get; set; }
 
+    public string ImgPath { get; set; }
+
 
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
