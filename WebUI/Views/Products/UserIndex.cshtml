@@ -110,7 +110,7 @@
                         <h6 class="priceData" data-attr-price="@item.Price"><strong>Rs. @item.Price</strong></h6><h6 style="color: red; margin: -5px 0px;">(Out Of Stock)</h6>
                     </div>
                     <div class="card_Footer" style="pointer-events:none">
-                        <button class="btn-warning add_Cart add_Cart_@item.ProductID" href="#" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">Add To Cart</button>
+                        <button class="btn-warning add_Cart add_Cart_@item.ProductID" href="#" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)" style="background-color:grey">Add To Cart</button>
 
                         <div class="cart_Count_@item.ProductID displayNone">
                             <button class="cart_Count" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">+</button>

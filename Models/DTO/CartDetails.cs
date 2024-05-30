@@ -16,7 +16,9 @@ namespace Models.DTO
         public DateTime OrderDate { get; set; }
         [DisplayName("Last Updated Date")]
         public DateTime? ModifiedDate { get; set; }
+        public int TotalQuantity { get; set; }
         public List<OrderDetails> lstOrderDetails { get; set; }
+        public string OrderStatus { get; set; }
     }
 
     public class TempCartDetails

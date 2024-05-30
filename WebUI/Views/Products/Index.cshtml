@@ -1,95 +1,78 @@
 ﻿@model IEnumerable<Models.DTO.ProductDetails>
 
 @{
-    ViewBag.Title = ViewBag.userType + " - Dashboard";
-    var i = 0;
+    ViewBag.Title = ViewBag.userType + " - Products";
 }
 
-<h2 class="page_Header">Product List</h2>
+<h2 class="page_Header">Products(@Model.ToList().Count())</h2>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+    </dl>
+</div>
 
-<a class="login_Submit addProduct_Btn" href="@Url.Action("/AddProduct")"><i class="fas fa-plus"></i> &nbsp; New Product</a>
+<div class="product_list_Container">
+    <div class="addnewProduct-Container">
+        <a class="login_Submit addProduct_Btn" href="@Url.Action("/AddProduct")"><i class="fas fa-plus"></i> &nbsp; Add New</a>
+    </div>
 
-<table class="product_List_Table">
-    <thead>
-        <tr>
-            <th style="display: none;">
-                ProductID
-            </th>
-            <th>
-                Sr.
-            </th>
-            <th>
-                Name
-            </th>
-            <th class="mobile_Hidden">
-                Title
-            </th>
-            <th class="mobile_Hidden">
-                Desc
-            </th>
-            <th class="mobile_Hidden">
-                Category
-            </th>
-            <th style="display:none;">
-                Category ID
-            </th>
-            <th>
-                Quantity
-            </th>
-            <th class="mobile_Hidden">
-                Price
-            </th>
-            <th>
-                Action
-            </th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @foreach (var item in Model)
-        {
-            i++;
+    <table class="product_List_Table">
+        <thead>
             <tr>
-                <td style="display:none;">
-                    @Html.HiddenFor(modelItem => item.ProductID)
-                </td>
-                <td>
-                    @i
-                </td>
-                <td>
-                    @item.PName
-                </td>
-                @if (item.PTitle.Length > 15)
-                {
-                    <td class="mobile_Hidden">@item.PTitle.Substring(0, 15) ..</td>
-                }
-                else
-                {
-                    <td class="mobile_Hidden">@item.PTitle</td>
-                }
-
-                <td class="mobile_Hidden">
-                    @item.PDescription.Substring(0, 40) ..
-                </td>
-                <td class="mobile_Hidden">
-                    @Html.DisplayFor(modelItem => item.Category)
-                </td>
-                <td style="display:none;">
-                    @Html.DisplayFor(modelItem => item.CategoryID_FK)
-                </td>
-                <td class="mobile_Hidden">
-                    @Html.DisplayFor(modelItem => item.Quantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    <a href="@Url.Action("EditProduct", new { id = item.ProductID })"><i class="fas fa-pen"></i></a> &nbsp; |
-                    <a href="@Url.Action("ViewProductDetails", new { id = item.ProductID })"><i class="fas fa-info"></i></a> &nbsp; |
-                    <a href="@Url.Action("DeleteProduct", new { id = item.ProductID })"><i class="fas fa-trash"></i></a>
-                </td>
+                <th style="display: none;">
+                    ProductID
+                </th>
+                <th style="display:none;">
+                    Category ID
+                </th>
+                <th>
+                    Name
+                </th>
+                <th class="mobile_Hidden">
+                    Category
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th class="mobile_Hidden">
+                    Price
+                </th>
+                <th>
+                    Action
+                </th>
             </tr>
-        }
-    </tbody>
+        </thead>
 
-</table>
+        <tbody>
+            @foreach (var item in Model.OrderBy(a=>a.Quantity))
+            {
+                <tr>
+                    <td style="display:none;">
+                        @Html.HiddenFor(modelItem => item.ProductID)
+                    </td>
+                    <td style="display:none;">
+                        @Html.DisplayFor(modelItem => item.CategoryID_FK)
+                    </td>
+                    <td>
+                        @item.PName
+                    </td>
+                    <td class="mobile_Hidden">
+                        @Html.DisplayFor(modelItem => item.Category)
+                    </td>
+                    <td class="mobile_Hidden">
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        &#8377; @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("EditProduct", new { id = item.ProductID })"><i class="fas fa-pen"></i></a> &nbsp; |
+                        <a href="@Url.Action("ViewProductDetails", new { id = item.ProductID })"><i class="fas fa-info"></i></a> &nbsp; |
+                        <a href="@Url.Action("DeleteProduct", new { id = item.ProductID })"><i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>

@@ -18,6 +18,7 @@ namespace Models.DTO
         public System.DateTime OrderDate { get; set; }
         [DisplayName("Product Name")]
         public string ProductName { get; set; }
+        [DisplayName("Order Status")]
         public string OrderStatus { get; set; }
         [DisplayName("Last Updated Date")]
         public System.DateTime? ModifiedDate { get; set; }

@@ -266,7 +266,7 @@ label {
     padding: 15px;
     display: grid;
     grid-column-gap: 15px;
-    grid-template-columns: 35% 65%;
+    grid-template-columns: 40% 60%;
 }
 
 .left-container {

@@ -244,16 +244,16 @@ namespace WebUI.Controllers
         }
 
         [Authorize(Roles = "BotLogin, Seller")]
-        public ActionResult EditSellerOrderDetails(string orderID, string productID)
+        public ActionResult SellerOrderDetails(string orderID)
         {
-            OrderDetails orderDetails = new OrderDetails();
-            var responseTask = hc.GetAsync("API/GetSellerOrderDetailsByOrderID/" + orderID + "/" + productID);
+            CartDetails orderDetails = new CartDetails();
+            var responseTask = hc.GetAsync("API/GetOrderDetailsByOrderID/" + orderID);
             responseTask.Wait();
             HttpResponseMessage result = responseTask.Result;
 
             if (result.IsSuccessStatusCode)
             {
-                var readResult = result.Content.ReadAsAsync<OrderDetails>();
+                var readResult = result.Content.ReadAsAsync<CartDetails>();
                 readResult.Wait();
                 orderDetails = readResult.Result;
             }
@@ -265,19 +265,26 @@ namespace WebUI.Controllers
 
         [Authorize(Roles = "BotLogin, Seller")]
         [HttpPost]
-        public ActionResult EditSellerOrderDetails(OrderDetails orderDetails)
+        public ActionResult SellerOrderDetails(CartDetails cartDetails)
         {
-            var responseTask = hc.PostAsJsonAsync<OrderDetails>("API/UpdateSellerOrderDetails", orderDetails);
+            var responseTask = hc.PostAsJsonAsync<CartDetails>("API/UpdateSellerOrderDetails", cartDetails);
             responseTask.Wait();
             var result = responseTask.Result;
 
             if (result.IsSuccessStatusCode)
             {
                 ViewBag.Message = "Order Updated Succesfully..!";
-
-                return RedirectToAction("SellerProfile", "Account");
+                ViewBag.Link = constants.SellerProfileURL;
+                ViewBag.ButtonName = "Close";
+                return View("CommonValidationPrinter");
             }
-            return RedirectToAction("Home");
+            else
+            {
+                ViewBag.Message = "Some Error Occured While Updating.!";
+                ViewBag.Link = constants.SellerProfileURL;
+                ViewBag.ButtonName = "Close";
+                return View("CommonValidationPrinter");
+            }
         }
 
         [Authorize(Roles = "BotLogin, Buyer")]

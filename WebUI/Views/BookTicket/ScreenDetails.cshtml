@@ -1,12 +1,13 @@
 ﻿@model Models.DTO.ScreenDetail
 
 @{
-    ViewBag.Title ="Screen Details";
+    ViewBag.Title = "Screen Details";
     var i = 0;
 }
 
+
+<h2 class="page_Header">@Model.TheatreName - Screen @Model.ScreenNo </h2>
 <div class="all_Theatre">
-    <h2>@Model.TheatreName - Screen @Model.ScreenNo </h2>
     <hr />
     <dl class="dl-horizontal">
         <dd style="display:none;">
@@ -14,7 +15,7 @@
         </dd>
 
         <dt>
-            Seats for Recliner - 
+            Seats for Recliner -
         </dt>
         <dd>
             @Model.NoOfSeatsRecliner | at Rs. @Model.PriceRecliner
@@ -42,15 +43,14 @@
         </dd>
     </dl>
 
-    <h2>Show Timings </h2>
+    <h2 class="page_Header">Show Timings </h2>
     <div class="left-most-container">
-        <a class="login_Submit addProduct_Btn" href="@Url.Action("/AddMovieToScreen/" + Model.ScreenID)"><i class="fas fa-plus"></i> &nbsp; Add Movie to Screen</a>
+        <a class="login_Submit addProduct_Btn" href="@Url.Action("/AddMovieToScreen/" + Model.ScreenID)"><i class="fas fa-plus"></i> &nbsp; Assign Movie</a>
     </div>
     <div class="all_Theatre">
         <table class="screen_List_Table">
             <thead>
                 <tr>
-                    <th>Sr No.</th>
                     <th>Movie Name</th>
                     <th>Duration</th>
                     <th>Movie Timing</th>
@@ -59,15 +59,14 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.lstMovieScreenTimingConfig.OrderBy(a=>a.TimingID))
+                @foreach (var item in Model.lstMovieScreenTimingConfig.OrderBy(a => a.TimingID))
                 {
                     i++;
                     <tr>
-                        <td><strong>@i</strong></td>
                         <td>@Model.lstMovieDetails.Where(a => a.MovieID == item.MovieID_FK).FirstOrDefault().MovieName</td>
                         <td>@Model.lstMovieDetails.Where(a => a.MovieID == item.MovieID_FK).FirstOrDefault().Duration mins</td>
                         <td>@item.TimingFrom</td>
-                        <td>@item.MovieDate.ToString().Substring(0,10)</td>
+                        <td>@item.MovieDate.ToString().Substring(0, 10)</td>
                         <td><i class="fas fa-pen"></i></td>
                     </tr>
                 }

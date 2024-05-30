@@ -5,8 +5,8 @@
     var i = 0;
 }
 
+<h2 class="page_Header">Theatre Details</h2>
 <div class="all_Theatre">
-    <h2>Theatre Details</h2>
     <hr />
     <dl class="dl-horizontal">
 
@@ -39,7 +39,7 @@
         <dt>
             No Of Screens
         </dt>
-        <dd  id="NoOfScreens">
+        <dd id="NoOfScreens">
             @Model.NoOfScreens
         </dd>
 
@@ -51,7 +51,7 @@
         </dd>
     </dl>
 
-    <h2>Screen Details</h2>
+    <h2 class="page_Header">Screen Details</h2>
     <div class="all_Theatre">
         <div class="all_theatreDetails">
             @foreach (var item in Model.lstScreens)

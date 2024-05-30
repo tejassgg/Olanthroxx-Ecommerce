@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System.Globalization;
 
 namespace WebAPI.Helpers
 {
@@ -27,6 +28,8 @@ namespace WebAPI.Helpers
         public string AddressTypeBilling = "Billing";
         public string TheatreImagePath = "~/Content/Images/Theatres";
         public string MyTheatreURL = ConfigurationManager.AppSettings["WebUIURL"].ToString() + "BookTicket/TheatreDetails";
-        
+        public string SellerProfileURL = ConfigurationManager.AppSettings["WebUIURL"].ToString() + "Account/SellerProfile";
+
+
     }
 }

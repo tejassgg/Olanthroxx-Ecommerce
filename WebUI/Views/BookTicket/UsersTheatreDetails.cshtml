@@ -5,6 +5,7 @@
     var i = 0;
 }
 
+<h2 class="page_Header">My Theatres</h2>
 <div class="all_Theatre">
     <div class="all_theatreDetails">
         @foreach (var item in Model)
@@ -27,11 +28,11 @@
                 <div class="prod_Desc">
                     <strong>@Html.ActionLink(item.Name, "TheatreDetails", new { id = item.TheaterID.ToString() })</strong> | @Html.DisplayFor(modelItem => item.Location)
                 </div>
-                @Html.DisplayFor(modelItem => item.Landmark )
+                @Html.DisplayFor(modelItem => item.Landmark)
             </div>
         }
         <div class="addTheatre-card">
-            <center ><a href="../BookTicket/AddTheatreDetails"><img style="width:150px; aspect-ratio:1/1;" src="~/Content/Images/AddTheatre.png"></a></center>
+            <center><a href="../BookTicket/AddTheatreDetails"><img style="width:150px; aspect-ratio:1/1;" src="~/Content/Images/AddTheatre.png"></a></center>
             <hr />
             <div class="prod_Desc">
                 <strong>Add New Theatre</strong>

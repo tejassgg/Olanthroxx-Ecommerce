@@ -1,9 +1,9 @@
 ﻿@model Models.DTO.LstOrderDetails
 @{
-    ViewBag.Title = "User's Profile";
+    ViewBag.Title = "Orders & Returns";
 }
 
-<h2> User Profile</h2>
+<h2 class="page_Header">@ViewBag.Title</h2>
 
 <div>
     <hr />
@@ -77,7 +77,7 @@
         </div>
     </div>
     <div class="right-container">
-        <h2> Your Orders</h2>
+        <h2> My Orders</h2>
         <hr />
         @if (Model.CartDetails != null && Model.CartDetails.Count > 0)
         {

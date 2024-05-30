@@ -304,11 +304,18 @@ namespace WebAPI.Controllers
             CartDetails cartDetail = new CartDetails();
             cartDetail.OrderID = orderid;
 
+            GetOrderDetails(cartDetail);
+
+            return Ok(cartDetail);
+        }
+
+        public CartDetails GetOrderDetails(CartDetails cartDetail)
+        {
             cartDetail.lstOrderDetails = new List<OrderDetails>();
             cartDetail.lstOrderDetails = (from obj in entities.tblOrderDetails
                                           join obj1 in entities.tblProducts on obj.ProductID equals obj1.ProductID
                                           join obj2 in entities.tblMasCommonTypes on obj.OrderStatus equals obj2.Code
-                                          where obj.OrderID == orderid && obj2.MasterType == "OrderStatus"
+                                          where obj.OrderID == cartDetail.OrderID && obj2.MasterType == "OrderStatus"
                                           select new OrderDetails
                                           {
                                               OrderID = obj.OrderID,
@@ -323,25 +330,24 @@ namespace WebAPI.Controllers
                                               ImgPath = obj1.ImgPath
                                           }).ToList();
 
-            if(cartDetail.lstOrderDetails != null && cartDetail.lstOrderDetails.Count > 0)
+            if (cartDetail.lstOrderDetails != null && cartDetail.lstOrderDetails.Count > 0)
             {
                 foreach (var item in cartDetail.lstOrderDetails)
                 {
-                    if(entities.tblProductReviews.Where(a=>a.ProductID_FK == item.ProductID && a.OrderID_FK == item.OrderID).FirstOrDefault() != null)
+                    if (entities.tblProductReviews.Where(a => a.ProductID_FK == item.ProductID && a.OrderID_FK == item.OrderID).FirstOrDefault() != null)
                     {
                         item.IsReviewed = true;
                     }
-
-                    if (item.ModifiedDate != null)
-                        cartDetail.ModifiedDate = item.ModifiedDate;
-                    cartDetail.OrderDate = item.OrderDate;
-                    cartDetail.TotalAmount += item.Amount;
+                    cartDetail.OrderStatus = item.OrderStatus;
                 }
+
+                cartDetail.OrderDate = cartDetail.lstOrderDetails[0].OrderDate;
+                if (cartDetail.lstOrderDetails[0].ModifiedDate != null)
+                    cartDetail.ModifiedDate = cartDetail.lstOrderDetails[0].ModifiedDate;
+
+                cartDetail.TotalAmount = cartDetail.lstOrderDetails.Sum(a => a.Amount);
             }
-
-            
-
-            return Ok(cartDetail);
+            return cartDetail;
         }
 
         [HttpGet]
@@ -350,95 +356,99 @@ namespace WebAPI.Controllers
         {
             LstOrderDetailsForSeller SellerOrders = new LstOrderDetailsForSeller();
 
-            var User = entities.tblUsers.Where(a => a.UserName == sellerName).FirstOrDefault();
-            if(User != null)
+            try
             {
-                if(User.LoginType == "Seller" || User.LoginType == "BotLogin")
+                var User = entities.tblUsers.Where(a => a.UserName == sellerName).FirstOrDefault();
+                if (User != null)
                 {
-                    SellerOrders.UserDetails = new UserDetails();
-                    SellerOrders.UserDetails = entities.tblUserDetails.Where(a => a.AccountID_FK == User.AccountID).
-                        Select(x => new UserDetails
+                    if (User.LoginType == "Seller" || User.LoginType == "BotLogin")
+                    {
+                        SellerOrders.UserDetails = new UserDetails();
+                        SellerOrders.UserDetails = entities.tblUserDetails.Where(a => a.AccountID_FK == User.AccountID).
+                            Select(x => new UserDetails
+                            {
+                                FirstName = x.FirstName,
+                                MidName = x.MidName,
+                                LastName = x.LastName,
+                                MobileNo = x.MobileNo,
+                                AadharNumber = x.AadharNumber,
+                                EmailID = x.EmailID,
+                                State = x.State,
+                                City = x.City,
+                                PinCode = x.PinCode,
+                                FullAddress = x.FullAddress,
+                                CreatedDate = x.CreatedDate
+                            }).FirstOrDefault();
+
+                        SellerOrders.OrderDetails = new List<OrderDetails>();
+                        SellerOrders.OrderDetails = (from obj in entities.tblOrderDetails
+                                                     join obj2 in entities.tblProducts on obj.ProductID equals obj2.ProductID
+                                                     where obj2.SellerName == sellerName && obj.OrderStatus != 4
+                                                     select new OrderDetails
+                                                     {
+                                                         OrderID = obj.OrderID,
+                                                         ProductID = obj2.ProductID,
+                                                         Amount = obj.Amount,
+                                                         Quantity = obj.Quantity,
+                                                         OrderDate = obj.CreatedDate,
+                                                         ProductName = obj2.PName,
+                                                         OrderStatus = entities.tblMasCommonTypes.Where(a => a.MasterType == "OrderStatus" && a.Code == obj.OrderStatus).FirstOrDefault().Description,
+                                                         ModifiedDate = obj.ModifiedDate,
+                                                         ShippingAddressID = obj.ShippingAddressID_FK,
+                                                         BilllingAddressID = obj.BillingAddressID_FK
+                                                     }).OrderByDescending(a => a.OrderStatus).ToList();
+
+                        SellerOrders.OrderDetails = SellerOrders.OrderDetails.GroupBy(a => a.OrderID).Select(obj => new OrderDetails
                         {
-                            FirstName = x.FirstName,
-                            MidName = x.MidName,
-                            LastName = x.LastName,
-                            MobileNo = x.MobileNo,
-                            AadharNumber = x.AadharNumber,
-                            EmailID = x.EmailID,
-                            State = x.State,
-                            City = x.City,
-                            PinCode = x.PinCode,
-                            FullAddress = x.FullAddress,
-                            CreatedDate = x.CreatedDate
-                        }).FirstOrDefault();
+                            OrderID = obj.Max(a=>a.OrderID),
+                            Amount = obj.Sum(a => a.Amount),
+                            Quantity = obj.Sum(a => a.Quantity),
+                            OrderStatus = obj.Max(a=>a.OrderStatus),
+                            OrderDate = obj.Max(a=>a.OrderDate),
+                        }).ToList();
 
-                    SellerOrders.OrderDetails = new List<OrderDetails>();
-                    SellerOrders.OrderDetails = (from obj in entities.tblOrderDetails
-                                                 join obj2 in entities.tblProducts on obj.ProductID equals obj2.ProductID
-                                                 join obj3 in entities.tblMasCommonTypes on obj.OrderStatus equals obj3.Code
-                                                 where obj2.SellerName == sellerName & obj3.MasterType == "OrderStatus" & obj.OrderStatus != 4
-                                                 select new OrderDetails
-                                                 {
-                                                     OrderID = obj.OrderID,
-                                                     ProductID = obj2.ProductID,
-                                                     Amount = obj.Amount,
-                                                     Quantity = obj.Quantity,
-                                                     OrderDate = obj.CreatedDate,
-                                                     ProductName = obj2.PName,
-                                                     OrderStatus = obj3.Description,
-                                                     ModifiedDate = obj.ModifiedDate,
-                                                     ShippingAddressID = obj.ShippingAddressID_FK,
-                                                     BilllingAddressID = obj.BillingAddressID_FK
-                                                 }).OrderByDescending(a=>a.OrderStatus).ToList();
+                        return Ok(SellerOrders);
+                        //return Ok(new { SellerOrders, Data });
 
-                    return Ok(SellerOrders);
+                    }
+                    else
+                    {
+                        return BadRequest("User Is Not A Seller.");
+                    }
                 }
-                else
-                {
-                    return BadRequest("User Is Not A Seller.");
-                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Some Error Occured While Fetching the Details..!");
+                throw;
             }
 
             return BadRequest("User Not Found..!!");
             
         }
 
-        [HttpGet]
-        [Route("API/GetSellerOrderDetailsByOrderID/{orderid}/{productID}")]
-        public IHttpActionResult GetSellerOrderDetailsByOrderID(Guid orderid, int productID)
-        {
-            OrderDetails orderDetails = new OrderDetails();
-
-            orderDetails = (from obj in entities.tblOrderDetails
-                            join obj2 in entities.tblMasCommonTypes on obj.OrderStatus equals obj2.Code
-                            join obj3 in entities.tblProducts on obj.ProductID equals obj3.ProductID
-                            where obj2.MasterType == "OrderStatus" && obj.OrderID == orderid && obj.ProductID == productID
-                            select new OrderDetails
-                            {
-                                Amount = obj.Amount,
-                                OrderID = obj.OrderID,
-                                ProductID = obj.ProductID,
-                                OrderDate = obj.CreatedDate,
-                                OrderStatus = obj2.Description,
-                                Quantity = obj.Quantity,
-                                ProductName = obj3.PName,
-                                ModifiedDate = obj.ModifiedDate
-                            }).FirstOrDefault();
-
-            return Ok(orderDetails);
-        }
-
         [HttpPost]
         [Route("API/UpdateSellerOrderDetails")]
-        public IHttpActionResult SellerOrderDetails(OrderDetails obj)
+        public IHttpActionResult UpdateSellerOrderDetails(CartDetails obj)
         {
-            
-            var orderDetails = entities.tblOrderDetails.Where(a=>a.OrderID == obj.OrderID && a.ProductID == obj.ProductID).FirstOrDefault();
-            if (orderDetails == null)
-                return BadRequest("OrderDetailsNotFound..!");
+            var OrderStatus = obj.OrderStatus;
+            if (obj.lstOrderDetails == null)
+            {
+                obj.lstOrderDetails = new List<OrderDetails>();
+                obj.lstOrderDetails = GetOrderDetails(obj).lstOrderDetails;
+            }
+            if(obj.lstOrderDetails != null & obj.lstOrderDetails.Count > 0)
+            {
+                foreach(var item in obj.lstOrderDetails)
+                {
+                    var orderDetails = entities.tblOrderDetails.Where(a => a.OrderID == item.OrderID && a.ProductID == item.ProductID).FirstOrDefault();
+                    if (orderDetails == null)
+                        return BadRequest("OrderDetailsNotFound..!");
 
-            orderDetails.OrderStatus = Convert.ToInt32(obj.OrderStatus);
-            orderDetails.ModifiedDate = DateTime.Now;
+                    orderDetails.OrderStatus = Convert.ToInt32(OrderStatus);
+                    orderDetails.ModifiedDate = DateTime.Now;
+                }
+            }
 
             int success = entities.SaveChanges();
 

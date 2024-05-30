@@ -202,7 +202,7 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\UserProfile.cshtml" />
     <Content Include="Views\Account\SellerProfile.cshtml" />
-    <Content Include="Views\Products\EditSellerOrderDetails.cshtml" />
+    <Content Include="Views\Products\SellerOrderDetails.cshtml" />
     <Content Include="Views\Account\CommonValidationPrinter.cshtml" />
     <Content Include="Views\Services\ContactUs.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
@@ -226,6 +226,7 @@
     <Content Include="Views\BookTicket\CommonValidationPrinter.cshtml" />
     <Content Include="Views\BookTicket\AddNewScreen.cshtml" />
     <Content Include="Views\BookTicket\ScreenDetails.cshtml" />
+    <Content Include="Views\Products\CommonValidationPrinter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
