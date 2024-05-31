@@ -501,8 +501,19 @@ option {
 .product_List_Table tr {
     width: 100%;
     display: grid;
-    grid-template-columns: 25% 20% 20% 15% 20%;
+    grid-template-columns: 25% 25% 15% 15% 20%;
     border-radius: 12px;
+}
+
+
+.product_List_Table td, .product_List_Table th {
+    width: 100%;
+    font-size: 18px;
+    padding: 15px;
+}
+
+.product_List_Table td:nth-child(n+5), .product_List_Table th:nth-child(n+5){
+    text-align: center;
 }
 
 .addnewProduct-Container{
@@ -719,13 +730,13 @@ option {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #eeeded;
+    background-color: azure;
     border-radius: 10px;
     padding: 2.5% 0;
 }
 
 .sellerOrderList_Table tr {
-    width: 100%;
+    width: 80%;
     display: grid;
     grid-template-columns: 5% 40% 10% 15% 20% 5%;
     border-radius: 12px;
@@ -752,8 +763,8 @@ option {
     align-items: center;
 }
 
-.sellerOrderList_Table thead, .orderDetails_Seller thead, .product_List_Table thead,
-.sellerOrderList_Table tbody, .orderDetails_Seller tbody, .product_List_Table tbody {
+.sellerOrderList_Table thead, .orderDetails_Seller thead, .product_List_Table thead, .orderDetails_Buyer thead,
+.sellerOrderList_Table tbody, .orderDetails_Seller tbody, .product_List_Table tbody, .orderDetails_Buyer tbody {
     width: 90%;
     display: flex;
     flex-direction: column;
@@ -771,20 +782,217 @@ table thead tr {
     align-items: center;
 }
 
-.sellerOrderList_Table th, .orderDetails_Seller th,
-.sellerOrderList_Table td, .orderDetails_Seller td{
+.sellerOrderList_Table th, .orderDetails_Seller th, .orderDetails_Buyer th,
+.sellerOrderList_Table td, .orderDetails_Seller td, .orderDetails_Buyer td {
     width: 100%;
     font-size: 18px;
     padding: 15px;
     text-align: center;
 }
 
-.product_List_Table td, .product_List_Table th {
+
+.orderDetails_Buyer {
     width: 100%;
-    font-size: 18px;
-    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #eeeded;
+    border-radius: 10px;
+    padding: 2.5% 0;
+    background-color: ghostwhite;
 }
 
-.product_List_Table td:nth-child(n+4), .product_List_Table th:nth-child(n+4){
-    text-align: center;
+.orderDetails_Buyer tr {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 12% 12% 12% 12% 20% 15% 20%;
+    border-radius: 12px;
+    align-items: center;
+}
+
+.seller_Blocks {
+    width: 24%;
+    height: 100px;
+    column-gap: 1%;
+    padding: 5px 15px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: azure;
+    box-shadow: 5px 10px 30px rgba(0,0,0,0.2);
+}
+
+.seller_Blocks h5{
+    text-align:right;
+}
+
+.seller_Blocks>h4>i{
+    float:right;
+}
+
+:root {
+    --dark: #34495E;
+    --light: #ffffff;
+    --success: #0ABF30;
+    --error: #E24D4C;
+    --warning: #E9BD0C;
+    --info: #3498DB;
+}
+
+.notifications {
+    position: fixed;
+    top: 30px;
+    right: 20px;
+}
+
+.notifications :where(.toast, .column) {
+    display: flex;
+    align-items: center;
+}
+
+.notifications .toast {
+    width: 400px;
+    height: 60px;
+    position: relative;
+    overflow: hidden;
+    list-style: none;
+    border-radius: 4px;
+    padding: 16px 17px;
+    margin-bottom: 10px;
+    background: var(--light);
+    justify-content: space-between;
+    animation: show_toast 0.3s ease forwards;
+}
+
+@keyframes show_toast {
+    0% {
+        transform: translateX(100%);
+    }
+
+    40% {
+        transform: translateX(-5%);
+    }
+
+    80% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-10px);
+    }
+}
+
+.notifications .toast.hide {
+    animation: hide_toast 0.3s ease forwards;
+}
+
+@keyframes hide_toast {
+    0% {
+        transform: translateX(-10px);
+    }
+
+    40% {
+        transform: translateX(0%);
+    }
+
+    80% {
+        transform: translateX(-5%);
+    }
+
+    100% {
+        transform: translateX(calc(100% + 20px));
+    }
+}
+
+.toast::before {
+    position: absolute;
+    content: "";
+    height: 3px;
+    width: 100%;
+    bottom: 0px;
+    left: 0px;
+    animation: progress 5s linear forwards;
+}
+
+@keyframes progress {
+    100% {
+        width: 0%;
+    }
+}
+
+.toast.success::before, .btn#success {
+    background: var(--success);
+}
+
+.toast.error::before, .btn#error {
+    background: var(--error);
+}
+
+.toast.info::before, .btn#info {
+    background: var(--info);
+}
+
+.toast .column i {
+    font-size: 2rem;
+}
+
+.toast.success .column i {
+    color: var(--success);
+}
+
+.toast.error .column i {
+    color: var(--error);
+}
+
+.toast.info .column i {
+    color: var(--info);
+}
+
+.toast .column span {
+    font-size: 1.5rem;
+    margin-left: 12px;
+}
+
+.toast i {
+    font-size: 2rem;
+}
+
+.toast i:last-child {
+    color: #aeb0d7;
+    cursor: pointer;
+}
+
+.toast i:last-child:hover {
+    color: var(--dark);
+}
+
+.buttons .btn {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    margin: 0 5px;
+    color: var(--light);
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border-radius: 4px;
+}
+
+@media screen and (max-width: 530px) {
+    .notifications {
+        width: 95%;
+    }
+
+    .notifications .toast {
+        width: 100%;
+        font-size: 1rem;
+        margin-left: 20px;
+    }
+
+    .buttons .btn {
+        margin: 0 1px;
+        font-size: 1.1rem;
+        padding: 8px 15px;
+    }
 }

@@ -533,3 +533,67 @@ function AddNewScreen(id) {
         }
     });
 }
+
+// Object containing details for different types of toasts
+const toastDetails = {
+    timer: 5000,
+    success: {
+        icon: 'fa-circle-check',
+        text: 'Success: This is a success toast.',
+    },
+    error: {
+        icon: 'fa-circle-xmark',
+        text: 'Error: This is an error toast.',
+    },
+    info: {
+        icon: 'fa-circle-info',
+        text: 'Info: This is an information toast.',
+    }
+}
+
+const removeToast = (toast) => {
+    toast.classList.add("hide");
+    if (toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
+    setTimeout(() => toast.remove(), 500); // Removing the toast after 500ms
+}
+
+function createToast(id, text){
+
+    const notifications = document.querySelector(".notifications");
+
+    // Getting the icon and text for the toast based on the id passed
+    const { icon } = toastDetails[id];
+    const toast = document.createElement("li"); // Creating a new 'li' element for the toast
+    toast.className = `toast ${id}`; // Setting the classes for the toast
+    // Setting the inner HTML for the toast
+    toast.innerHTML = `<div class="column">
+                        <i class="fa-solid ${icon}"></i>
+                        <span>${text}</span>
+                        </div>
+                        <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>`;
+
+    notifications.appendChild(toast); // Append the toast to the notification ul
+    // Setting a timeout to remove the toast after the specified duration
+    toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);
+}
+
+function SubmitSellerOrderUpdate(e) {
+    e.preventDefault();
+    var form = $("#submitSellerOrderUpdate");
+    var actionUrl = form.attr('action');
+    var method = form.attr('method');
+
+    $.ajax({
+        type: method,
+        url: actionUrl,
+        data: form.serialize(),
+        success: function (data) {
+            if (data.IsSuccess) {
+                createToast("success", data.Message);
+            }
+            else {
+                createToast("error", data.Message);
+            }
+        }
+    });
+};

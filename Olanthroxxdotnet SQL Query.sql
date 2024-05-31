@@ -10,7 +10,7 @@ select  * From tblProduct
 select * from tblTempCartDetails
 
 select  * From tblProduct
-select * from tblOrderDetails
+select * from tblOrderDetails where OrderID = 'd1d80fe7-d4ad-4e63-8b70-7a9a96236a69' and OrderStatus !=4
 
 
 select * from tblTheaterDetails
@@ -34,6 +34,5 @@ select a.Address1, a.Address2 from tblAddress as a INNER JOIN tblOrderDetails as
 
 select * from tblOrderDetails as a 
 JOIN tblProduct as b on b.ProductID = a.ProductID
-JOIN tblMasCommonType as c on a.OrderStatus = c.Code
-where b.SellerName = 'walmart' and c.MasterType = 'OrderStatus'
---and a.OrderID = '805ae6af-9c15-42e4-958c-fd9fa08c01c8'
+where b.SellerName = 'walmart'
+and a.OrderID = '1ae45f92-aec6-4112-9743-e9d2b0af2cc1'

@@ -13,10 +13,12 @@
     <script src="~/Scripts/modernizr-2.8.3.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body style=" background-color: aliceblue; padding-top: -50px; padding-bottom: -20px;">
+    <ul class="notifications"></ul>
     <form id="formYourCart" class="displayNone">
         <input type="hidden" id="hdnCartDetails" />
         <div class="yourCart">
@@ -130,7 +132,7 @@
                 spanCart.onclick = function () {
                     $("#cartPopUp").attr("style", "display:none");
                 }
-            }           
+            }
 
             var modal = document.getElementById("commonPopUp");
             var span = document.getElementsByClassName("close")[0];

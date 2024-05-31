@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 using System.Xml.Linq;
 using WebAPI.Helpers;
 using static System.Net.WebRequestMethods;
@@ -265,7 +267,7 @@ namespace WebUI.Controllers
 
         [Authorize(Roles = "BotLogin, Seller")]
         [HttpPost]
-        public ActionResult SellerOrderDetails(CartDetails cartDetails)
+        public JsonResult SellerOrderDetails(CartDetails cartDetails)
         {
             var responseTask = hc.PostAsJsonAsync<CartDetails>("API/UpdateSellerOrderDetails", cartDetails);
             responseTask.Wait();
@@ -273,18 +275,11 @@ namespace WebUI.Controllers
 
             if (result.IsSuccessStatusCode)
             {
-                ViewBag.Message = "Order Updated Succesfully..!";
-                ViewBag.Link = constants.SellerProfileURL;
-                ViewBag.ButtonName = "Close";
-                return View("CommonValidationPrinter");
+                return Json(new { IsSuccess = true, Message = "Order Updated Succesfully..!" }, JsonRequestBehavior.AllowGet);
             }
-            else
-            {
-                ViewBag.Message = "Some Error Occured While Updating.!";
-                ViewBag.Link = constants.SellerProfileURL;
-                ViewBag.ButtonName = "Close";
-                return View("CommonValidationPrinter");
-            }
+
+            return Json(new { IsSuccess = false, Message = "Some Error has Occures While Processing Your Request." }, JsonRequestBehavior.AllowGet);
+
         }
 
         [Authorize(Roles = "BotLogin, Buyer")]

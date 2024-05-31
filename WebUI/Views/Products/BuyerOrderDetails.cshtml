@@ -1,123 +1,125 @@
 ﻿@model Models.DTO.CartDetails
 
 @{
-    ViewBag.Title = "Order Details";
+    ViewBag.Title = " Order Details";
+    var Quantity = Model.lstOrderDetails.Sum(a => a.Quantity);
 }
+
+<h2 class="page_Header">@ViewBag.Title</h2>
 <div>
-    <h4>Order Details</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OrderID)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalAmount)
-        </dt>
-
-        <dd>
-            <strong>Rs.</strong>&nbsp;@Convert.ToInt32(Model.TotalAmount)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderDate)
-        </dt>
-
-        <dd>
-            @Model.OrderDate.ToShortDateString()
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ModifiedDate)
-        </dt>
-        @if (Model.ModifiedDate != null)
-        {
-            <dd>@Convert.ToDateTime(Model.ModifiedDate).ToShortDateString()</dd>
-        }
-        else
-        {
-            <dd>NA</dd>
-        }
     </dl>
-    <hr />
-    <center>
-
-        @if (Model.lstOrderDetails != null && Model.lstOrderDetails.Count > 0)
-        {<table class="table table-responsive text-center" style="width:80%">
-                <thead>
-                    <tr>
-                        <th class="text-center">Name</th>
-                        <th class="text-center">Quantity</th>
-                        <th class="text-center">Amount</th>
-                        <th class="text-center">Order Status</th>
-                        <th class="text-center">Last Updated</th>
-                        <th class="text-center">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var cart in Model.lstOrderDetails)
-                    {
-                        <tr>
-                            @if (!string.IsNullOrEmpty(cart.ImgPath))
-                            {
-                                <td><img src="@Url.Content(cart.ImgPath)" width="20px" height="20px"> &nbsp; @cart.ProductName</td>
-                            }
-                            else
-                            {
-                                <td><img src="~/Content/Images/Product.png" width="20px" height="20px">&nbsp; @cart.ProductName</td>
-                            }
-                            <td>@cart.Quantity</td>
-                            <td>@cart.Amount</td>
-                            <td>@cart.OrderStatus</td>
-                            @if (cart.ModifiedDate != null)
-                            {
-                                <td>@Convert.ToDateTime(Model.ModifiedDate).ToShortDateString()</td>
-                            }
-                            else
-                            {
-                                <td>NA</td>
-                            }
-                            @if (cart.IsReviewed)
-                            {
-                                <td>Reviewed</td>
-                            }
-                            else if (cart.OrderStatus == "Delivered")
-                            {
-                                <td>
-                                    <button class="btn-warning writeReviewBtn" onclick="AddReview('@Model.OrderID', '@cart.ProductID', '@cart.ProductName')">Write Review</button>
-                                </td>
-                            }
-                            else
-                            {
-                                <td>
-                                    <button disabled class="btn-warning writeReviewBtn" onclick="AddReview('@Model.OrderID', '@cart.ProductID', '@cart.ProductName')">Write Review</button>
-                                </td>
-                            }
-
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <p>No Order Details Found for the OrderID</p>
-        }
-    </center>
 </div>
 
-<center>
-    <a class="btn btn-success" href="javascript:window.print()">
-        Print Order Summary
-    </a>
-</center>
-<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>
+@using (Html.BeginForm("SellerOrderDetails", "Products", FormMethod.Post, new { @class = "register-form" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="addProduct_Form_Div">
+
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row_Input">
+        <div class="form_Input">
+            @Html.LabelFor(model => model.OrderID, htmlAttributes: new { @class = "form_Control" })
+            @Html.EditorFor(model => model.OrderID, new { htmlAttributes = new { @class = "form_Control", @readonly = "true" } })
+        </div>
+    </div>
+
+    <div class="row_Input">
+        <div class="form_Input">
+            @Html.LabelFor(model => model.OrderDate, htmlAttributes: new { @class = "form_Control" })
+            @Html.EditorFor(model => model.OrderDate, new { htmlAttributes = new { @class = "form_Control", @readonly = "true" } })
+        </div>
+        <div class="form_Input">
+            @Html.LabelFor(model => model.ModifiedDate, htmlAttributes: new { @class = "form_Control" })
+            @Html.EditorFor(model => model.ModifiedDate, new { htmlAttributes = new { @class = "form_Control", @readonly = "true" } })
+        </div>
+    </div>
+
+    <div class="row_Input">
+        <div class="form_Input">
+            <label class="form_Control">Amount</label>
+            @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new { @class = "form_Control", @readonly = "true" } })
+        </div>
+        <div class="form_Input">
+            @Html.LabelFor(model => Quantity, htmlAttributes: new { @class = "form_Control" })
+            @Html.EditorFor(model => Quantity, new { htmlAttributes = new { @class = "form_Control", @readonly = "true" } })
+        </div>
+    </div>
+
+    <h2 class="page_Header">Item Details</h2>
+    @if (Model.lstOrderDetails != null && Model.lstOrderDetails.Count > 0)
+    {
+        <table class="orderDetails_Buyer">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                    <th>Order Status</th>
+                    <th>Last Updated</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cart in Model.lstOrderDetails)
+                {
+                    <tr>
+                        <td> &nbsp; @cart.ProductName</td>
+                        @if (!string.IsNullOrEmpty(cart.ImgPath))
+                        {
+                            <td><img src="@Url.Content(cart.ImgPath)" width="60px" height="60px"></td>
+                        }
+                        else
+                        {
+                            <td><img src="~/Content/Images/Product.png" width="60px" height="60px"></td>
+                        }
+                        <td>@cart.Quantity</td>
+                        <td>@cart.Amount</td>
+                        <td>@cart.OrderStatus</td>
+                        @if (cart.ModifiedDate != null)
+                        {
+                            <td>@Convert.ToDateTime(Model.ModifiedDate).ToShortDateString()</td>
+                        }
+                        else
+                        {
+                            <td>NA</td>
+                        }
+                        @if (cart.IsReviewed)
+                        {
+                            <td>Reviewed</td>
+                        }
+                        else if (cart.OrderStatus == "Delivered")
+                        {
+                            <td>
+                                <button class="btn-warning writeReviewBtn" onclick="AddReview('@Model.OrderID', '@cart.ProductID', '@cart.ProductName')">Write Review</button>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <button disabled class="btn-warning writeReviewBtn" onclick="AddReview('@Model.OrderID', '@cart.ProductID', '@cart.ProductName')">Write Review</button>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <button class="login_Submit addProduct_Btn" onclick="javascript:window.print()">Print Order Summary</button>
+    }
+    else
+    {
+        <p>No Order Details Found for the OrderID</p>
+    }
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back", "Index")
+</div>
 
 <!--Add Review Modal-->
 <div id="addReviewPopUp" class="modal">

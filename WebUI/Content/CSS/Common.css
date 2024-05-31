@@ -264,23 +264,30 @@ label {
 .main-container {
     width: 100%;
     padding: 15px;
-    display: grid;
-    grid-column-gap: 15px;
-    grid-template-columns: 40% 60%;
+    display: flex;
+    flex-direction:column;
+    row-gap:15px;
 }
 
 .left-container {
-    height: fit-content;
+    width: 65%;
+    display: flex;
+    justify-content:space-between;
+    align-items:center;
     border-radius: 10px;
     padding: 8px;
-    background-color: red;
+    background-color:aliceblue;
+}
+
+.main-left-conatiner {
+    display:flex;
+    justify-content:center;
+    align-items:center
 }
 
 .right-container {
     height: fit-content;
-    border-radius: 10px;
     padding: 8px;
-    background-color: aquamarine;
 }
 
 .user-form-body {
@@ -456,23 +463,23 @@ a{
     display: inline-block;
 }
 
-    .tooltips .tooltiptext {
-        border: 1px solid black;
-        visibility: hidden;
-        width: auto;
-        background-color: white;
-        color: #000;
-        text-align: center;
-        border-radius: 6px;
-        padding: 5px 0;
-        /* Position the tooltip */
-        position: absolute;
-        z-index: 1;
-    }
+.tooltips .tooltiptext {
+    border: 1px solid black;
+    visibility: hidden;
+    width: auto;
+    background-color: white;
+    color: #000;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
 
-    .tooltips:hover .tooltiptext {
-        visibility: visible;
-    }
+.tooltips:hover .tooltiptext {
+    visibility: visible;
+}
 
     .rating{
         padding:5px;
