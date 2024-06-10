@@ -238,6 +238,17 @@ namespace WebUI.Controllers
             return View("AddProduct");
         }
 
+        [Authorize(Roles = "Admin, BotLogin, Seller")]
+        public JsonResult DeleteProduct(int id)
+        {
+            var responseTask = hc.GetAsync("API/DeleteProduct/" + id + "/" + User.Identity.Name);
+            responseTask.Wait();
+            var result = responseTask.Result;
+
+            return Json(new { IsSuccess = result.IsSuccessStatusCode, Message = result.IsSuccessStatusCode ? "Your Order Has Been Placed Successfully..!!" : result.ReasonPhrase }, JsonRequestBehavior.AllowGet);
+        }
+
+
         [AllowAnonymous]
         public ActionResult ViewProductDetails(int id)
         {

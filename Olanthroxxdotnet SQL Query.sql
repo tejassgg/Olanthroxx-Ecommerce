@@ -7,10 +7,11 @@ Select * from tblUser
 select * from tblProductReview
 select  * From tblProduct
 
+Select * from tblOrderDetails
 select * from tblTempCartDetails
 
 select  * From tblProduct
-select * from tblOrderDetails where OrderID = 'd1d80fe7-d4ad-4e63-8b70-7a9a96236a69' and OrderStatus !=4
+select * from tblOrderDetails where OrderID = '80ce43d6-9655-413b-a399-01cc5691b47d' and OrderStatus !=4
 
 
 select * from tblTheaterDetails
@@ -21,7 +22,7 @@ Select * from tblMasCommonType WHERE MasterType = 'MovieTimingFrom' ORDER by Cod
 select * from tblMovieBookingHistory
 
 --DELETE FROM tblTheaterDetails where TheaterID = 1007
-
+	
 select a.Address1, a.Address2 from tblAddress as a INNER JOIN tblOrderDetails as b on a.AddressID = b.BillingAddressID_FK
 
 --UPDATE tblMovieScreenTimingConfig SET MovieDate = '2024-06-10' where ScreenTimingConfigID = 10003
@@ -30,6 +31,8 @@ select a.Address1, a.Address2 from tblAddress as a INNER JOIN tblOrderDetails as
 --INSERT INTO tblTempCartDetails VALUES (10010,'[{"ProductID":16,"Quantity":1,"Amount":36,"Price":36,"Name":"Organic Potato"},{"ProductID":23,"Quantity":2,"Amount":130,"Price":65,"Name":"Organic Tomato"}]', 'xxeykg1b2xxtom15ugswz5h4',0, GETDATE(), NULL )
 
 --Alter TABLE tblTheaterDetails ADD ImgPath nvarchar(200); 
+--ALTER TABLE tblOrderDetails ADD OTP int
+--ALTER TABLE tblOrderDetails ADD OTPToBeShown bit
 	
 
 select * from tblOrderDetails as a 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,6 +33,10 @@ namespace Models.DTO
     {
         public UserDetails UserDetails { get; set; }
         public List<OrderDetails> OrderDetails { get; set; }
+        public int TotalSales {get; set; }
+        public int TotalSalesQuantity {get; set; }  
+        public int TotalSalesAmount { get; set; }
+        public int TotalProducts { get; set; }
     }
 
 }

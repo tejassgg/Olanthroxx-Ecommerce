@@ -13,7 +13,7 @@
     }
 }
 
-<h2 style="margin-left: 2%;">Payment Details</h2>
+<h2 class="page_Header">Payment Details</h2>
 
 <form id="paymentPageForm" action="../Payment/ProceedToPayment" method="POST">
 
@@ -25,9 +25,9 @@
             @Html.HiddenFor(model => model.PaymentOf)
 
             <div class="form-group">
-                @Html.LabelFor(model => model.OrderID, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.OrderID, htmlAttributes: new { @class = "control-label col-md-2"})
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.OrderID, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+                    @Html.EditorFor(model => model.OrderID, new { htmlAttributes = new { @class = "form-control", @readonly = "true", @id = "txtOrderID" } })
                 </div>
             </div>
 
@@ -103,7 +103,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <button class="btn btn-primary">Proceed To Payment</button>
+                    <button class="btn btn-primary" onclick="ProceedToPayment(event)">Proceed To Payment</button>
                 </div>
             </div>
         </div>

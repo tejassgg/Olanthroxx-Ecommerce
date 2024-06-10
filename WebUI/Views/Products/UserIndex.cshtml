@@ -46,7 +46,7 @@
                 }
                 <hr />
                 <div class="prod_Desc">
-                    <strong>@Html.ActionLink(item.PName, "ViewProductDetails", new { id = item.ProductID })</strong> | @Html.DisplayFor(modelItem => item.PTitle)
+                    <strong>@Html.ActionLink(item.PName, "ViewProductDetails", new { id = item.ProductID})</strong> | @Html.DisplayFor(modelItem => item.PTitle)
                 </div>
                 <div>
                     <ul>
@@ -92,7 +92,7 @@
                 else if (item.Quantity < 5 && item.Quantity > 0)
                 {
                     <div class="priceCategory">
-                        <h6 class="priceData" data-attr-price="@item.Price"><strong>Rs. @item.Price</strong></h6><h6 style="color: red; margin: -5px 0px;"> (Only @item.Quantity units available..)</h6>
+                        <h6 class="priceData" data-attr-price="@item.Price"><strong>Rs. @item.Price</strong></h6><h6 style="color: red; margin: -5px 0px;"> (Only @item.Quantity unit(s) available..)</h6>
                     </div>
                     <div class="card_Footer">
                         <button class="add_Cart add_Cart_@item.ProductID" href="#" data-attr-MaxQuantity="@item.Quantity" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">Add To Cart</button>
@@ -147,9 +147,6 @@
 
 <script>
     $(document).ready(function () {
-
-        debugger;
-
         var tempDetails = '@datas';
         console.log(tempDetails);
 

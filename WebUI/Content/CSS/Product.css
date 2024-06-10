@@ -155,7 +155,7 @@ option {
 
 
 .rating{
-    color: #000;
+    color: gold;
 }
 
 .yourCart {
@@ -516,6 +516,10 @@ option {
     text-align: center;
 }
 
+.product_List_Table a{
+    cursor:pointer;
+}
+
 .addnewProduct-Container{
     width:75%;
     float:left;
@@ -812,7 +816,7 @@ table thead tr {
 }
 
 .seller_Blocks {
-    width: 24%;
+    width: 19%;
     height: 100px;
     column-gap: 1%;
     padding: 5px 15px;
@@ -995,4 +999,14 @@ table thead tr {
         font-size: 1.1rem;
         padding: 8px 15px;
     }
+}
+
+.viewProductModal{
+    width:90%;
+    position:absolute;
+    display:block;
+    background-color:rgba(237,237,237,.1);
+    backdrop-filter:blur(10px);
+    justify-self: center;
+    margin:50px 0px;
 }

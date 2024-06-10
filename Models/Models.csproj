@@ -53,6 +53,7 @@
     <Compile Include="DTO\PaymentDetail.cs" />
     <Compile Include="DTO\CommonDropDown.cs" />
     <Compile Include="DTO\ProductDetails.cs" />
+    <Compile Include="DTO\EmailDetails.cs" />
     <Compile Include="DTO\UserDetails.cs" />
     <Compile Include="Helpers\CommonMethods.cs" />
     <Compile Include="Helpers\Constants.cs" />

@@ -194,7 +194,7 @@ namespace WebUI.Controllers
         {
             LstOrderDetailsForSeller lstOrderDetailsSeller = new LstOrderDetailsForSeller();
 
-            var responseTask = hc.GetAsync("API/GetOrderDetailsForSeller/" + User.Identity.Name);
+            var responseTask = hc.GetAsync("API/GetSellerDashBoardDetails/" + User.Identity.Name);
             responseTask.Wait();
             var result = responseTask.Result;
 

@@ -18,6 +18,8 @@ namespace WebAPI.Controllers
     public class ProductsAPIController : ApiController
     {
         OlanthroxxEntities entities = new OlanthroxxEntities();
+        AccountAPIController accountAPIController = new AccountAPIController();
+        Constants constants = new Constants();
 
         [HttpGet]
         [Route("API/GetProductDetails/{userType}/{userName}/{type}")]
@@ -241,6 +243,37 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("API/DeleteProduct/{id}/{username}")]
+        public IHttpActionResult DeleteProduct(int id, string username)
+        {
+            var User = entities.tblUsers.Where(a=>a.UserName == username).FirstOrDefault();
+            var item = new tblProduct();
+            if (User != null && (User.LoginType == constants.BotLoginType || User.LoginType != "Buyer") )
+            {
+                if(User.LoginType == "Buyer") { return BadRequest("You are Not a Seller nor the Product Owner. So, you cannot delete the product."); }
+                if (User.LoginType == constants.BotLoginType)
+                {
+                    item = entities.tblProducts.Where(a => a.ProductID == id).FirstOrDefault();
+                }
+                else
+                {
+                    item = entities.tblProducts.Where(a => a.ProductID == id && a.SellerName == username).FirstOrDefault();
+                }
+
+                if (item != null)
+                {
+                    entities.tblProducts.Remove(item);
+                    int success = entities.SaveChanges();
+                    if (success > 0)
+                        return Ok("Product Deleted Successfully");
+                    return BadRequest("Some Error Occurred While Processing Your Request. Please Contact System Administrator..!!");
+                }
+
+            }            
+            return BadRequest();
+        }
+
+        [HttpGet]
         [Route("API/GetUserDetailsByUserID/{username}")]
         public IHttpActionResult GetUserDetailsByUserID(string username)
         {
@@ -304,12 +337,12 @@ namespace WebAPI.Controllers
             CartDetails cartDetail = new CartDetails();
             cartDetail.OrderID = orderid;
 
-            GetOrderDetails(cartDetail);
+            GetOrderDetailsByID(cartDetail);
 
             return Ok(cartDetail);
         }
 
-        public CartDetails GetOrderDetails(CartDetails cartDetail)
+        public CartDetails GetOrderDetailsByID(CartDetails cartDetail)
         {
             cartDetail.lstOrderDetails = new List<OrderDetails>();
             cartDetail.lstOrderDetails = (from obj in entities.tblOrderDetails
@@ -351,8 +384,8 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("API/GetOrderDetailsForSeller/{sellerName}")]
-        public IHttpActionResult GetOrderDetailsForSeller(string sellerName)
+        [Route("API/GetSellerDashBoardDetails/{sellerName}")]
+        public IHttpActionResult GetSellerDashBoardDetails(string sellerName)
         {
             LstOrderDetailsForSeller SellerOrders = new LstOrderDetailsForSeller();
 
@@ -383,7 +416,7 @@ namespace WebAPI.Controllers
                         SellerOrders.OrderDetails = new List<OrderDetails>();
                         SellerOrders.OrderDetails = (from obj in entities.tblOrderDetails
                                                      join obj2 in entities.tblProducts on obj.ProductID equals obj2.ProductID
-                                                     where obj2.SellerName == sellerName && obj.OrderStatus != 4
+                                                     where obj2.SellerName == sellerName
                                                      select new OrderDetails
                                                      {
                                                          OrderID = obj.OrderID,
@@ -398,6 +431,11 @@ namespace WebAPI.Controllers
                                                          BilllingAddressID = obj.BillingAddressID_FK
                                                      }).OrderByDescending(a => a.OrderStatus).ToList();
 
+                        SellerOrders.TotalSales = SellerOrders.OrderDetails.Count();
+                        SellerOrders.TotalSalesQuantity = SellerOrders.OrderDetails.Sum(a => a.Quantity);
+                        SellerOrders.TotalSalesAmount = SellerOrders.OrderDetails.Sum(a => a.Amount);
+                        SellerOrders.TotalProducts = entities.tblProducts.Where(a => a.SellerName == sellerName).Count();
+
                         SellerOrders.OrderDetails = SellerOrders.OrderDetails.GroupBy(a => a.OrderID).Select(obj => new OrderDetails
                         {
                             OrderID = obj.Max(a=>a.OrderID),
@@ -406,6 +444,8 @@ namespace WebAPI.Controllers
                             OrderStatus = obj.Max(a=>a.OrderStatus),
                             OrderDate = obj.Max(a=>a.OrderDate),
                         }).ToList();
+
+                        
 
                         return Ok(SellerOrders);
                         //return Ok(new { SellerOrders, Data });
@@ -431,11 +471,11 @@ namespace WebAPI.Controllers
         [Route("API/UpdateSellerOrderDetails")]
         public IHttpActionResult UpdateSellerOrderDetails(CartDetails obj)
         {
-            var OrderStatus = obj.OrderStatus;
+            var OrderStatus = Convert.ToInt32(obj.OrderStatus);
             if (obj.lstOrderDetails == null)
             {
                 obj.lstOrderDetails = new List<OrderDetails>();
-                obj.lstOrderDetails = GetOrderDetails(obj).lstOrderDetails;
+                obj.lstOrderDetails = GetOrderDetailsByID(obj).lstOrderDetails;
             }
             if(obj.lstOrderDetails != null & obj.lstOrderDetails.Count > 0)
             {
@@ -445,8 +485,24 @@ namespace WebAPI.Controllers
                     if (orderDetails == null)
                         return BadRequest("OrderDetailsNotFound..!");
 
-                    orderDetails.OrderStatus = Convert.ToInt32(OrderStatus);
+                    orderDetails.OrderStatus = OrderStatus;
                     orderDetails.ModifiedDate = DateTime.Now;
+                    if(OrderStatus == 3)  //Out For Delivery
+                        orderDetails.OTPToBeShown = true;
+                }
+
+                //SendEmailForDeliveryOTP
+                if (OrderStatus == 3)  //Out For Delivery
+                {
+                    var orderDetails = entities.tblOrderDetails.FirstOrDefault(a => a.OrderID == obj.OrderID);
+                    EmailDetails objEmail = new EmailDetails();
+                    objEmail.UserName = orderDetails.UserID;
+                    objEmail.EmailID = entities.tblUserDetails.FirstOrDefault(a => a.AccountID_FK == entities.tblUsers.FirstOrDefault(b => b.UserName == orderDetails.UserID).AccountID).EmailID;
+                    objEmail.EmailType = constants.OutForDelivery;
+                    objEmail.OrderID = orderDetails.OrderID.ToString();
+                    objEmail.OTP = orderDetails.OTP.ToString();
+                    objEmail.NoOfItems = obj.lstOrderDetails.Sum(a => a.Quantity);
+                    accountAPIController.SendEmail(objEmail);
                 }
             }
 
@@ -454,9 +510,9 @@ namespace WebAPI.Controllers
 
             if (success > 0)
             {
-                return Ok("Order Updated");
+                return Ok("Order Updated Successfully..!!");
             }
-            return BadRequest("Error in Updating Order Details");
+            return BadRequest("Some Error Occurred While Updating the Order Details");
         }
 
         [HttpPost]

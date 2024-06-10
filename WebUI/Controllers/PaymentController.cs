@@ -106,15 +106,7 @@ namespace WebUI.Controllers
             responseTask.Wait();
             var result = responseTask.Result;
 
-            if (result.IsSuccessStatusCode)
-            {
-                var readResult = result.Content.ReadAsAsync<PaymentDetail>();
-                readResult.Wait();
-                paymentDetail = readResult.Result;
-                return Json(new { IsSuccess = true, OrderID = paymentDetail.OrderID.ToString() }, JsonRequestBehavior.AllowGet);
-            }
-            else
-                return Json(new { IsSuccess = false, ErrorMsg = "Some Error Occurred While Proccessing Your Request." }, JsonRequestBehavior.AllowGet);
+            return Json(new { IsSuccess = result.IsSuccessStatusCode, Message = result.IsSuccessStatusCode ? "Your Order Has Been Placed Successfully..!!" : result.ReasonPhrase }, JsonRequestBehavior.AllowGet);
         }
         
         public ActionResult PaymentSuccessfull (PaymentDetail paymentDetail)

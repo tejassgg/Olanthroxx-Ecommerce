@@ -163,7 +163,12 @@ namespace WebAPI.Controllers
                     User.UserName = userDetails.loginObject.UserName;
                     User.Password = userDetails.loginObject.Password;
 
-                    SendRegistrationMail(userDetails);
+                    EmailDetails objEmail = new EmailDetails();
+                    objEmail.UserName = userDetails.EmailID;
+                    objEmail.LoginType = userDetails.loginObject.LoginType;
+                    objEmail.EmailType = constants.UserRegistration;
+
+                    SendEmail(objEmail);
                     User.Message = "Thanks for Registering on Olanthroxx. An email has been sent, which contains a link to verfiy you account.";
                     return Ok(User);
                 }
@@ -171,21 +176,48 @@ namespace WebAPI.Controllers
             return BadRequest("User Registration failed due to some technical error.");
         }
 
-        public void SendRegistrationMail(UserDetails userDetails)
+        public void SendEmail(EmailDetails emailObj)
         {
             try
             {
-                MailMessage mailMessage = new MailMessage(constants.FromEmailID, userDetails.EmailID)
+                MailMessage mailMessage = new MailMessage();
+                switch (emailObj.EmailType)
                 {
-                    Subject = constants.EmailSubjectforRegistration,
-                    Body = constants.EmailBodyforRegistration.Replace("txtUserName", userDetails.loginObject.UserName).
-                    Replace("txtActionURL", constants.LoginURL).
-                    Replace("txtContactUsURL", constants.ContactUsURL).
-                    Replace("txtSupportEmailID", constants.FromEmailID).
-                    Replace("txtLoginType", userDetails.loginObject.LoginType).
-                    Replace("txtVerificationLinkURL", constants.VerificationURL + userDetails.loginObject.UserName),
-                    IsBodyHtml = true
-                };
+                    case "UserRegistration":
+                        mailMessage = new MailMessage(constants.FromEmailID, emailObj.EmailID)
+                        {
+                            Subject = constants.EmailSubjectforRegistration,
+                            Body = constants.EmailBodyforRegistration.Replace("txtUserName", emailObj.UserName).
+                                    Replace("txtActionURL", constants.LoginURL).
+                                    Replace("txtContactUsURL", constants.ContactUsURL).
+                                    Replace("txtSupportEmailID", constants.FromEmailID).
+                                    Replace("txtLoginType", emailObj.LoginType).
+                                    Replace("txtVerificationLinkURL", constants.VerificationURL + emailObj.UserName),
+                            IsBodyHtml = true
+                        };
+                        break;
+                    case "OutForDelivery":
+                        var msgBody = constants.EmailBodyforOutForDelivery.Replace("txtUserName", emailObj.UserName).
+                                    Replace("txtQuantity", emailObj.NoOfItems.ToString()).
+                                    Replace("txtOrderID", emailObj.OrderID).
+                                    Replace("txtOrderDetailsLink", constants.BuyerOrdeDetailsURL + emailObj.OrderID).
+                                    Replace("txtTrackPackageLink", constants.TrackPackageURL + emailObj.OrderID);
+
+                        var OTP = emailObj.OTP;
+                        for (int i = 0; i < OTP.Length; i++)
+                        {
+                            msgBody = msgBody.Replace("txtOTP" + (i+1).ToString(), OTP[i].ToString());
+                        }
+
+                        mailMessage = new MailMessage(constants.FromEmailID, emailObj.EmailID)
+                        {
+                            Subject = constants.EmailSubjectforOutForDelivery,
+                            Body = msgBody,
+                            IsBodyHtml = true
+                        };
+                        break;
+                }
+                
 
                 System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
 

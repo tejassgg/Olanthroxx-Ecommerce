@@ -18,24 +18,26 @@ window.onload = function () {
 
 function refreshCart() {
     var strMsg = "";
-    if (JSON.parse(localStorage.getItem("CartDetails")) != null && JSON.parse(localStorage.getItem("CartDetails")) != []) {
-        CartDetails = JSON.parse(localStorage.getItem("CartDetails"));
-        TotalAmount = 0;
-        TotalCartItems = 0;
-        CartDetails.forEach(function (item) {
-            strMsg += '<div class="cart-table" id="' + item.ProductID + '"><div class="cart_Image"><img src=' + $("#img_" + item.ProductID + " img").attr("src") + '></div><div><strong class="splitData">' + item.Name + '</strong><h6>Rs.' + item.Price + '</h6><p style="text-align:bottom">Qty:- ' + item.Quantity + '</p></div><div class="cart-details-action" ><a href="#" style="writing-mode:vertical-lr" onclick="removeItemFromCart(' + item.ProductID + ',' + item.Quantity + ',' + item.Price + ')"><i class="fas fa-trash"></i></a></div></div>';
-            TotalAmount += item.Amount;
-            TotalCartItems += item.Quantity;
-            $(".add_Cart_" + item.ProductID).addClass("displayNone");
-            $(".cart_Count_" + item.ProductID).removeClass("displayNone");
-            $("#item_Counter_" + item.ProductID).val(item.Quantity);
-        });
+    if (localStorage.getItem("CartDetails") != undefined && localStorage.getItem("CartDetails") != '') {
+        if (JSON.parse(localStorage.getItem("CartDetails")) != null && JSON.parse(localStorage.getItem("CartDetails")) != []) {
+            CartDetails = JSON.parse(localStorage.getItem("CartDetails"));
+            TotalAmount = 0;
+            TotalCartItems = 0;
+            CartDetails.forEach(function (item) {
+                strMsg += '<div class="cart-table" id="' + item.ProductID + '"><div class="cart_Image"><img src=' + $("#img_" + item.ProductID + " img").attr("src") + '></div><div><strong class="splitData">' + item.Name + '</strong><h6>Rs.' + item.Price + '</h6><p style="text-align:bottom">Qty:- ' + item.Quantity + '</p></div><div class="cart-details-action" ><a href="#" style="writing-mode:vertical-lr" onclick="removeItemFromCart(' + item.ProductID + ',' + item.Quantity + ',' + item.Price + ')"><i class="fas fa-trash"></i></a></div></div>';
+                TotalAmount += item.Amount;
+                TotalCartItems += item.Quantity;
+                $(".add_Cart_" + item.ProductID).addClass("displayNone");
+                $(".cart_Count_" + item.ProductID).removeClass("displayNone");
+                $("#item_Counter_" + item.ProductID).val(item.Quantity);
+            });
 
-        $("#appendCartData").empty().append(strMsg);
+            $("#appendCartData").empty().append(strMsg);
 
-        $("#totalCartValue").empty().append('Total Cart Value:- <strong>Rs.' + TotalAmount + '</strong>');
-        if (TotalCartItems > 0)
-            $("#txtCartCount").text("(" + TotalCartItems + ")");
+            $("#totalCartValue").empty().append('Total Cart Value:- <strong>Rs.' + TotalAmount + '</strong>');
+            if (TotalCartItems > 0)
+                $("#txtCartCount").text("(" + TotalCartItems + ")");
+        }        
     }
 }
 
@@ -142,6 +144,8 @@ function AddtoCart(obj, pName, pId, pQuantity, pPrice) {
         TotalCartItems += pQuantity;
     }
 
+    createToast("success", "Item Added to Cart..!!");
+
     $("#appendCartData").append(appendString);
     $("#totalCartValue").empty().append('Total Cart Value:- <strong>Rs.' + TotalAmount + '</strong>');
     $("#txtCartCount").text("(" + TotalCartItems + ")");
@@ -187,6 +191,8 @@ function removeItem(pId, pQuantity, pPrice) {
         //Update the localStorage
         localStorage.setItem("CartDetails", JSON.stringify(CartDetails));
         refreshCart();
+
+        createToast("info", "Item Removed From Cart..!!");
     }
 }
 
@@ -380,11 +386,10 @@ function GetAddress(type) {
     });        
 }
 
-$("#paymentPageForm").submit(function (e) {
+function ProceedToPayment(e) {
 
     e.preventDefault();
-
-    var form = $(this);
+    var form = $('#paymentPageForm');
     var actionUrl = form.attr('action');
     var method = form.attr('method');
 
@@ -394,26 +399,17 @@ $("#paymentPageForm").submit(function (e) {
         data: form.serialize(),
         success: function (data) {
             if (data.IsSuccess) {
-                var strMsg, colorTheme, popupHeader, btnText;
-                strMsg = "Your Order Has Been Placed Successfully..!!";
-                colorTheme = "success";
-                popupHeader = "Alert";
-                btnText = "OrderDetails";
-                openSuccessModal(strMsg, colorTheme, popupHeader, btnText, data.OrderID);
                 CartDetails = [];
                 localStorage.setItem("CartDetails", CartDetails);
+                createToast("success", data.Message);
+                setTimeout(function () { window.location.href = "../Products/BuyerOrderDetails?orderID=" + $('#txtOrderID').val(); }, 5000);
             }
             else {
-                var strMsg, colorTheme, popupHeader, btnText;
-                strMsg = data.ErrorMsg;
-                colorTheme = "fail";
-                popupHeader = "Alert";
-                btnText = "Close";
-                openSuccessModal(strMsg, colorTheme, popupHeader, btnText, "");
+                createToast("error", data.Message);
             }
         }
     });
-});
+};
 
 function SubmitAddress() {
     var form = $("#addAddressForm");
@@ -596,4 +592,41 @@ function SubmitSellerOrderUpdate(e) {
             }
         }
     });
+};
+
+function PrintOrderSummary(e){
+    e.preventDefault();
+    window.print();
+}
+
+function ViewProductDetails(productID) {    
+    $.ajax({
+        type: "GET",
+        url: "../Products/ViewProductDetails/" + parseInt(productID),
+        success: function (data) {
+            $("#viewProductModal").empty();
+            $("#viewProductModal").html(data);
+            $("#viewProductModal").removeAttr("style");
+            $("#viewProductModal").showModal();
+        }
+    });
+}
+
+function DeleteProduct(id) {
+    var con = confirm("Are you Sure?");
+    if (con) {
+        $.ajax({
+            type: "GET",
+            url: "../Products/DeleteProduct/" + parseInt(id),
+            success: function (data) {
+                if (data.IsSuccess) {
+                    createToast("success", data.Message);
+                    setTimeout(function () { window.location.reload() }, 5000);
+                }
+                else {
+                    createToast("error", data.Message);
+                }
+            }
+        });
+    }
 };

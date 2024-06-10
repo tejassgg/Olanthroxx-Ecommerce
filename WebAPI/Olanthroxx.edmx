@@ -194,6 +194,8 @@
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="ShippingAddressID_FK" Type="int" />
           <Property Name="BillingAddressID_FK" Type="int" />
+          <Property Name="OTPToBeShown" Type="bit" />
+          <Property Name="OTP" Type="int" />
         </EntityType>
         <EntityType Name="tblPayment">
           <Key>
@@ -922,6 +924,8 @@
           <Property Name="ShippingAddressID_FK" Type="Int32" />
           <Property Name="BillingAddressID_FK" Type="Int32" />
           <NavigationProperty Name="tblProduct" Relationship="OlanthroxxModel.FK_tblOrderDetails_tblProduct" FromRole="tblOrderDetail" ToRole="tblProduct" />
+          <Property Name="OTPToBeShown" Type="Boolean" />
+          <Property Name="OTP" Type="Int32" />
         </EntityType>
         <Association Name="FK_tblOrderDetails_tblProduct">
           <End Type="OlanthroxxModel.tblProduct" Role="tblProduct" Multiplicity="1" />
@@ -1347,6 +1351,8 @@
           <EntitySetMapping Name="tblOrderDetails">
             <EntityTypeMapping TypeName="OlanthroxxModel.tblOrderDetail">
               <MappingFragment StoreEntitySet="tblOrderDetails">
+                <ScalarProperty Name="OTP" ColumnName="OTP" />
+                <ScalarProperty Name="OTPToBeShown" ColumnName="OTPToBeShown" />
                 <ScalarProperty Name="BillingAddressID_FK" ColumnName="BillingAddressID_FK" />
                 <ScalarProperty Name="ShippingAddressID_FK" ColumnName="ShippingAddressID_FK" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />

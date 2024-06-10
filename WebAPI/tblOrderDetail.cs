@@ -40,6 +40,10 @@ public partial class tblOrderDetail
 
     public Nullable<int> BillingAddressID_FK { get; set; }
 
+    public Nullable<bool> OTPToBeShown { get; set; }
+
+    public Nullable<int> OTP { get; set; }
+
 
 
     public virtual tblProduct tblProduct { get; set; }

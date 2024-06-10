@@ -270,7 +270,7 @@ label {
 }
 
 .left-container {
-    width: 65%;
+    width: 70%;
     display: flex;
     justify-content:space-between;
     align-items:center;
@@ -481,11 +481,11 @@ a{
     visibility: visible;
 }
 
-    .rating{
-        padding:5px;
-        display:flex;
-        column-gap: 5px;
-    }
+.rating{
+    padding:5px;
+    display:flex;
+    column-gap: 5px;
+}
 
 .addressCart {
     display: flex;

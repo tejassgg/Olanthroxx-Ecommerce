@@ -15,9 +15,10 @@
         rating4 = Model.lstProductReviews.Where(a => a.Rating == 4).ToList();
         rating5 = Model.lstProductReviews.Where(a => a.Rating == 5).ToList();
     }
+    Layout = null;
 }
 <div>
-    <h2>Product Details</h2>
+    <h2 class="page_Header">Product Details</h2>
     <hr />
     <dl class="dl-horizontal">
 
@@ -202,39 +203,39 @@
                         <div class="slider-Data">
                             @if (!string.IsNullOrEmpty(prod.ImgPath))
                             {
-                                <a href="../ViewProductDetails/@prod.ProductID" ><img src="@Url.Content(prod.ImgPath)"></a>
+                                <a href="../ViewProductDetails/@prod.ProductID"><img src="@Url.Content(prod.ImgPath)"></a>
                             }
                             else
                             {
-                                <a href="../ViewProductDetails/@prod.ProductID" ><img src="~/Content/Images/Product.png"></a>
+                                <a href="../ViewProductDetails/@prod.ProductID"><img src="~/Content/Images/Product.png"></a>
                             }
-                        <div>
-                            <h5><strong>@prod.PName</strong></h5>
                             <div>
-                                <ul>
-                                    <li class="splitData">@prod.PDescription.Split('|')[0]</li>
-                                </ul>
-                            </div>
-                            @if (prod.OverallRating > 0)
-                            {
-                                for (var j = 1; j <= 5; j++)
+                                <h5><strong>@prod.PName</strong></h5>
+                                <div>
+                                    <ul>
+                                        <li class="splitData">@prod.PDescription.Split('|')[0]</li>
+                                    </ul>
+                                </div>
+                                @if (prod.OverallRating > 0)
                                 {
-                                    if (j <= prod.OverallRating)
+                                    for (var j = 1; j <= 5; j++)
                                     {
-                                        <span class="fas checked fa-star"></span>
-                                    }
-                                    else
-                                    {
-                                        <span class="far fa-star"></span>
+                                        if (j <= prod.OverallRating)
+                                        {
+                                            <span class="fas checked fa-star"></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="far fa-star"></span>
+                                        }
                                     }
                                 }
-                            }
-                            else
-                            {
-                                <h6><strong>(0 Ratings)</strong></h6>
-                            }
-                            <p><strong>Rs. </strong>@prod.Price</p>
-                        </div>
+                                else
+                                {
+                                    <h6><strong>(0 Ratings)</strong></h6>
+                                }
+                                <p><strong>Rs. </strong>@prod.Price</p>
+                            </div>
                         </div>
                         <div style="height:50px">
 
@@ -440,6 +441,7 @@
     }
 
 </p>
+
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 

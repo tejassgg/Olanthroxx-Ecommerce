@@ -15,13 +15,19 @@ namespace WebAPI.Controllers
     {
         OlanthroxxEntities entities = new OlanthroxxEntities();
         private readonly CommonMethods _CommonMethods = new CommonMethods();
+        Constants _Constants = new Constants();
 
         [HttpPost]
         [Route("API/SaveOrderDetails")]
         public IHttpActionResult SaveOrderDetails(PaymentDetail paymentDetail)
         {
+            if(entities.tblOrderDetails.FirstOrDefault(a=>a.OrderID == paymentDetail.OrderID) != null)
+            {
+                return Ok("Order is Alreay Places. Please Wait for Order Confirmation Email.");
+            }
             if (paymentDetail.PaymentOf == "ECommerce" && paymentDetail.CartDetails != null)
             {
+                var OTP = GenerateOTP();
                 foreach (var order in paymentDetail.CartDetails.lstOrderDetails)
                 {
                     tblOrderDetail obj = new tblOrderDetail();
@@ -31,9 +37,11 @@ namespace WebAPI.Controllers
                     obj.Amount = order.Amount;
                     obj.UserID = paymentDetail.UserName;
                     obj.CreatedDate = DateTime.Now;
-                    obj.OrderStatus = 0;      //Order Pending
+                    obj.OrderStatus = 0;  //Order Pending
                     obj.ShippingAddressID_FK = paymentDetail.ShippingAddressID;
                     obj.BillingAddressID_FK = paymentDetail.BillingAddressID;
+                    obj.OTPToBeShown = false;
+                    obj.OTP = OTP;
                     entities.tblOrderDetails.Add(obj);
 
                     var objProduct = entities.tblProducts.Where(a => a.ProductID == order.ProductID).FirstOrDefault();
@@ -47,19 +55,20 @@ namespace WebAPI.Controllers
                 var ScreenConfig = entities.tblMovieScreenTimingConfigs.Where(a => a.ScreenTimingConfigID == paymentDetail.movieBooking.ScreenTimingConfigID_FK).FirstOrDefault();
                 if (ScreenConfig != null)
                 {
+                    var ScreenDet = entities.tblScreenDetails.Where(a => a.ScreenID == ScreenConfig.ScreenID_FK).ToList();
                     switch (paymentDetail.movieBooking.SeatCategory)
                     {
                         case 101:
-                            TicketPrice = entities.tblScreenDetails.Where(a => a.ScreenID == ScreenConfig.ScreenID_FK).Select(a => a.PriceSilver).FirstOrDefault();
+                            TicketPrice = ScreenDet.Select(a => a.PriceSilver).FirstOrDefault();
                             break;
                         case 102:
-                            TicketPrice = entities.tblScreenDetails.Where(a => a.ScreenID == ScreenConfig.ScreenID_FK).Select(a => a.PriceGold).FirstOrDefault();
+                            TicketPrice = ScreenDet.Select(a => a.PriceGold).FirstOrDefault();
                             break;
                         case 103:
-                            TicketPrice = entities.tblScreenDetails.Where(a => a.ScreenID == ScreenConfig.ScreenID_FK).Select(a => a.PricePlatinum).FirstOrDefault();
+                            TicketPrice = ScreenDet.Select(a => a.PricePlatinum).FirstOrDefault();
                             break;
                         case 104:
-                            TicketPrice = entities.tblScreenDetails.Where(a => a.ScreenID == ScreenConfig.ScreenID_FK).Select(a => a.PriceRecliner).FirstOrDefault();
+                            TicketPrice = ScreenDet.Select(a => a.PriceRecliner).FirstOrDefault();
                             break;
                     }
                     paymentDetail.movieBooking.MovieName = entities.tblMovieDetails.Where(a => a.MovieID == ScreenConfig.MovieID_FK).Select(a => a.MovieName).FirstOrDefault();
@@ -82,19 +91,29 @@ namespace WebAPI.Controllers
                 };
                 entities.tblMovieBookingHistories.Add(dbObj);
             }
-            
-            int success = entities.SaveChanges();
-            if (success > 0)
-            {
-                paymentDetail.PaymentModeDetails.PaymentDetails = JsonConvert.SerializeObject(paymentDetail);
-                paymentDetail.CreatedDate = DateTime.Now;
-                paymentDetail.PaymentModeDetails.PaymentStatus = 2006;
-                paymentDetail.TransactionNo = _CommonMethods.GenerateTransactionNo(paymentDetail.PaymentModeDetails.PaymentMode);
-                SavePaymentDetails(paymentDetail);
 
-                return Ok(paymentDetail);
+            try
+            {
+                int success = entities.SaveChanges();
+                if (success > 0)
+                {
+                    paymentDetail.PaymentModeDetails.PaymentDetails = JsonConvert.SerializeObject(paymentDetail);
+                    paymentDetail.CreatedDate = DateTime.Now;
+                    paymentDetail.PaymentModeDetails.PaymentStatus = 2006;
+                    paymentDetail.TransactionNo = _CommonMethods.GenerateTransactionNo(paymentDetail.PaymentModeDetails.PaymentMode);
+                    SavePaymentDetails(paymentDetail);
+
+                    return Ok();
+                }
             }
-            return BadRequest();
+            catch (Exception ex)
+            {
+                return BadRequest(_Constants.ErrorMsg);
+                throw;
+            }
+
+            return BadRequest(_Constants.ErrorMsg);
+
         }
 
         public void SavePaymentDetails(PaymentDetail objPayment)
@@ -162,6 +181,13 @@ namespace WebAPI.Controllers
             return lstAddress;
         }
 
-        
+        public int GenerateOTP()
+        {
+            Random generator = new Random();
+            String r = generator.Next(0, 1000000).ToString("D6");
+            return Convert.ToInt32(r);
+        }
+
+
     }
 }

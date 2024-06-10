@@ -35,7 +35,7 @@
                     Quantity
                 </th>
                 <th class="mobile_Hidden">
-                    Price
+                    Price (&#8377;)
                 </th>
                 <th>
                     Action
@@ -63,16 +63,22 @@
                         @Html.DisplayFor(modelItem => item.Quantity)
                     </td>
                     <td>
-                        &#8377; @Html.DisplayFor(modelItem => item.Price)
+                        @Html.DisplayFor(modelItem => item.Price)
                     </td>
                     <td>
                         <a href="@Url.Action("EditProduct", new { id = item.ProductID })"><i class="fas fa-pen"></i></a> &nbsp; |
-                        <a href="@Url.Action("ViewProductDetails", new { id = item.ProductID })"><i class="fas fa-info"></i></a> &nbsp; |
-                        <a href="@Url.Action("DeleteProduct", new { id = item.ProductID })"><i class="fas fa-trash"></i></a>
+                        <a onclick="ViewProductDetails(@item.ProductID)"><i class="fas fa-info"></i></a> &nbsp; |
+                        <a onclick="DeleteProduct(@item.ProductID)"><i class="fas fa-trash"></i></a>
                     </td>
                 </tr>
             }
         </tbody>
-
     </table>
 </div>
+
+
+<div class="ModalDad">
+    <dialog id="viewProductModal" style="display:none;" class="viewProductModal">
+    </dialog>
+</div>
+    
