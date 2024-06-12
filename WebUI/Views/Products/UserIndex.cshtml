@@ -12,7 +12,7 @@
     <div class="Search_Bar">
         <div class="Search_Bar_Items">
             <div class="input_Search_Block input">
-                <i class="fas fa-search fa-lg"></i> <input class="input_Search" type="text" id="txtSearch" placeholder="Search Olanthroxx" />
+                <input class="input_Search" type="text" id="txtSearch" placeholder="Search Olanthroxx" /><i class="fas fa-search fa-lg"></i>
             </div>
 
             <div class="input_Search_Block select">
@@ -25,6 +25,16 @@
                 </select>
             </div>
         </div>
+        <form id="formYourCart" class="displayNone">
+            <input type="hidden" id="hdnCartDetails" />
+            <div class="yourCart">
+                <a onclick="OpenCart()">Cart<i class="fa fa-shopping-cart" style="font-size:22px"></i></a><a id="txtCartCount"></a>
+            </div>
+        </form>
+    </div>
+
+    <div class="displayNone" id="productPageMsgs">
+
     </div>
 
     <div class="product_Details">
@@ -184,16 +194,24 @@
         $("#txtSearch").on("keyup", function () {
             var textEnter = $(this).val();
             $("div .product_Details .card").each(function (results) {
-                if (results !== 0) {
+                if (results >= 0) {
                     var id = $(this).find(".prod_Desc").text();
                     if (id.indexOf(textEnter) !== 0 && id.toLowerCase().indexOf(textEnter.toLowerCase()) < 0) {
                         $(this).hide();
                     }
                     else {
                         $(this).show();
-                    }
+                    }                  
                 }
             });
+            if ($("div .product_Details .card:visible").length <= 0) {
+                $("#productPageMsgs").removeClass("displayNone").html("<h2 class='page_Header'>No products found..!!</h2>");
+            }
+            else {
+                if (!$("#productPageMsgs").hasClass("displayNone")) {
+                    $("#productPageMsgs").addClass("displayNone")
+                }  
+            }
         });
 
         $("#formYourCart").removeClass("displayNone");
