@@ -1,7 +1,7 @@
 ﻿@model Models.DTO.LstOrderDetailsForSeller
 @{
     ViewBag.Title = "Seller - Dashboard";
-    var OngoingOrders = Model.OrderDetails.Where(a => a.OrderStatus != "Delivered").ToList();
+    var OngoingOrders = Model.OrderDetails; //.Where(a => a.OrderStatus != "Delivered").ToList();
 
     //var AvgSales = TotalSalesAmount / (Model.OrderDetails.OrderByDescending(a => a.OrderDate).FirstOrDefault().OrderDate.Month - DateTime.Now.Month);
 }
@@ -49,7 +49,7 @@
                         <th>Sr.</th>
                         <th>OrderID</th>
                         <th>Amount</th>
-                        <th>Date</th>
+                        <th>Placed On</th>
                         <th>OrderStatus</th>
                         <th>Action</th>
                     </tr>
@@ -67,7 +67,15 @@
                                 <td>@ordDetails.OrderDate.ToShortDateString()</td>
                                 <td>@ordDetails.OrderStatus</td>
                                 <!--<td><a href="~/Products/SellerOrderDetails?orderID=@ordDetails.OrderID&productID=@ordDetails.ProductID"><i class="fas fa-edit"></i></a></td>-->
-                                <td><a href="~/Products/SellerOrderDetails?orderID=@ordDetails.OrderID"><i class="fas fa-edit"></i></a></td>
+                                <!--<td><a href="~/Products/SellerOrderDetails?orderID=@ordDetails.OrderID"><i class="fas fa-edit"></i></a></td>-->
+                                 @if (ordDetails.OrderStatus == "Delivered")
+                                 {
+                                    <td><button class="btn-success writeReviewBtn" onclick='window.location.href = "/Products/SellerOrderDetails?orderID=@ordDetails.OrderID"'><i class="fas fa-edit"></i> Edit</button></td> 
+                                 }
+                                 else { 
+                                     <td><button class="btn-warning writeReviewBtn" onclick='window.location.href = "/Products/SellerOrderDetails?orderID=@ordDetails.OrderID"'><i class="fas fa-edit"></i> Edit</button></td>
+                                 }
+
                             </tr>
                         }
                     }

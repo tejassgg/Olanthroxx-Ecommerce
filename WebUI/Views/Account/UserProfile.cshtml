@@ -76,19 +76,19 @@
             </div>
         </div>
     </div>
-    <div class="right-container">
-        <h2> My Orders</h2>
-        <hr />
+    <h2 class="page_Header"> My Orders</h2>
+    <hr />
+    <div class="userProfile_List_Container">
         @if (Model.CartDetails != null && Model.CartDetails.Count > 0)
         {
-            <table class="table table-bordered table-responsive table-striped">
+            <table class="userProfile_Table">
                 <thead>
                     <tr>
                         <th>Serial No.</th>
                         <th>OrderID</th>
                         <th>Amount</th>
-                        <th>Date</th>
-                        <th>Last Updated</th>
+                        <th>Placed On</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -98,21 +98,24 @@
                         foreach (var cartDetails in Model.CartDetails)
                         {
                             i++;
-                                        <tr>
-                                            <td>@i</td>
-                                            <td>@cartDetails.OrderID.ToString().Substring(0, 14) ..</td>
-                                            <td>@cartDetails.TotalAmount</td>
-                                            <td>@cartDetails.OrderDate.ToShortDateString()</td>
-                                            @if (@Convert.ToDateTime(cartDetails.ModifiedDate).ToShortDateString() == "01-01-0001")
-                                            {
-                                                <td>NA</td>
-                                            }
-                                            else
-                                            {
-                                                <td>@Convert.ToDateTime(cartDetails.ModifiedDate).ToShortDateString()</td>
-                                            }
-                                            <td><a href="~/Products/BuyerOrderDetails?orderID=@cartDetails.OrderID"><i class="fas fa-eye"></i></a></td>
-                                        </tr>
+                            <tr>
+                                <td>@i</td>
+                                <td>@cartDetails.OrderID</td>
+                                <td>@cartDetails.TotalAmount</td>
+                                <td>@cartDetails.OrderDate.ToString("dd-MM-yyyy")</td>
+                                <td>@cartDetails.OrderStatus</td>
+                            <td>
+                                @if (cartDetails.OrderStatus == "Delivered")
+                                {
+                                    <button class="btn-success writeReviewBtn" onclick='window.location.href = "/Products/BuyerOrderDetails?orderID=@cartDetails.OrderID"'><i class="fas fa-eye"></i> View</button>
+                                }
+                                else
+                                {
+                                    <button class="btn-warning writeReviewBtn" onclick='window.location.href = "/Products/BuyerOrderDetails?orderID=@cartDetails.OrderID"'><i class="fas fa-eye"></i> View</button>
+                                }
+
+                            </td>
+                            </tr>
                         }
                     }
                 </tbody>
@@ -139,21 +142,6 @@
 
 
 <style>
-    table tbody tr td{
-        width:fit-content;
-    }
-    table thead tr {
-        background-color:bisque;
-        text-align:center;
-    }
-
-    th, td {
-        text-align: center;
-    }
-
-    hr{
-        border: 1.25px solid black;
-    }
     .right-container h2 {
         margin-top: 5px;
         margin-bottom: -10px;

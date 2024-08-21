@@ -5,13 +5,15 @@ Select * from tblForgotPasswordHistory
 Select * from tblUserDetails
 Select * from tblUser
 select * from tblProductReview
-select  * From tblProduct
+select  * From tblProduct where ProductID in (24, 6)
 
 Select * from tblOrderDetails
 select * from tblTempCartDetails
 
 select  * From tblProduct
-select * from tblOrderDetails where OrderID = '80ce43d6-9655-413b-a399-01cc5691b47d' and OrderStatus !=4
+select * from tblOrderDetails where OrderID = '22804605-5579-4f99-b015-08ac49fb2290' and OrderStatus !=4
+
+--UPDATE tblOrderDetails Set OrderStatus = 4 WHERE OrderID = 'ff52bc8f-fcc9-4dc2-9920-652bdf4f4fad' and ProductID = 6
 
 
 select * from tblTheaterDetails
@@ -25,7 +27,7 @@ select * from tblMovieBookingHistory
 	
 select a.Address1, a.Address2 from tblAddress as a INNER JOIN tblOrderDetails as b on a.AddressID = b.BillingAddressID_FK
 
---UPDATE tblMovieScreenTimingConfig SET MovieDate = '2024-06-10' where ScreenTimingConfigID = 10003
+--UPDATE tblMovieScreenTimingConfig SET MovieDate = '2024-09-10' where ScreenTimingConfigID = 10003
 --UPDATE tblTheaterDetails SET ImgPath = '~/Content/Images/Theatres/tejassgg-HumaCinemas-5968.jpg' where TheaterID = 1000
 
 --INSERT INTO tblTempCartDetails VALUES (10010,'[{"ProductID":16,"Quantity":1,"Amount":36,"Price":36,"Name":"Organic Potato"},{"ProductID":23,"Quantity":2,"Amount":130,"Price":65,"Name":"Organic Tomato"}]', 'xxeykg1b2xxtom15ugswz5h4',0, GETDATE(), NULL )

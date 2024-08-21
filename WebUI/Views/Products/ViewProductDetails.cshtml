@@ -15,10 +15,11 @@
         rating4 = Model.lstProductReviews.Where(a => a.Rating == 4).ToList();
         rating5 = Model.lstProductReviews.Where(a => a.Rating == 5).ToList();
     }
-    Layout = null;
 }
 <div>
-    <h2 class="page_Header">Product Details</h2>
+    <div class="page_Header">
+        <h2 style=" font-weight: 600;">@Model.PName - @Model.PTitle</h2>
+    </div>
     <hr />
     <dl class="dl-horizontal">
 
@@ -33,23 +34,6 @@
         <dd style="display:none;">
             @Html.HiddenFor(model => model.ProductID)
         </dd>
-
-        <dt>
-            Name
-        </dt>
-
-        <dd>
-            @Model.PName
-        </dd>
-
-        <dt>
-            Title
-        </dt>
-
-        <dd>
-            @Model.PTitle
-        </dd>
-
         <dt>
             Description
         </dt>
@@ -114,74 +98,74 @@
                     {
                         if (j <= Model.OverallRating)
                         {
-                            <span class="fa fa-star checked"></span>
+                            <span class="fas fa-star checked"></span>
                         }
                         else
                         {
-                            <span class="fa fa-star"></span>
+                            <span class="far fa-star"></span>
                         }
                     }
                 </div> &nbsp;&nbsp; <a href="#productReviews" style="text-decoration:underline">@Model.lstProductReviews.Count ratings</a>
 
                 <div class="tooltiptext">
                     <div class="rating">
-                        @if (rating5 != null)
+                        @if (rating1 != null)
                         {
                             <div>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                            </div> <a href="#rating5" style="text-decoration:underline">@rating5.Count ratings</a>
-                        }
-                    </div>
-                    <div class="rating">
-                        @if (rating4 != null)
-                        {
-                            <div>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star"></span>
-                            </div> <a href="#rating4" style="text-decoration:underline">@rating4.Count ratings</a>
-                        }
-                    </div>
-                    <div class="rating">
-                        @if (rating3 != null)
-                        {
-                            <div>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
-                            </div> <a href="#rating3" style="text-decoration:underline">@rating3.Count ratings</a>
+                                <span class="fas fa-star checked"></span>
+                                <span class="far fa-star"></span>
+                                <span class="far fa-star"></span>
+                                <span class="far fa-star"></span>
+                                <span class="far fa-star"></span>
+                            </div> <a href="#rating1" style="text-decoration:underline">@rating1.Count ratings</a>
                         }
                     </div>
                     <div class="rating">
                         @if (rating2 != null)
                         {
                             <div>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                                <span class="far fa-star"></span>
+                                <span class="far fa-star"></span>
+                                <span class="far fa-star"></span>
                             </div> <a href="#rating2" style="text-decoration:underline">@rating2.Count ratings</a>
                         }
                     </div>
                     <div class="rating">
-                        @if (rating1 != null)
+                        @if (rating3 != null)
                         {
                             <div>
-                                <span class="fa fa-star checked"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
-                            </div> <a href="#rating1" style="text-decoration:underline">@rating1.Count ratings</a>
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                                <span class="far fa-star"></span>
+                                <span class="far fa-star"></span>
+                            </div> <a href="#rating3" style="text-decoration:underline">@rating3.Count ratings</a>
+                        }
+                    </div>
+                    <div class="rating">
+                        @if (rating4 != null)
+                        {
+                            <div>
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                                <span class="far fa-star"></span>
+                            </div> <a href="#rating4" style="text-decoration:underline">@rating4.Count ratings</a>
+                        }
+                    </div>
+                    <div class="rating">
+                        @if (rating5 != null)
+                        {
+                            <div>
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                            </div> <a href="#rating5" style="text-decoration:underline">@rating5.Count ratings</a>
                         }
                     </div>
                 </div>
@@ -222,7 +206,7 @@
                                     {
                                         if (j <= prod.OverallRating)
                                         {
-                                            <span class="fas checked fa-star"></span>
+                                            <span class="fas fa-star checked"></span>
                                         }
                                         else
                                         {
@@ -272,11 +256,11 @@
                                         {
                                             if (i <= rev.Rating)
                                             {
-                                                <span class="fa fa-star checked"></span>
+                                                <span class="fas fa-star checked"></span>
                                             }
                                             else
                                             {
-                                                <span class="fa fa-star"></span>
+                                                <span class="far fa-star"></span>
                                             }
                                         }
 
@@ -306,11 +290,11 @@
                                         {
                                             if (i <= rev.Rating)
                                             {
-                                                <span class="fa fa-star checked"></span>
+                                                <span class="fas fa-star checked"></span>
                                             }
                                             else
                                             {
-                                                <span class="fa fa-star"></span>
+                                                <span class="far fa-star"></span>
                                             }
                                         }
 
@@ -340,11 +324,11 @@
                                         {
                                             if (i <= rev.Rating)
                                             {
-                                                <span class="fa fa-star checked"></span>
+                                                <span class="fas fa-star checked"></span>
                                             }
                                             else
                                             {
-                                                <span class="fa fa-star"></span>
+                                                <span class="far fa-star"></span>
                                             }
                                         }
 
@@ -374,11 +358,11 @@
                                         {
                                             if (i <= rev.Rating)
                                             {
-                                                <span class="fa fa-star checked"></span>
+                                                <span class="fas fa-star checked"></span>
                                             }
                                             else
                                             {
-                                                <span class="fa fa-star"></span>
+                                                <span class="far fa-star"></span>
                                             }
                                         }
 
@@ -408,11 +392,11 @@
                                         {
                                             if (i <= rev.Rating)
                                             {
-                                                <span class="fa fa-star checked"></span>
+                                                <span class="fas fa-star checked"></span>
                                             }
                                             else
                                             {
-                                                <span class="fa fa-star"></span>
+                                                <span class="far fa-star"></span>
                                             }
                                         }
 
@@ -441,9 +425,6 @@
     }
 
 </p>
-
-
-<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 
 <script>
     var swiper = new Swiper(".mySwiper", {

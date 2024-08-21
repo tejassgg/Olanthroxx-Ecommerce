@@ -280,6 +280,7 @@ namespace WebUI.Controllers
         [HttpPost]
         public JsonResult SellerOrderDetails(CartDetails cartDetails)
         {
+            cartDetails.LoggedInUser = User.Identity.Name;
             var responseTask = hc.PostAsJsonAsync<CartDetails>("API/UpdateSellerOrderDetails", cartDetails);
             responseTask.Wait();
             var result = responseTask.Result;
@@ -294,7 +295,7 @@ namespace WebUI.Controllers
         }
 
         [Authorize(Roles = "BotLogin, Buyer")]
-        public ActionResult BuyerOrderDetails(string orderID)
+        public ActionResult BuyerOrderDetails(string orderID, string from = "")
         {
             CartDetails orderDetails = new CartDetails();
 
@@ -307,6 +308,7 @@ namespace WebUI.Controllers
                 var readResult = result.Content.ReadAsAsync<CartDetails>();
                 readResult.Wait();
                 orderDetails = readResult.Result;
+                ViewBag.From = from;
             }
 
             return View(orderDetails);

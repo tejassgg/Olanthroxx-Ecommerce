@@ -387,7 +387,7 @@ function GetAddress(type) {
 }
 
 function ProceedToPayment(e) {
-
+    $("#proceedToPaymentBtn").attr("disabled", true);
     e.preventDefault();
     var form = $('#paymentPageForm');
     var actionUrl = form.attr('action');
@@ -402,9 +402,10 @@ function ProceedToPayment(e) {
                 CartDetails = [];
                 localStorage.setItem("CartDetails", CartDetails);
                 createToast("success", data.Message);
-                setTimeout(function () { window.location.href = "../Products/BuyerOrderDetails?orderID=" + $('#txtOrderID').val(); }, 5000);
+                setTimeout(function () { window.location.href = "../Products/BuyerOrderDetails?from=Payment&orderID=" + $('#txtOrderID').val();}, 3000);
             }
             else {
+                $("#proceedToPaymentBtn").attr("disabled", true);
                 createToast("error", data.Message);
             }
         }
@@ -607,7 +608,6 @@ function ViewProductDetails(productID) {
             $("#viewProductModal").empty();
             $("#viewProductModal").html(data);
             $("#viewProductModal").removeAttr("style");
-            $("#viewProductModal").showModal();
         }
     });
 }
@@ -630,3 +630,12 @@ function DeleteProduct(id) {
         });
     }
 };
+
+
+function CloseProdModal() {
+    var prodModal = document.getElementById('viewProductModal');
+    $("#viewProductModal").empty();
+    prodModal.close();
+    $("#viewProductModal").attr("style", "display: none;");
+};
+

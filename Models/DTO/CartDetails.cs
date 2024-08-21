@@ -12,13 +12,14 @@ namespace Models.DTO
         public Guid OrderID { get; set; }
         [DisplayName("Total Amount")]
         public decimal TotalAmount { get; set; }
-        [DisplayName("Order Date")]
+        [DisplayName("Placed On")]
         public DateTime OrderDate { get; set; }
-        [DisplayName("Last Updated Date")]
+        [DisplayName("Last Updated")]
         public DateTime? ModifiedDate { get; set; }
         public int TotalQuantity { get; set; }
         public List<OrderDetails> lstOrderDetails { get; set; }
         public string OrderStatus { get; set; }
+        public string LoggedInUser { get; set; }
     }
 
     public class TempCartDetails

@@ -16,10 +16,19 @@
 {
     @Html.AntiForgeryToken()
 
-<div class="addProduct_Form_Div">
+<div class="buyerOrderDetails_Div">
 
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @{
+        if (ViewBag.From == "Payment")
+        {
+            <div class="row_Input orderPlaced">
+                <img src="~/Content/Images/Successful.gif" width="45px" />
+                <h2>Order Placed Successfully</h2>
+            </div>
+        }
+    }
     <div class="row_Input">
         <div class="form_Input">
             @Html.LabelFor(model => model.OrderID, htmlAttributes: new { @class = "form_Control" })
@@ -59,7 +68,7 @@
                     <th>Image</th>
                     <th>Quantity</th>
                     <th>Amount</th>
-                    <th>Order Status</th>
+                    <th>Status</th>
                     <th>Last Updated</th>
                     <th>Action</th>
                 </tr>
@@ -82,11 +91,11 @@
                         <td>@cart.OrderStatus</td>
                         @if (cart.ModifiedDate != null)
                         {
-                            <td>@Convert.ToDateTime(Model.ModifiedDate).ToShortDateString()</td>
+                            <td>@Convert.ToDateTime(Model.ModifiedDate)</td>
                         }
                         else
                         {
-                            <td>NA</td>
+                            <td>--</td>
                         }
                         @if (cart.IsReviewed)
                         {
@@ -95,20 +104,20 @@
                         else if (cart.OrderStatus == "Delivered")
                         {
                             <td>
-                                <button class="btn-warning writeReviewBtn" onclick="AddReview('@Model.OrderID', '@cart.ProductID', '@cart.ProductName')">Write Review</button>
+                                <button class="btn-warning writeReviewBtn" onclick="AddReview('@Model.OrderID', '@cart.ProductID', '@cart.ProductName')"><i class="fa-solid fa-pen-nib"></i> Review</button>
                             </td>
                         }
                         else
                         {
                             <td>
-                                <button disabled class="btn-warning writeReviewBtn" onclick="AddReview('@Model.OrderID', '@cart.ProductID', '@cart.ProductName')">Write Review</button>
+                                <button disabled class="btn-warning writeReviewBtn" style="cursor:not-allowed; opacity:0.8" onclick="AddReview('@Model.OrderID', '@cart.ProductID', '@cart.ProductName')"><i class="fa-solid fa-pen-nib"></i> Review</button>
                             </td>
                         }
                     </tr>
                 }
             </tbody>
         </table>
-        <button class="login_Submit addProduct_Btn" onclick="PrintOrderSummary(event)">Print Order Summary</button>
+        <button class="login_Submit addProduct_Btn" onclick="PrintOrderSummary(event)"><i class="fa-solid fa-print"></i> Order Summary</button>
     }
     else
     {

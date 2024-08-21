@@ -150,12 +150,14 @@
     <Content Include="Content\CSS\Product.css" />
     <Content Include="Content\flickity.css" />
     <Content Include="Content\Images\AddTheatre.png" />
+    <Content Include="Content\Images\OrderOnItsWay.gif" />
     <Content Include="Content\Images\Product.png" />
     <Content Include="Content\Images\Products\379002798Walmart-Aalu.jpg" />
     <Content Include="Content\Images\Products\sgg1400-OrganicLettuce-8681.jpg" />
     <Content Include="Content\Images\Products\walmart-OrganicTomato-7265.jpg" />
     <Content Include="Content\Images\Products\walmart-OrganicTomato-7274.png" />
     <Content Include="Content\Images\Products\walmart-OrganicTomato-7802.jpeg" />
+    <Content Include="Content\Images\Successful.gif" />
     <Content Include="Content\Images\Theatres\tejassgg-CarnivalCinemas-5698.png" />
     <Content Include="Content\Images\Theatres\tejassgg-HumaCinemas-5968.jpg" />
     <Content Include="Content\Images\Theatres\tejassgg-MayaCinemas-2784.jpg" />

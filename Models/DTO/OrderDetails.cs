@@ -27,6 +27,7 @@ namespace Models.DTO
         public bool IsReviewed { get; set; }
         public int? ShippingAddressID { get; set; }
         public int? BilllingAddressID { get; set; }
+        public string SoldBy { get; set; }
     }
 
     public class LstOrderDetailsForSeller 

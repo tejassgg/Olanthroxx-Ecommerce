@@ -277,6 +277,7 @@ namespace WebAPI.Controllers
         [Route("API/GetUserDetailsByUserID/{username}")]
         public IHttpActionResult GetUserDetailsByUserID(string username)
         {
+            string TempOrderStatus = "";
             LstOrderDetails orders = new LstOrderDetails();
 
             orders.UserDetails = new UserDetails();
@@ -307,7 +308,8 @@ namespace WebAPI.Controllers
                 obj.lstOrderDetails = new List<OrderDetails>();
                 obj.lstOrderDetails = (from obj2 in entities.tblOrderDetails
                                        join obj1 in entities.tblProducts on obj2.ProductID equals obj1.ProductID
-                                       where obj2.OrderID == item.OrderID
+                                       join obj3 in entities.tblMasCommonTypes on obj2.OrderStatus equals obj3.Code
+                                       where obj2.OrderID == item.OrderID && obj3.MasterType == "OrderStatus"
                                        select new OrderDetails
                                        {
                                            OrderID = obj2.OrderID,
@@ -316,12 +318,30 @@ namespace WebAPI.Controllers
                                            Quantity = obj2.Quantity,
                                            OrderDate = obj2.CreatedDate,
                                            ProductName = obj1.PName,
+                                           OrderStatus = obj3.Description
                                        }).ToList();
 
                 foreach (var ord in obj.lstOrderDetails)
                 {
                     obj.TotalAmount += ord.Amount;
+                    if(obj.lstOrderDetails.Count > 1)
+                    {
+                        if (string.IsNullOrEmpty(TempOrderStatus))
+                        {
+                            TempOrderStatus = ord.OrderStatus;
+                        }
+                        else
+                        {
+                            if (ord.OrderStatus != TempOrderStatus)
+                                obj.OrderStatus = "In Progress";
+                            else
+                                obj.OrderStatus = ord.OrderStatus;
+                        }
+                    }
+                    else
+                        obj.OrderStatus = ord.OrderStatus;
                 }
+                TempOrderStatus = "";
                 obj.OrderID = item.OrderID;
                 obj.OrderDate = item.CreatedDate;
 
@@ -360,7 +380,8 @@ namespace WebAPI.Controllers
                                               ModifiedDate = obj.ModifiedDate,
                                               UserID = obj.UserID,
                                               OrderStatus = obj2.Description,
-                                              ImgPath = obj1.ImgPath
+                                              ImgPath = obj1.ImgPath,
+                                              SoldBy = obj1.SellerName
                                           }).ToList();
 
             if (cartDetail.lstOrderDetails != null && cartDetail.lstOrderDetails.Count > 0)
@@ -475,7 +496,7 @@ namespace WebAPI.Controllers
             if (obj.lstOrderDetails == null)
             {
                 obj.lstOrderDetails = new List<OrderDetails>();
-                obj.lstOrderDetails = GetOrderDetailsByID(obj).lstOrderDetails;
+                obj.lstOrderDetails = GetOrderDetailsByID(obj).lstOrderDetails.Where(a=>a.SoldBy == obj.LoggedInUser).ToList();
             }
             if(obj.lstOrderDetails != null & obj.lstOrderDetails.Count > 0)
             {
@@ -500,7 +521,9 @@ namespace WebAPI.Controllers
                     objEmail.EmailID = entities.tblUserDetails.FirstOrDefault(a => a.AccountID_FK == entities.tblUsers.FirstOrDefault(b => b.UserName == orderDetails.UserID).AccountID).EmailID;
                     objEmail.EmailType = constants.OutForDelivery;
                     objEmail.OrderID = orderDetails.OrderID.ToString();
-                    objEmail.OTP = orderDetails.OTP.ToString();
+                    Random generator = new Random();
+                    objEmail.OTP = generator.Next(0, 1000000).ToString("D6");
+                    orderDetails.OTP = Convert.ToInt32(objEmail.OTP);
                     objEmail.NoOfItems = obj.lstOrderDetails.Sum(a => a.Quantity);
                     accountAPIController.SendEmail(objEmail);
                 }
