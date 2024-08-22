@@ -456,6 +456,7 @@ namespace WebAPI.Controllers
                         SellerOrders.TotalSalesQuantity = SellerOrders.OrderDetails.Sum(a => a.Quantity);
                         SellerOrders.TotalSalesAmount = SellerOrders.OrderDetails.Sum(a => a.Amount);
                         SellerOrders.TotalProducts = entities.tblProducts.Where(a => a.SellerName == sellerName).Count();
+                        SellerOrders.ActiveUsers = entities.tblUsers.Where(a=>a.IsActive == true).Count();
 
                         SellerOrders.OrderDetails = SellerOrders.OrderDetails.GroupBy(a => a.OrderID).Select(obj => new OrderDetails
                         {

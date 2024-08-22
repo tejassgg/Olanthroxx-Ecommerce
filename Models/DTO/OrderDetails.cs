@@ -38,6 +38,7 @@ namespace Models.DTO
         public int TotalSalesQuantity {get; set; }  
         public int TotalSalesAmount { get; set; }
         public int TotalProducts { get; set; }
+        public int ActiveUsers { get; set; }
     }
 
 }

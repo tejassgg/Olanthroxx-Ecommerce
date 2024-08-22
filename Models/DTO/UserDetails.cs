@@ -56,9 +56,13 @@ namespace Models.DTO
         [DisplayName("Full Address")]
         public string FullAddress { get; set; }
 
+        public bool IsActive { get; set; }
+
         public System.DateTime CreatedDate { get; set; }
 
         public UserLoginObject loginObject { get; set; }
+
+        public string UserName {  get; set; }
     }
 
     public class ChangePassword
@@ -81,5 +85,10 @@ namespace Models.DTO
         public System.DateTime CreatedDate { get; set; }
         public string EmailID {get; set;}
         public string Message { get; set; }
+    }
+
+    public class UserManagement
+    {
+        public List<UserDetails> userDetails { get; set; }
     }
 }

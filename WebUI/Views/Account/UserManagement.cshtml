@@ -1,0 +1,82 @@
+﻿@model Models.DTO.UserManagement
+@{
+    ViewBag.Title = "User Management";
+}
+
+<h2 class="page_Header">Manage Users & Rights</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+    </dl>
+</div>
+
+<div class="main-container">
+    <div class="right-container">
+        @if (Model.userDetails != null && Model.userDetails.Count > 0)
+        {
+            <table class="userDetailList_Table">
+                <thead>
+                    <tr>
+                        <th>Sr.</th>
+                        <th>UserName</th>
+                        <th>Full Name</th>
+                        <th>City</th>
+                        <th>Mobile No.</th>
+                        <th>Created On</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 0;
+                        foreach (var usrDet in Model.userDetails)
+                        {
+                            i++;
+                            <tr>
+                                <td><strong>@i</strong></td>
+                                <td>@usrDet.UserName</td>
+                                <td>@usrDet.FirstName  @usrDet.MidName  @usrDet.LastName</td>
+                                <td>@usrDet.City</td>
+                                <td>@usrDet.MobileNo</td>
+                                <td>@usrDet.CreatedDate.ToShortDateString()</td>
+                                 @if (usrDet.IsActive )
+                                 {
+                                    <td><button class="btn-success writeReviewBtn" id="@usrDet.UserName" onclick="UpdateUserStatus('@usrDet.UserName')"><i class="fas fa-edit"></i> Active</button></td> 
+                                 }
+                                 else { 
+                                     <td><button class="btn-primary writeReviewBtn" id="@usrDet.UserName" onclick="UpdateUserStatus('@usrDet.UserName')"><i class="fas fa-edit"></i> In Active</button></td>
+                                 }
+
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            if (User.IsInRole("BotLogin") || User.IsInRole("Seller"))
+            {
+                <center><p>Oops..!! No Orders Found.., <a href="~/Products/PromoteYourProducts">Click Here</a> To Promote Your Products</p></center>
+            }
+        }
+    </div>
+</div>
+
+<p>
+    @Html.ActionLink("Back", "Index", "Products")
+</p>
+
+
+<style>
+
+    hr {
+        border: 1.25px solid black;
+    }
+
+    .right-container h2 {
+        margin-top: 5px;
+        padding: 5px;
+    }
+</style>

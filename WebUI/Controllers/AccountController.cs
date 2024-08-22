@@ -400,5 +400,38 @@ namespace WebUI.Controllers
             return Json(new {IsSuccess = false, ErrorMsg = "Some Error has Occures While Processing Your Request."}, JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize(Roles = "Admin, BotLogin")]
+        public ActionResult UserManagement()
+        {
+            UserManagement obj = new UserManagement();
+            var responseTask = hc.GetAsync("API/Account/GetUserDetailListForAdmin");
+            responseTask.Wait();
+            var result = responseTask.Result;
+
+            if (result.IsSuccessStatusCode)
+            {
+                var readResult = result.Content.ReadAsAsync<UserManagement>();
+                readResult.Wait();
+                obj = readResult.Result;
+            }
+
+            return View(obj);
+        }
+
+        [Authorize(Roles = "Admin, BotLogin")]
+        public JsonResult UpdateActiveStatus(string userName) 
+        {
+            var responseTask = hc.GetAsync("API/Account/UpdateActiveStatus/" + userName );
+            responseTask.Wait();
+            var result = responseTask.Result;
+
+            if (result.IsSuccessStatusCode){
+                return Json(new { IsSuccess = true }, JsonRequestBehavior.AllowGet);
+            }
+            else{
+                return Json(new { Message = "Some Error Occured While Updating The Status." }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 }

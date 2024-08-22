@@ -229,6 +229,7 @@
     <Content Include="Views\BookTicket\AddNewScreen.cshtml" />
     <Content Include="Views\BookTicket\ScreenDetails.cshtml" />
     <Content Include="Views\Products\CommonValidationPrinter.cshtml" />
+    <Content Include="Views\Account\UserManagement.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

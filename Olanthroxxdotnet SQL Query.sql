@@ -2,10 +2,16 @@ USE Olanthroxxx
 
 select  * From tblProduct
 Select * from tblForgotPasswordHistory
-Select * from tblUserDetails
-Select * from tblUser
+Select * from tblUserDetails order by AccountID_FK
+Select * from tblUser order by AccountID
 select * from tblProductReview
-select  * From tblProduct where ProductID in (24, 6)
+select  * From tblProduct where SellerName = 'cooldude69'
+
+--UPDATE tblUserDetails Set City = 'Pune', State = 'Maharashtra', PinCode = '410014' where AccountID_FK = '10035'
+
+--INSERT into tblUserDetails values (10008, 'walmart', '', '', '6504047707', 'tejassgg1@gmail.com', '', 'Maharashtra', 'Thane', '400072', 'Type H1,Build No. 15,5th Floor,Udaygiri  IIT Campus.Powai, Mumbai-76', '2023-01-22', null )
+
+--DELETE from tblUser where AccountID = 10006
 
 Select * from tblOrderDetails
 select * from tblTempCartDetails
@@ -14,7 +20,7 @@ select  * From tblProduct
 select * from tblOrderDetails where OrderID = '22804605-5579-4f99-b015-08ac49fb2290' and OrderStatus !=4
 
 --UPDATE tblOrderDetails Set OrderStatus = 4 WHERE OrderID = 'ff52bc8f-fcc9-4dc2-9920-652bdf4f4fad' and ProductID = 6
-
+--UPDATE tblUser SET IsActive = 0 where UserName in ('sgg1400', 'tvirangana')
 
 select * from tblTheaterDetails
 select * from tblMovieDetails

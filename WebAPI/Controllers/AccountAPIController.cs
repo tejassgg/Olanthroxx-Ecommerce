@@ -447,5 +447,55 @@ namespace WebAPI.Controllers
 
             return BadRequest();
         }
+
+        [HttpGet]
+        [Route("API/Account/GetUserDetailListForAdmin")]
+        public IHttpActionResult GetUserDetailListForAdmin() 
+        {
+            UserManagement objUser = new UserManagement();
+            objUser.userDetails = new List<UserDetails>();
+
+            objUser.userDetails = (from obj in  entities.tblUsers 
+                     join obj1 in entities.tblUserDetails on obj.AccountID equals obj1.AccountID_FK
+                     select new UserDetails
+                     {
+                         UserName = obj.UserName,
+                         IsActive = obj.IsActive == true ? true : false,
+                         FirstName = obj1.FirstName,
+                         MidName = obj1.MidName,
+                         LastName = obj1.LastName,
+                         CreatedDate = obj.CreatedDate,
+                         City = obj1.City,
+                         MobileNo = obj1.MobileNo,
+                     }).OrderBy(a=>a.CreatedDate).ToList();
+
+            if (objUser.userDetails.Count > 0)
+            {
+                return  Ok(objUser);
+            }
+
+            return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("API/Account/UpdateActiveStatus/{userName}")]
+        public IHttpActionResult UpdateActiveStatus(string userName)
+        {
+            if (!string.IsNullOrEmpty(userName))
+            {
+                var user = entities.tblUsers.FirstOrDefault(a => a.UserName == userName);
+                if (user != null)
+                {
+                    user.IsActive = !user.IsActive;
+                    int success = entities.SaveChanges();
+                    if (success > 0) {
+                        return Ok();
+                    }
+                }
+                else
+                    return BadRequest();
+            }
+            return BadRequest();
+        }
     }
 }
