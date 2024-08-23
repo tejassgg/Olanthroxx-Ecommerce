@@ -63,6 +63,7 @@ namespace Models.DTO
         public UserLoginObject loginObject { get; set; }
 
         public string UserName {  get; set; }
+        public string UserType { get; set; }
     }
 
     public class ChangePassword

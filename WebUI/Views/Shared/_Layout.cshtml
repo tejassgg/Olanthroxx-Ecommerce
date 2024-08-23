@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link href="~/Scripts/tablesort.js"/>
 </head>
 <body style=" background-color: aliceblue; padding-top: -50px; padding-bottom: -20px;">
 
@@ -33,32 +34,21 @@
             <ul class="list-items">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    if (User.IsInRole("Admin") || User.IsInRole("BotLogin") || User.IsInRole("Seller"))
-                    {
-                        if (User.IsInRole("Seller"))
-                        {
-                            <li><a href="~/Products/Index?userType=Seller"><i class="fas fa-home"></i>My Products</a></li>
-                        }
-                        else if (User.IsInRole("BotLogin"))
-                        {
-                            <li><a href="~/Products/Index?userType=BotLogin"><i class="fas fa-home"></i>Super Admin Products</a></li>
-                        }
-                        else if (User.IsInRole("Admin"))
-                        {
-                            <li><a href="~/Products/Index?userType=Admin"><i class="fas fa-home"></i>Admin Products</a></li>
-                        }
-                    }
+                    //<li><a href="~/Products/Index">@Url.Content(User.Identity.) My Products</a></li>  -- Add Profile Photo And Name
+
                     if (User.IsInRole("Seller"))
                     {
                         <li><a href="~/Account/SellerProfile"><i class="fas fa-user-alt"></i>Seller Dashboard</a></li>
-                        <li><a href="~/BookTicket/TheatreDetails"><i class="fa fa-film"></i>My Theatre</a></li>
+                        <li><a href="~/Products/Index"><i class="fas fa-home"></i>My Products</a></li>
+                        <li><a href="~/BookTicket/TheatreDetails"><i class="fa fa-film"></i>Manage Theatre</a></li>
                     }
-                    else if (User.IsInRole("BotLogin"))
+                    else if (User.IsInRole("Admin"))
                     {
-                        /*<li><a href="~/Account/SellerProfile"><i class="fas fa-user-alt"></i>Seller -  @User.Identity.Name</a></li>*/
+                        <li><a href="~/Account/AdminDashboard"><i class="fas fa-user-alt"></i>Admin Dashboard</a></li>
                         <li><a href="~/Account/SellerProfile"><i class="fas fa-user-alt"></i>Seller Dashboard</a></li>
-                        <li><a href="~/BookTicket/TheatreDetails"><i class="fa fa-film"></i>My Theatre</a></li>
-                        <li><a href="~/Products/UserIndex?userType=BotLogin"><i class="fas fa-shopping-cart"></i>Shop</a></li>
+                        <li><a href="~/Products/Index"><i class="fas fa-home"></i>Manage All Products</a></li>
+                        <li><a href="~/BookTicket/TheatreDetails"><i class="fa fa-film"></i>Manage Theatre</a></li>
+                        <li><a href="~/Products/UserIndex"><i class="fas fa-shopping-cart"></i>Shop</a></li>
                         <li><a href="~/Account/UserProfile"><i class="fas fa-user-alt"></i>Orders & Returns</a></li>
                     }
                     else

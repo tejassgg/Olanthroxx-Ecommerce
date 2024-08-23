@@ -84,11 +84,23 @@
             <table class="userProfile_Table">
                 <thead>
                     <tr>
-                        <th>Serial No.</th>
                         <th>OrderID</th>
-                        <th>Amount</th>
-                        <th>Placed On</th>
-                        <th>Status</th>
+                        <th>Amount(&#8377;)</th>
+                        <th hidden="hidden"></th>
+                        <th style="cursor: pointer; display: flex; justify-content: center; align-items: center; ">
+                            Placed On &nbsp;
+                            <div class="filterArrow">
+                                <i id="sortAscDate" class="fa-solid fa-angle-up"></i>
+                                <i id="sortDescDate" class="fa-solid fa-angle-down"></i>
+                            </div>
+                        </th>
+                        <th style="cursor: pointer; display: flex; justify-content: center; align-items: center; ">
+                            Status &nbsp;
+                            <div class="filterArrow">
+                                <i id="sortAscStatus" class="fa-solid fa-angle-up"></i>
+                                <i id="sortDescStatus" class="fa-solid fa-angle-down"></i>
+                            </div>
+                        </th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -99,22 +111,22 @@
                         {
                             i++;
                             <tr>
-                                <td>@i</td>
                                 <td>@cartDetails.OrderID</td>
                                 <td>@cartDetails.TotalAmount</td>
-                                <td>@cartDetails.OrderDate.ToString("dd-MM-yyyy")</td>
-                                <td>@cartDetails.OrderStatus</td>
-                            <td>
-                                @if (cartDetails.OrderStatus == "Delivered")
-                                {
-                                    <button class="btn-success writeReviewBtn" onclick='window.location.href = "/Products/BuyerOrderDetails?orderID=@cartDetails.OrderID"'><i class="fas fa-eye"></i> View</button>
-                                }
-                                else
-                                {
-                                    <button class="btn-warning writeReviewBtn" onclick='window.location.href = "/Products/BuyerOrderDetails?orderID=@cartDetails.OrderID"'><i class="fas fa-eye"></i> View</button>
-                                }
+                                <td hidden="hidden">@cartDetails.OrderDate</td>
+                                <td>@cartDetails.OrderDate.ToString("MMMM dd, yyyy")</td>
+                                <td data-val="@cartDetails.OrderStatusID">@cartDetails.OrderStatus</td>
+                                <td>
+                                    @if (cartDetails.OrderStatus == "Delivered")
+                                    {
+                                        <button class="btn-success writeReviewBtn" onclick='window.location.href = "/Products/BuyerOrderDetails?orderID=@cartDetails.OrderID"'><i class="fas fa-eye"></i> View</button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn-warning writeReviewBtn" onclick='window.location.href = "/Products/BuyerOrderDetails?orderID=@cartDetails.OrderID"'><i class="fas fa-eye"></i> View</button>
+                                    }
 
-                            </td>
+                                </td>
                             </tr>
                         }
                     }
@@ -127,7 +139,7 @@
             {
                 <center><p>No Orders, <a href="~/Products/Index">Click Here</a> Check Your Products</p></center>
             }
-            else if (User.IsInRole("Buyer") || User.IsInRole("BotLogin"))
+            else if (User.IsInRole("Buyer") || User.IsInRole("Admin"))
             {
                 <center><p>No Orders, <a href="~/Products/userIndex">Click Here</a> to shop Now.</p></center>
             }
@@ -148,3 +160,60 @@
         padding: 5px;
     }
 </style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#sortAscDate").attr("disabled", true).css("opacity", "0.7");
+        $("#sortAscStatus").attr("disabled", true).css("opacity", "0.7");
+
+        function sortTable(order, type) {
+            var rows = $('.userProfile_Table tbody tr').get();
+            rows.sort(function (a, b) {
+                var A;
+                var B;
+                if (type == 'Date') {
+                    A = new Date($(a).children('td').eq(2).text());
+                    B = new Date($(b).children('td').eq(2).text());                    
+                }
+                else if (type == 'Status') {
+                    A = $(a).children('td').eq(4).attr("data-val");
+                    B = $(b).children('td').eq(4).attr("data-val");
+                }    
+                if (order === 'asc') {
+                    return A - B;
+                } else {
+                    return B - A;
+                }
+            });
+            $.each(rows, function (index, row) {
+                $('.userProfile_Table').children('tbody').append(row);
+            });
+        }
+
+        $('#sortAscDate').click(function () {
+            $("#sortAscDate").attr("disabled", true).css("opacity","0.7");
+            $("#sortDescDate").attr("disabled", false).css("opacity", "1");
+            sortTable('asc', 'Date');
+        });
+
+        $('#sortDescDate').click(function () {
+            $("#sortDescDate").attr("disabled", true).css("opacity", "0.7");
+            $("#sortAscDate").attr("disabled", false).css("opacity", "1");
+            sortTable('desc', 'Date');
+        });
+
+        $('#sortAscStatus').click(function () {
+            $("#sortAscStatus").attr("disabled", true).css("opacity", "0.7");
+            $("#sortDescStatus").attr("disabled", false).css("opacity", "1");
+            sortTable('asc', 'Status');
+        });
+
+        $('#sortDescStatus').click(function () {
+            $("#sortDescStatus").attr("disabled", true).css("opacity", "0.7");
+            $("#sortAscStatus").attr("disabled", false).css("opacity", "1");
+            sortTable('desc', 'Status');
+        });
+    });
+
+</script>
+

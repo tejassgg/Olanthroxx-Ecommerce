@@ -65,7 +65,6 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Image</th>
                     <th>Quantity</th>
                     <th>Amount</th>
                     <th>Status</th>
@@ -77,15 +76,17 @@
                 @foreach (var cart in Model.lstOrderDetails)
                 {
                     <tr>
-                        <td> &nbsp; @cart.ProductName</td>
-                        @if (!string.IsNullOrEmpty(cart.ImgPath))
-                        {
-                            <td><img src="@Url.Content(cart.ImgPath)" width="60px" height="60px"></td>
-                        }
-                        else
-                        {
-                            <td><img src="~/Content/Images/Product.png" width="60px" height="60px"></td>
-                        }
+                        <td>
+                            @if (!string.IsNullOrEmpty(cart.ImgPath))
+                            {
+                                <img src="@Url.Content(cart.ImgPath)" width="60px" height="60px">
+                            }
+                            else
+                            {
+                                <img src="~/Content/Images/Product.png" width="60px" height="60px">
+                            }
+                            &nbsp; @cart.ProductName
+                        </td>
                         <td>@cart.Quantity</td>
                         <td>@cart.Amount</td>
                         <td>@cart.OrderStatus</td>

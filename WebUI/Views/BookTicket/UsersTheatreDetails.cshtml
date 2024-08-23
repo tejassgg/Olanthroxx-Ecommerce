@@ -1,11 +1,11 @@
 ﻿@model List<Models.DTO.TheaterDetails>
 
 @{
-    ViewBag.Title = "Theatre Details";
+    ViewBag.Title = "Manage - Theatres";
     var i = 0;
 }
 
-<h2 class="page_Header">My Theatres</h2>
+<h2 class="page_Header">@ViewBag.Title</h2>
 <div class="all_Theatre">
     <div class="all_theatreDetails">
         @foreach (var item in Model)

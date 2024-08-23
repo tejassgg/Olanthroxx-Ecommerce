@@ -19,6 +19,7 @@ namespace Models.DTO
         public int TotalQuantity { get; set; }
         public List<OrderDetails> lstOrderDetails { get; set; }
         public string OrderStatus { get; set; }
+        public int OrderStatusID { get; set; }
         public string LoggedInUser { get; set; }
     }
 

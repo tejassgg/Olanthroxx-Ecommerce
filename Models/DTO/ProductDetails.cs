@@ -10,16 +10,23 @@ namespace Models.DTO
     public class ProductDetails
     {
         public int ProductID { get; set; }
+
+        [DisplayName("Name")]
         public string PName { get; set; }
+
+        [DisplayName("Title")]
         public string PTitle { get; set; }
+
+        [DisplayName("Description")]
         public string PDescription { get; set; }
+
         public string Category { get; set; }
         public int CategoryID_FK { get; set; }
         public int Quantity { get; set; }
         public int Price { get; set; }
-        [DisplayName("Created Date")]
+        [DisplayName("Placed On")]
         public DateTime CreatedDate { get; set; }
-        [DisplayName("Last Updated Date")]
+        [DisplayName("Last Updated")]
         public Nullable<DateTime> ModifiedDate { get; set; }
         public string SellerName { get; set; }
         public string ImgPath { get; set; }

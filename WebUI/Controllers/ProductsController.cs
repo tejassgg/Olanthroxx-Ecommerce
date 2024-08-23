@@ -24,7 +24,7 @@ namespace WebUI.Controllers
             BaseAddress = new Uri(ConfigurationManager.AppSettings["WebAPIURL"].ToString())
         };
 
-        [Authorize(Roles ="Admin, BotLogin, Seller, Buyer")]
+        [Authorize(Roles ="Admin, Seller, Buyer")]
         public ActionResult Index(string userType)
         {
             if (User.Identity.IsAuthenticated)
@@ -59,7 +59,7 @@ namespace WebUI.Controllers
             return View(ProductList);
         }
 
-        //[Authorize(Roles = "Buyer, BotLogin")]
+        //[Authorize(Roles = "Buyer")]
         [AllowAnonymous]
         public ActionResult UserIndex(string userType)
         {
@@ -107,14 +107,14 @@ namespace WebUI.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin, BotLogin, Seller")]
+        [Authorize(Roles = "Admin, Seller")]
         public ActionResult AddProduct()
         {
             ViewBag.CategoryList = GetCategoryList();
             return View();
         }
 
-        [Authorize(Roles = "Admin, BotLogin, Seller")]
+        [Authorize(Roles = "Admin, Seller")]
         [HttpPost]
         public ActionResult AddProduct(ProductDetails obj, HttpPostedFileBase imgFile)
         {
@@ -180,7 +180,7 @@ namespace WebUI.Controllers
             return View("AddProduct");
         }
         
-        [Authorize(Roles = "Admin, BotLogin, Seller")]
+        [Authorize(Roles = "Admin, Seller")]
         public ActionResult EditProduct(int id)
         {
             var obj = GetProductDetailsbyID(id);
@@ -188,7 +188,7 @@ namespace WebUI.Controllers
             return View(obj);
         }
 
-        [Authorize(Roles = "Admin, BotLogin, Seller")]
+        [Authorize(Roles = "Admin, Seller")]
         [HttpPost]
         public ActionResult EditProduct(ProductDetails obj, HttpPostedFileBase imgFile)
         {
@@ -238,7 +238,7 @@ namespace WebUI.Controllers
             return View("AddProduct");
         }
 
-        [Authorize(Roles = "Admin, BotLogin, Seller")]
+        [Authorize(Roles = "Admin, Seller")]
         public JsonResult DeleteProduct(int id)
         {
             var responseTask = hc.GetAsync("API/DeleteProduct/" + id + "/" + User.Identity.Name);
@@ -256,7 +256,7 @@ namespace WebUI.Controllers
             return View(obj);
         }
 
-        [Authorize(Roles = "BotLogin, Seller")]
+        [Authorize(Roles = "Admin, Seller")]
         public ActionResult SellerOrderDetails(string orderID)
         {
             CartDetails orderDetails = new CartDetails();
@@ -276,7 +276,7 @@ namespace WebUI.Controllers
             return View(orderDetails);
         }
 
-        [Authorize(Roles = "BotLogin, Seller")]
+        [Authorize(Roles = "Admin, Seller")]
         [HttpPost]
         public JsonResult SellerOrderDetails(CartDetails cartDetails)
         {
@@ -294,7 +294,7 @@ namespace WebUI.Controllers
 
         }
 
-        [Authorize(Roles = "BotLogin, Buyer")]
+        [Authorize(Roles = "Admin, Buyer")]
         public ActionResult BuyerOrderDetails(string orderID, string from = "")
         {
             CartDetails orderDetails = new CartDetails();

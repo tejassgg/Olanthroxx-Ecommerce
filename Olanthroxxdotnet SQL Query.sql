@@ -1,5 +1,7 @@
 USE Olanthroxxx
 
+select * from tblUserSessionDetails
+
 select  * From tblProduct
 Select * from tblForgotPasswordHistory
 Select * from tblUserDetails order by AccountID_FK
@@ -11,7 +13,7 @@ select  * From tblProduct where SellerName = 'cooldude69'
 
 --INSERT into tblUserDetails values (10008, 'walmart', '', '', '6504047707', 'tejassgg1@gmail.com', '', 'Maharashtra', 'Thane', '400072', 'Type H1,Build No. 15,5th Floor,Udaygiri  IIT Campus.Powai, Mumbai-76', '2023-01-22', null )
 
---DELETE from tblUser where AccountID = 10006
+--UPDATE tblUser SET LoginType = 'Admin' where AccountID IN (10012, 10035)
 
 Select * from tblOrderDetails
 select * from tblTempCartDetails

@@ -1,12 +1,10 @@
 ﻿@model Models.DTO.LstOrderDetailsForSeller
 @{
-    ViewBag.Title = "Seller - Dashboard";
-    var OngoingOrders = Model.OrderDetails; //.Where(a => a.OrderStatus != "Delivered").ToList();
-
-    //var AvgSales = TotalSalesAmount / (Model.OrderDetails.OrderByDescending(a => a.OrderDate).FirstOrDefault().OrderDate.Month - DateTime.Now.Month);
+    ViewBag.Title = "Admin - Dashboard";
+    var OngoingOrders = Model.OrderDetails;
 }
 
-<h2 class="page_Header">Overview</h2>
+<h2 class="page_Header">Admin Dashboard</h2>
 
 <div>
     <hr />
@@ -37,10 +35,14 @@
                 <h4>Total Returns &nbsp;<i class="fas fa-refresh"></i></h4>
                 <h5><strong>0</strong></h5>
             </a>
+            <a class="seller_Blocks" href="~/Account/UserManagement">
+                <h4>Active Users &nbsp;<i class="fas fa-refresh"></i></h4>
+                <h5><strong>@Model.ActiveUsers  </strong></h5>
+            </a>
         </div>
     </div>
     <div class="right-container">
-        <h2> Ongoing Orders</h2>
+        <h2> Current Orders</h2>
         @if (OngoingOrders != null && OngoingOrders.Count > 0)
         {
             <table class="sellerOrderList_Table">

@@ -18,7 +18,7 @@
             <table class="userDetailList_Table">
                 <thead>
                     <tr>
-                        <th>Sr.</th>
+                        <th>#</th>
                         <th>UserName</th>
                         <th>Full Name</th>
                         <th>City</th>
@@ -56,7 +56,7 @@
         }
         else
         {
-            if (User.IsInRole("BotLogin") || User.IsInRole("Seller"))
+            if (User.IsInRole("Admin") || User.IsInRole("Seller"))
             {
                 <center><p>Oops..!! No Orders Found.., <a href="~/Products/PromoteYourProducts">Click Here</a> To Promote Your Products</p></center>
             }

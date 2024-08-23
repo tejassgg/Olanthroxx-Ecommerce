@@ -35,18 +35,18 @@ namespace WebAPI.Controllers
                     {
                         list = entities.tblProducts.OrderByDescending(a => a.ProductID).Where(a => a.SellerName == userName).ToList();
                     }
-                    else if (userType == "admin" || userType == "botlogin")
+                    else if (userType == "admin")
                     {
                         list = entities.tblProducts.OrderByDescending(a => a.ProductID).ToList();
                     }
                 }
                 else if (type == "shop")
                 {
-                    if (userType == "botlogin")
+                    if (userType == "admin")
                     {
                         list = entities.tblProducts.Where(a => a.SellerName != userName).OrderByDescending(a => a.ProductID).ToList();
                     }
-                    else if (userType == "buyer" || userType == "notlogged")
+                    else if (userType == "buyer")
                     {
                         list = entities.tblProducts.OrderByDescending(a => a.ProductID).ToList();
                     }
@@ -248,17 +248,14 @@ namespace WebAPI.Controllers
         {
             var User = entities.tblUsers.Where(a=>a.UserName == username).FirstOrDefault();
             var item = new tblProduct();
-            if (User != null && (User.LoginType == constants.BotLoginType || User.LoginType != "Buyer") )
+            if (User != null && (User.LoginType == "Admin" || User.LoginType != "Buyer") )
             {
                 if(User.LoginType == "Buyer") { return BadRequest("You are Not a Seller nor the Product Owner. So, you cannot delete the product."); }
-                if (User.LoginType == constants.BotLoginType)
-                {
+                
+                if (User.LoginType == "Admin")
                     item = entities.tblProducts.Where(a => a.ProductID == id).FirstOrDefault();
-                }
                 else
-                {
                     item = entities.tblProducts.Where(a => a.ProductID == id && a.SellerName == username).FirstOrDefault();
-                }
 
                 if (item != null)
                 {
@@ -318,7 +315,7 @@ namespace WebAPI.Controllers
                                            Quantity = obj2.Quantity,
                                            OrderDate = obj2.CreatedDate,
                                            ProductName = obj1.PName,
-                                           OrderStatus = obj3.Description
+                                           OrderStatus = obj3.Description,
                                        }).ToList();
 
                 foreach (var ord in obj.lstOrderDetails)
@@ -344,6 +341,7 @@ namespace WebAPI.Controllers
                 TempOrderStatus = "";
                 obj.OrderID = item.OrderID;
                 obj.OrderDate = item.CreatedDate;
+                obj.OrderStatusID = Convert.ToInt32(item.OrderStatus);
 
                 orders.CartDetails.Add(obj);
             }
@@ -415,7 +413,7 @@ namespace WebAPI.Controllers
                 var User = entities.tblUsers.Where(a => a.UserName == sellerName).FirstOrDefault();
                 if (User != null)
                 {
-                    if (User.LoginType == "Seller" || User.LoginType == "BotLogin")
+                    if (User.LoginType == "Seller" || User.LoginType == "Admin")
                     {
                         SellerOrders.UserDetails = new UserDetails();
                         SellerOrders.UserDetails = entities.tblUserDetails.Where(a => a.AccountID_FK == User.AccountID).

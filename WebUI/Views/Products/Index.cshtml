@@ -1,10 +1,17 @@
 ﻿@model IEnumerable<Models.DTO.ProductDetails>
 
 @{
-    ViewBag.Title = ViewBag.userType + " - Products";
+    ViewBag.Title = "Manage - Products";
 }
 
-<h2 class="page_Header">Products(@Model.ToList().Count())</h2>
+@if (User.IsInRole("Admin"))
+{
+    <h2 class="page_Header">Manage - All Products(@Model.ToList().Count())</h2>
+}
+else
+{
+    <h2 class="page_Header">Manage - Products(@Model.ToList().Count())</h2>
+}
 <div>
     <hr />
     <dl class="dl-horizontal">
@@ -44,7 +51,7 @@
         </thead>
 
         <tbody>
-            @foreach (var item in Model.OrderBy(a=>a.Quantity))
+            @foreach (var item in Model.OrderBy(a => a.Quantity))
             {
                 <tr>
                     <td style="display:none;">
@@ -81,4 +88,4 @@
     <dialog id="viewProductModal" style="display:none;" class="viewProductModal">
     </dialog>
 </div>
-    
+

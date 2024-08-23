@@ -1,91 +1,103 @@
 ﻿@model Models.DTO.ProductDetails
 
 @{
-    ViewBag.Title = "Update Product";
+    ViewBag.Title = "Edit - " + Model.PName;
 }
 
+<h2 class="page_Header">Update @Model.PName</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+    </dl>
+</div>
 
 @using (Html.BeginForm("EditProduct", "Products", FormMethod.Post, new { enctype = "multipart/form-data", @class = "addProduct_Form" }))
 {
     @Html.AntiForgeryToken()
 
-<div class="addProduct_Form_Div">
-    <h2>Update Product Details</h2>
-    @Html.ValidationSummary(true, "", new { @class = "text-danger", @id = "txtValidationSummary" })
-    @Html.HiddenFor(model => model.ProductID)
-    <div class="row_Input">
-        <div class="form_Input">
-            @Html.EditorFor(model => model.PName, new { htmlAttributes = new { @class = "form_Control" } })
-        </div>
-        <div class="form_Input">
-            @Html.EditorFor(model => model.PTitle, new { htmlAttributes = new { @class = "form_Control" } })
-        </div>
-    </div>
-
-    <div class="row_Input">
-        <div class="form_Input full_Address">
-            @Html.TextAreaFor(model => model.PDescription, new { @class = "form_Control", @rows = "4", @cols = "100", @placeholder = "Description", @required = "required" })
-        </div>
-    </div>
-
-    <div class="row_Input">
-        <div class="form_Input">
-            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form_Control" } })
-        </div>
-        <div class="form_Input">
-            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form_Control" } })
-        </div>
-    </div>
-
-    <div class="row_Input">
-        <input type="file" name="imgFile" class="login_Submit" value="@Model.ImgPath" onchange="getImagePreview(event)" />
-        <div class="form_Input">
-            <select name="CategoryID_FK" class="form_Control">
-                @foreach (var item in ViewBag.CategoryList)
-                {
-                    if (item.Value == Model.CategoryID_FK)
-                    {
-                        <option value="@item.Value" selected="selected">@item.Text </option>
-                    }
-                    else
-                    {
-                        <option value="@item.Value">@item.Text</option>
-                    }
-                }
-            </select>
-        </div>
-    </div>
-
-    @Html.HiddenFor(a => a.ImgPath)
-
-    @if (!string.IsNullOrEmpty(Model.ImgPath))
-    {
+    <div class="addProduct_Form_Div">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger", @id = "txtValidationSummary" })
+        @Html.HiddenFor(model => model.ProductID)
         <div class="row_Input">
-            <div class="form_Input" id="imgPreview">
-                <img src="@Url.Content(Model.ImgPath)" width="200px" />
+            <div class="form_Input">
+                @Html.LabelFor(model => model.PName, htmlAttributes: new { @class = "form_Control" })
+                @Html.EditorFor(model => model.PName, new { htmlAttributes = new { @class = "form_Control" } })
             </div>
-            
+            <div class="form_Input">
+                @Html.LabelFor(model => model.PTitle, htmlAttributes: new { @class = "form_Control" })
+                @Html.EditorFor(model => model.PTitle, new { htmlAttributes = new { @class = "form_Control" } })
+            </div>
         </div>
-    }
-    else
-    {
+
         <div class="row_Input">
-            <div class="form_Input" id="imgPreview">
-                <img src="~/Content/Images/Product.png" width="200px" />
+            <div class="form_Input full_Address">
+                @Html.LabelFor(model => model.PDescription, htmlAttributes: new { @class = "form_Control" })
+                @Html.TextAreaFor(model => model.PDescription, new { @class = "form_Control", @rows = "4", @cols = "100", @placeholder = "Description", @required = "required" })
             </div>
-            
         </div>
-    }
 
-    <div class="row_Input">
-        <div class="form_Input hidden" id="imgPreview"></div>
+        <div class="row_Input">
+            <div class="form_Input">
+                @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "form_Control" })
+                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form_Control" } })
+            </div>
+            <div class="form_Input">
+                @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "form_Control" })
+                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form_Control" } })
+            </div>
+        </div>
+
+        <div class="row_Input">
+            <input type="file" name="imgFile" class="login_Submit" value="@Model.ImgPath" onchange="getImagePreview(event)" />
+            <div class="form_Input">
+                @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "form_Control" })
+                <select name="CategoryID_FK" class="form_Control">
+                    @foreach (var item in ViewBag.CategoryList)
+                    {
+                        if (item.Value == Model.CategoryID_FK)
+                        {
+                            <option value="@item.Value" selected="selected">@item.Text </option>
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        @Html.HiddenFor(a => a.ImgPath)
+
+        @if (!string.IsNullOrEmpty(Model.ImgPath))
+        {
+            <div class="row_Input">
+                <div class="form_Input" id="imgPreview">
+                    <img src="@Url.Content(Model.ImgPath)" width="250px" />
+                </div>
+
+            </div>
+        }
+        else
+        {
+            <div class="row_Input">
+                <div class="form_Input" id="imgPreview">
+                    <img src="~/Content/Images/Product.png" width="250px" />
+                </div>
+
+            </div>
+        }
+
+        <div class="row_Input">
+            <div class="form_Input hidden" id="imgPreview"></div>
+        </div>
+
+        @Html.HiddenFor(model => model.ImgPath)
+
+        <button type="submit" class="login_Submit addProduct_Btn">Update</button>
+
     </div>
-
-    @Html.HiddenFor(model => model.ImgPath)
-
-    <button type="submit" class="login_Submit addProduct_Btn">Update</button>
-
-</div>
 }
 
 <div>

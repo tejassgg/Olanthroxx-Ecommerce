@@ -16,7 +16,7 @@ using WebAPI.Helpers;
 
 namespace WebUI.Controllers
 {
-    [AllowAnonymous]
+    
     public class AccountController : Controller
     {
         readonly Constants constants = new Constants();
@@ -24,17 +24,19 @@ namespace WebUI.Controllers
         {
             BaseAddress = new Uri(ConfigurationManager.AppSettings["WebAPIURL"].ToString())
         };
-
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult Login()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public ActionResult Login(UserLoginObject userDetails)
         {
@@ -58,7 +60,7 @@ namespace WebUI.Controllers
                 {
                     FormsAuthentication.SetAuthCookie(userDetails.UserName, false);  //rememberMe functionality
                     
-                    if (userDetails.LoginType == "Admin" || userDetails.LoginType == "BotLogin" || userDetails.LoginType == "Seller")
+                    if (userDetails.LoginType == "Admin" || userDetails.LoginType == "Seller")
                     {
                         return RedirectToAction("Index", "Products", new { userType = userDetails.LoginType });
                     }
@@ -71,6 +73,7 @@ namespace WebUI.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult Register()
         {
             if(User.Identity.IsAuthenticated)
@@ -82,6 +85,7 @@ namespace WebUI.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public ActionResult Register(UserDetails userDetails)
         {
@@ -138,6 +142,7 @@ namespace WebUI.Controllers
             return View(lstOrderDetails);
         }
 
+        [AllowAnonymous]
         public List<CommonDropDown> GetLoginTypeList()
         {
             var loginList = new List<CommonDropDown>();
@@ -155,6 +160,7 @@ namespace WebUI.Controllers
             return loginList;
         }
 
+        [AllowAnonymous]
         public List<CommonDropDown> GetStateList()
         {
             var stateList = new List<CommonDropDown>();
@@ -172,6 +178,7 @@ namespace WebUI.Controllers
             return stateList;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public JsonResult GetCityList(int stateID)
         {
@@ -190,6 +197,7 @@ namespace WebUI.Controllers
             return Json(stateList, JsonRequestBehavior.AllowGet);
         }
         
+
         public ActionResult SellerProfile()
         {
             LstOrderDetailsForSeller lstOrderDetailsSeller = new LstOrderDetailsForSeller();
@@ -207,6 +215,7 @@ namespace WebUI.Controllers
             return View(lstOrderDetailsSeller);
         }
 
+        [AllowAnonymous]
         public ActionResult VerifyUser(string userName)
         {
             var responseTask = hc.GetAsync("API/Account/VerifyUser/" + userName);
@@ -236,21 +245,25 @@ namespace WebUI.Controllers
             return View("CommonValidationPrinter");
         }
 
+        [AllowAnonymous]
         public ActionResult CommonValidationPrinter()
         {
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult ContactUs()
         {
             return RedirectToAction("ContactUs", "Services");
         }
 
+        [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public ActionResult ForgotPassword(ForgotPassword objForgot)
         {
@@ -284,6 +297,7 @@ namespace WebUI.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult VerifyForgotPassword(string userName, string key)
         {
             ForgotPassword objForgot = new ForgotPassword();
@@ -320,6 +334,7 @@ namespace WebUI.Controllers
             return View(objForgot);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public ActionResult VerifyForgotPassword(ForgotPassword objForgot)
         {
@@ -363,11 +378,13 @@ namespace WebUI.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult ChangePassword()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public ActionResult ChangePassword(ChangePassword objChange)
         {
@@ -400,7 +417,7 @@ namespace WebUI.Controllers
             return Json(new {IsSuccess = false, ErrorMsg = "Some Error has Occures While Processing Your Request."}, JsonRequestBehavior.AllowGet);
         }
 
-        [Authorize(Roles = "Admin, BotLogin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult UserManagement()
         {
             UserManagement obj = new UserManagement();
@@ -413,12 +430,12 @@ namespace WebUI.Controllers
                 var readResult = result.Content.ReadAsAsync<UserManagement>();
                 readResult.Wait();
                 obj = readResult.Result;
+                obj.userDetails = obj.userDetails.Where(a => a.UserType != "Admin").ToList();
             }
-
             return View(obj);
         }
 
-        [Authorize(Roles = "Admin, BotLogin")]
+        [Authorize(Roles = "Admin")]
         public JsonResult UpdateActiveStatus(string userName) 
         {
             var responseTask = hc.GetAsync("API/Account/UpdateActiveStatus/" + userName );
@@ -431,6 +448,24 @@ namespace WebUI.Controllers
             else{
                 return Json(new { Message = "Some Error Occured While Updating The Status." }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [Authorize(Roles="Admin")]
+        public ActionResult AdminDashboard()
+        {
+            LstOrderDetailsForSeller lstOrderDetailsSeller = new LstOrderDetailsForSeller();
+
+            var responseTask = hc.GetAsync("API/GetSellerDashBoardDetails/" + User.Identity.Name);
+            responseTask.Wait();
+            var result = responseTask.Result;
+
+            if (result.IsSuccessStatusCode)
+            {
+                var readResult = result.Content.ReadAsAsync<LstOrderDetailsForSeller>();
+                readResult.Wait();
+                lstOrderDetailsSeller = readResult.Result;
+            }
+            return View(lstOrderDetailsSeller);
         }
 
     }

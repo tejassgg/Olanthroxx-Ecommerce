@@ -181,6 +181,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\Payment\Payment.js" />
+    <Content Include="Scripts\tablesort.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -230,6 +231,7 @@
     <Content Include="Views\BookTicket\ScreenDetails.cshtml" />
     <Content Include="Views\Products\CommonValidationPrinter.cshtml" />
     <Content Include="Views\Account\UserManagement.cshtml" />
+    <Content Include="Views\Account\AdminDashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
