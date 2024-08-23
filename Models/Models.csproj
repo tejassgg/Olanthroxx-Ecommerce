@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTO\Address.cs" />
+    <Compile Include="DTO\AdminDashboard.cs" />
     <Compile Include="DTO\BudgetData.cs" />
     <Compile Include="DTO\CartDetails.cs" />
     <Compile Include="DTO\CategoryDetails.cs" />

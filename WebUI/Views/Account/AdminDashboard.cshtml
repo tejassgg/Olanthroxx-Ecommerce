@@ -1,7 +1,6 @@
-﻿@model Models.DTO.LstOrderDetailsForSeller
+﻿@model Models.DTO.AdminDashboard
 @{
     ViewBag.Title = "Admin - Dashboard";
-    var OngoingOrders = Model.OrderDetails;
 }
 
 <h2 class="page_Header">Admin Dashboard</h2>
@@ -11,6 +10,7 @@
     <dl class="dl-horizontal">
     </dl>
 </div>
+
 
 <div class="main-container">
     <div class="main-left-conatiner">
@@ -37,60 +37,117 @@
             </a>
             <a class="seller_Blocks" href="~/Account/UserManagement">
                 <h4>Active Users &nbsp;<i class="fas fa-refresh"></i></h4>
-                <h5><strong>@Model.ActiveUsers  </strong></h5>
+                <h5><strong>@Model.ActiveUsersCount  </strong></h5>
             </a>
         </div>
     </div>
-    <div class="right-container">
-        <h2> Current Orders</h2>
-        @if (OngoingOrders != null && OngoingOrders.Count > 0)
-        {
-            <table class="sellerOrderList_Table">
+
+    <br />
+    <br />
+    <br />
+
+    <div class="bottom_Container">
+        <div class="bottom_Left">
+            <table class="product_List_Table">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>OrderID</th>
-                        <th>Amount</th>
-                        <th>Placed On</th>
-                        <th>OrderStatus</th>
-                        <th>Action</th>
+                        <th style="display: none;">
+                            ProductID
+                        </th>
+                        <th style="display:none;">
+                            Category ID
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th class="mobile_Hidden">
+                            Category
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                        <th class="mobile_Hidden">
+                            Price (&#8377;)
+                        </th>
+                        <th>
+                            Action
+                        </th>
                     </tr>
                 </thead>
-                <tbody>
-                    @{
-                        int i = 0;
-                        foreach (var ordDetails in OngoingOrders)
-                        {
-                            i++;
-                            <tr>
-                                <td><strong>@i</strong></td>
-                                <td>@ordDetails.OrderID.ToString()</td>
-                                <td><strong>@ordDetails.Amount</strong></td>
-                                <td>@ordDetails.OrderDate.ToShortDateString()</td>
-                                <td>@ordDetails.OrderStatus</td>
-                                <!--<td><a href="~/Products/SellerOrderDetails?orderID=@ordDetails.OrderID&productID=@ordDetails.ProductID"><i class="fas fa-edit"></i></a></td>-->
-                                <!--<td><a href="~/Products/SellerOrderDetails?orderID=@ordDetails.OrderID"><i class="fas fa-edit"></i></a></td>-->
-                                 @if (ordDetails.OrderStatus == "Delivered")
-                                 {
-                                    <td><button class="btn-success writeReviewBtn" onclick='window.location.href = "/Products/SellerOrderDetails?orderID=@ordDetails.OrderID"'><i class="fas fa-edit"></i> Edit</button></td> 
-                                 }
-                                 else { 
-                                     <td><button class="btn-warning writeReviewBtn" onclick='window.location.href = "/Products/SellerOrderDetails?orderID=@ordDetails.OrderID"'><i class="fas fa-edit"></i> Edit</button></td>
-                                 }
 
-                            </tr>
-                        }
+                <tbody>
+                    @foreach (var item in Model.productList.OrderBy(a => a.Quantity))
+                    {
+                        <tr>
+                            <td style="display:none;">
+                                @Html.HiddenFor(modelItem => item.ProductID)
+                            </td>
+                            <td style="display:none;">
+                                @Html.DisplayFor(modelItem => item.CategoryID_FK)
+                            </td>
+                            <td>
+                                @item.PName
+                            </td>
+                            <td class="mobile_Hidden">
+                                @Html.DisplayFor(modelItem => item.Category)
+                            </td>
+                            <td class="mobile_Hidden">
+                                @Html.DisplayFor(modelItem => item.Quantity)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("EditProduct", new { id = item.ProductID })"><i class="fas fa-pen"></i></a> &nbsp; |
+                                <a onclick="ViewProductDetails(@item.ProductID)"><i class="fas fa-info"></i></a> &nbsp; |
+                                <a onclick="DeleteProduct(@item.ProductID)"><i class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
-        }
-        else
-        {
-            if (User.IsInRole("Admin") || User.IsInRole("Seller"))
+        </div>
+        <div class="bottom_Right">
+            @if (Model.userList != null && Model.userList.Count > 0)
             {
-                <center><p>Oops..!! No Orders Found.., <a href="~/Products/PromoteYourProducts">Click Here</a> To Promote Your Products</p></center>
+                <table class="userDetailList_Table">
+                    <thead>
+                        <tr>
+                            <th>UserName</th>
+                            <th>User Type</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 0;
+                            foreach (var usrDet in Model.userList)
+                            {
+                                i++;
+                                <tr>
+                                    <td>@usrDet.UserName</td>
+                                    <td>@usrDet.UserType</td>
+                                    @if (usrDet.IsActive)
+                                    {
+                                        <td><button class="btn-success writeReviewBtn" id="@usrDet.UserName" onclick="UpdateUserStatus('@usrDet.UserName')"><i class="fas fa-edit"></i> Active</button></td>
+
+                                    }
+                                    else
+                                    {
+                                        <td><button class="btn-primary writeReviewBtn" id="@usrDet.UserName" onclick="UpdateUserStatus('@usrDet.UserName')"><i class="fas fa-edit"></i> In Active</button></td>
+                                    }
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
             }
-        }
+            else
+            {
+                <center><p>No Users Found..!!</p></center>
+            }
+        </div>
     </div>
 </div>
 

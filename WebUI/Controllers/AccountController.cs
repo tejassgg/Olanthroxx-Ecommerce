@@ -453,19 +453,19 @@ namespace WebUI.Controllers
         [Authorize(Roles="Admin")]
         public ActionResult AdminDashboard()
         {
-            LstOrderDetailsForSeller lstOrderDetailsSeller = new LstOrderDetailsForSeller();
+            AdminDashboard adminData = new AdminDashboard();
 
-            var responseTask = hc.GetAsync("API/GetSellerDashBoardDetails/" + User.Identity.Name);
+            var responseTask = hc.GetAsync("API/Account/GetAdminDashboardDetails/" + User.Identity.Name);
             responseTask.Wait();
             var result = responseTask.Result;
 
             if (result.IsSuccessStatusCode)
             {
-                var readResult = result.Content.ReadAsAsync<LstOrderDetailsForSeller>();
+                var readResult = result.Content.ReadAsAsync<AdminDashboard>();
                 readResult.Wait();
-                lstOrderDetailsSeller = readResult.Result;
+                adminData = readResult.Result;
             }
-            return View(lstOrderDetailsSeller);
+            return View(adminData);
         }
 
     }

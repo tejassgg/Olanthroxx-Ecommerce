@@ -508,20 +508,20 @@ option {
 }
 
 .product_List_Table {
-    width: 75%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: #eeeded;
     border-radius: 10px;
-    padding: 2.5% 0;
+    padding: 20px 0px;
 }
 
 .product_List_Table tr {
     width: 100%;
     display: grid;
-    grid-template-columns: 25% 25% 15% 15% 20%;
+    grid-template-columns: 25% 30% 10% 15% 20%;
     border-radius: 12px;
 }
 
@@ -529,7 +529,7 @@ option {
 .product_List_Table td, .product_List_Table th {
     width: 100%;
     font-size: 18px;
-    padding: 15px;
+    padding: 10px 15px;
 }
 
 .product_List_Table td:nth-child(n+5), .product_List_Table th:nth-child(n+5){
@@ -718,8 +718,13 @@ table thead tr {
 .sellerOrderList_Table td, .orderDetails_Seller td, .orderDetails_Buyer td, .userProfile_Table td, .userDetailList_Table td {
     width: 100%;
     font-size: 18px;
-    padding: 15px;
+    padding: 10px;
     text-align: center;
+}
+
+.userDetailList_Table td:first-child {
+    text-align:left;
+    padding-left:30px;
 }
 
 
@@ -765,15 +770,15 @@ table thead tr {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: azure;
+    background-color: #eeeded;
     border-radius: 10px;
-    padding: 2.5% 0;
+    padding: 20px 0px;
 }
 
 .userDetailList_Table tr {
-    width: 80%;
+    width: 100%;
     display: grid;
-    grid-template-columns: 5% 15% 25% 20% 10% 13% 12%;
+    grid-template-columns: 40% 30% 30%;
     border-radius: 12px;
 }
 
@@ -989,6 +994,46 @@ table thead tr {
 }
 
 
+.bottom_Container {
+    height: fit-content;
+    display: grid;
+    grid-template-columns: 69% 30%;
+    column-gap: 1%;
+    background-color: azure;
+    border-radius: 10px;
+    padding: 1%;
+}
+
+.bottom_Left, .bottom_Right {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.product_List_Table tbody, .userDetailList_Table tbody{
+    margin-top:15px;
+    height: 380px;
+    overflow-y:auto;
+}
+
+.product_List_Table tbody::-webkit-scrollbar-track, .userDetailList_Table tbody::-webkit-scrollbar-track  {
+    border-radius: 8px;
+    background-color: transparent;
+}
+
+.product_List_Table tbody::-webkit-scrollbar, .userDetailList_Table tbody::-webkit-scrollbar {
+    width: 8px;
+    border-radius: 8px;
+    background-color: #F5F5F5;
+}
+
+.product_List_Table tbody::-webkit-scrollbar-thumb, .userDetailList_Table tbody::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: #383838;
+    opacity: 0.8;
+}
+
+
+
 @media screen and (max-width: 530px) {
     .notifications {
         width: 95%;
@@ -1083,9 +1128,9 @@ table thead tr {
         margin: 3px;
     }
 
-        .register_Form_Body .form_Input input, .register_Form_Body .form_Input select {
-            font-size: 12px;
-        }
+    .register_Form_Body .form_Input input, .register_Form_Body .form_Input select {
+        font-size: 12px;
+    }
 
     .addProduct_Form_Div {
         width: 100%;

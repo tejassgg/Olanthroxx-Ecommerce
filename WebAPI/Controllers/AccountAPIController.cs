@@ -493,5 +493,86 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+
+        [HttpGet]
+        [Route("API/Account/GetAdminDashboardDetails/{currentUser}")]
+        public IHttpActionResult GetAdminDashboardDetails(string currentUser)
+        {
+            try
+            {
+                AdminDashboard adminData = new AdminDashboard();
+                adminData.userList = new List<UserDetails>();
+                adminData.productList = new List<ProductDetails>();
+
+                adminData.userList = (from obj in entities.tblUsers
+                                      join obj1 in entities.tblUserDetails on obj.AccountID equals obj1.AccountID_FK
+                                      where obj.UserName != currentUser
+                                      select new UserDetails
+                                      {
+                                          UserName = obj.UserName,
+                                          IsActive = obj.IsActive == true ? true : false,
+                                          FirstName = obj1.FirstName,
+                                          MidName = obj1.MidName,
+                                          LastName = obj1.LastName,
+                                          CreatedDate = obj.CreatedDate,
+                                          City = obj1.City,
+                                          MobileNo = obj1.MobileNo,
+                                          UserType = obj.LoginType
+                                      }).OrderBy(a => a.UserType).ToList();
+
+                adminData.productList = (from obj in entities.tblProducts
+                                         select new ProductDetails
+                                         {
+                                             Quantity = obj.Quantity,
+                                             ProductID = obj.ProductID,
+                                             CategoryID_FK = obj.CategoryID_FK,
+                                             PName = obj.PName,
+                                             Price = obj.Price,
+                                             Category = entities.tblCategories.Where(a => a.CategoryID == obj.CategoryID_FK).Select(a => a.CategoryType).FirstOrDefault()
+                                         }).ToList();
+
+
+                List<OrderDetails> orderDetails = new List<OrderDetails>();
+                orderDetails = (from obj in entities.tblOrderDetails
+                                join obj2 in entities.tblProducts on obj.ProductID equals obj2.ProductID
+                                select new OrderDetails
+                                {
+                                    OrderID = obj.OrderID,
+                                    ProductID = obj2.ProductID,
+                                    Amount = obj.Amount,
+                                    Quantity = obj.Quantity,
+                                    OrderDate = obj.CreatedDate,
+                                    ProductName = obj2.PName,
+                                    OrderStatus = entities.tblMasCommonTypes.Where(a => a.MasterType == "OrderStatus" && a.Code == obj.OrderStatus).FirstOrDefault().Description,
+                                    ModifiedDate = obj.ModifiedDate,
+                                    ShippingAddressID = obj.ShippingAddressID_FK,
+                                    BilllingAddressID = obj.BillingAddressID_FK
+                                }).OrderByDescending(a => a.OrderStatus).ToList();
+
+                adminData.TotalSales = orderDetails.Count();
+                adminData.TotalSalesQuantity = orderDetails.Sum(a => a.Quantity);
+                adminData.TotalSalesAmount = orderDetails.Sum(a => a.Amount);
+                adminData.TotalProducts = adminData.productList.Count();
+                adminData.ActiveUsersCount = entities.tblUsers.Where(a => a.IsActive == true).Count();
+
+                orderDetails = orderDetails.GroupBy(a => a.OrderID).Select(obj => new OrderDetails
+                {
+                    OrderID = obj.Max(a => a.OrderID),
+                    Amount = obj.Sum(a => a.Amount),
+                    Quantity = obj.Sum(a => a.Quantity),
+                    OrderStatus = obj.Max(a => a.OrderStatus),
+                    OrderDate = obj.Max(a => a.OrderDate),
+                }).ToList();
+
+
+
+                return Ok(adminData);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Some Error Occured While Fetching the Details..!");
+                throw;
+            }
+        }
     }
 }

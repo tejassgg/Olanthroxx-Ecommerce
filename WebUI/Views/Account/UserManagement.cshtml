@@ -40,13 +40,15 @@
                                 <td>@usrDet.City</td>
                                 <td>@usrDet.MobileNo</td>
                                 <td>@usrDet.CreatedDate.ToShortDateString()</td>
-                                 @if (usrDet.IsActive )
-                                 {
-                                    <td><button class="btn-success writeReviewBtn" id="@usrDet.UserName" onclick="UpdateUserStatus('@usrDet.UserName')"><i class="fas fa-edit"></i> Active</button></td> 
-                                 }
-                                 else { 
-                                     <td><button class="btn-primary writeReviewBtn" id="@usrDet.UserName" onclick="UpdateUserStatus('@usrDet.UserName')"><i class="fas fa-edit"></i> In Active</button></td>
-                                 }
+                                @if (usrDet.IsActive)
+                                {
+                                    <td><button class="btn-success writeReviewBtn" id="@usrDet.UserName" onclick="UpdateUserStatus('@usrDet.UserName')"><i class="fas fa-edit"></i> Active</button></td>
+
+                                }
+                                else
+                                {
+                                    <td><button class="btn-primary writeReviewBtn" id="@usrDet.UserName" onclick="UpdateUserStatus('@usrDet.UserName')"><i class="fas fa-edit"></i> In Active</button></td>
+                                }
 
                             </tr>
                         }
@@ -56,10 +58,7 @@
         }
         else
         {
-            if (User.IsInRole("Admin") || User.IsInRole("Seller"))
-            {
-                <center><p>Oops..!! No Orders Found.., <a href="~/Products/PromoteYourProducts">Click Here</a> To Promote Your Products</p></center>
-            }
+            <center><p>No Users Found..!!</p></center>
         }
     </div>
 </div>
