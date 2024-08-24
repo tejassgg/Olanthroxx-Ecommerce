@@ -24,6 +24,22 @@ namespace WebUI.Controllers
         {
             BaseAddress = new Uri(ConfigurationManager.AppSettings["WebAPIURL"].ToString())
         };
+
+        public string GetUserType()
+        {
+            if (User != null && User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Admin"))
+                    return "Admin";
+                else if (User.IsInRole("Seller"))
+                    return "Seller";
+                else
+                    return "Buyer";
+            }
+            else
+                return "notlogged";
+        }
+
         [AllowAnonymous]
         public ActionResult Index()
         {
@@ -33,6 +49,17 @@ namespace WebUI.Controllers
         [AllowAnonymous]
         public ActionResult Login()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                var userType = GetUserType();
+                if (userType == "Admin")
+                    return RedirectToAction("AdminDashboard", "Account");
+                else if(userType == "Seller")
+                    return RedirectToAction("SellerProfile", "Account", new { userType = userType });
+                else
+                    return RedirectToAction("UserIndex", "Products", new { userType = userType });
+
+            }
             return View();
         }
 
@@ -60,13 +87,14 @@ namespace WebUI.Controllers
                 {
                     FormsAuthentication.SetAuthCookie(userDetails.UserName, false);  //rememberMe functionality
                     
-                    if (userDetails.LoginType == "Admin" || userDetails.LoginType == "Seller")
-                    {
-                        return RedirectToAction("Index", "Products", new { userType = userDetails.LoginType });
-                    }
+                    if (userDetails.LoginType == "Admin")
+                        return RedirectToAction("AdminDashboard", "Account");
+                    else if(userDetails.LoginType == "Seller")
+                        return RedirectToAction("SellerProfile", "Account", new { userType = userDetails.LoginType });
+
+                    //Buyer
                     if (userDetails.tempCartDetails != null)
                         ViewBag.tempCartDetails = userDetails.tempCartDetails.TempCartDetailsString;
-
                     return RedirectToAction("UserIndex", "Products", new { userType = userDetails.LoginType });
                 }
             }

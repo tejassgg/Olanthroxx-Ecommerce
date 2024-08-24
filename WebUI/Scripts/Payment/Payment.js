@@ -640,27 +640,32 @@ function CloseProdModal() {
 };
 
 function UpdateUserStatus(userName) {
-    $.ajax({
-        type: "POST",
-        url: "/Account/UpdateActiveStatus?userName=" + userName,
-        success: function (data) {
-            if (data.IsSuccess) {
-                if ($("#" + userName).hasClass("btn-success")) {
-                    $("#" + userName).removeClass("btn-success");
-                    $("#" + userName).addClass("btn-primary");
-                    $("#" + userName).html('<i class="fas fa-edit"></i> In Active')
-                    createToast("info", "User's is now InActive.");
+    if (confirm("Do you want to change the status?")) {
+        $.ajax({
+            type: "POST",
+            url: "/Account/UpdateActiveStatus?userName=" + userName,
+            success: function (data) {
+                if (data.IsSuccess) {
+                    if ($("#" + userName).hasClass("btn-success")) {
+                        $("#" + userName).removeClass("btn-success");
+                        $("#" + userName).addClass("btn-primary");
+                        $("#" + userName).html('<i class="fas fa-edit"></i> In Active')
+                        createToast("info", "User's is now InActive.");
+                    }
+                    else if ($("#" + userName).hasClass("btn-primary")) {
+                        $("#" + userName).removeClass("btn-primary");
+                        $("#" + userName).addClass("btn-success");
+                        $("#" + userName).html('<i class="fas fa-edit"></i> Active')
+                        createToast("success", "User's is now Active.");
+                    }
                 }
-                else if ($("#" + userName).hasClass("btn-primary")) {
-                    $("#" + userName).removeClass("btn-primary");
-                    $("#" + userName).addClass("btn-success");
-                    $("#" + userName).html('<i class="fas fa-edit"></i> Active')
-                    createToast("success", "User's is now Active.");
+                else {
+                    createToast("error", data.Message);
                 }
             }
-            else {
-                createToast("error", data.Message);
-            }
-        }
-    });
+        });
+    }
+    else {
+        createToast("error", "Request Cancelled.");
+    }
 };

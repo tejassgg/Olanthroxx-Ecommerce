@@ -23,81 +23,44 @@ namespace WebUI.Controllers
         {
             BaseAddress = new Uri(ConfigurationManager.AppSettings["WebAPIURL"].ToString())
         };
+        AccountController accControl = new AccountController();
 
-        [Authorize(Roles ="Admin, Seller, Buyer")]
+
+        [Authorize(Roles = "Admin, Seller")]
         public ActionResult Index(string userType)
         {
-            if (User.Identity.IsAuthenticated)
+            if (!User.Identity.IsAuthenticated)
             {
-                string[] listRoles = new string[5];
-
-                var rsTask = hc.GetAsync("API/Account/GetRoles/" + User.Identity.Name);
-                rsTask.Wait();
-                var rs = rsTask.Result;
-
-                if (rs.IsSuccessStatusCode)
-                {
-                    var readResult = rs.Content.ReadAsAsync<string[]>();
-                    readResult.Wait();
-                    listRoles = readResult.Result;
-                }
-                userType = listRoles[0];
+                return RedirectToAction("LogOut", "Account");
             }
             else
             {
-                return RedirectToAction("LogOut", "Account");
+                if (User.IsInRole("Admin"))
+                    return RedirectToAction("AdminDashboard", "Account");
+                else { //Seller
+                    var ProductList = GetProductDetails(userType);
+                    ViewBag.userType = userType;
+                    return View(ProductList);
+                }                    
             }
-
-            if (string.IsNullOrEmpty(userType))
-                return RedirectToAction("LogOut", "Account");
-
-            if (User.IsInRole("Buyer"))
-                return RedirectToAction("UserIndex");
-
-            var ProductList = GetProductDetails(userType.ToLower(), "index");
-            ViewBag.userType = userType;
-            return View(ProductList);
+                
         }
 
-        //[Authorize(Roles = "Buyer")]
         [AllowAnonymous]
         public ActionResult UserIndex(string userType)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                string[] listRoles = new string[5];
-
-                var rsTask = hc.GetAsync("API/Account/GetRoles/" + User.Identity.Name);
-                rsTask.Wait();
-                var rs = rsTask.Result;
-
-                if (rs.IsSuccessStatusCode)
-                {
-                    var readResult = rs.Content.ReadAsAsync<string[]>();
-                    readResult.Wait();
-                    listRoles = readResult.Result;
-                }
-                userType = listRoles[0];
-            }
-
-
-            if (userType == "Seller")
-            {
-                return RedirectToAction("LogOut", "Account");
-            }
-            else if (string.IsNullOrEmpty(userType)) {
-                userType = "notlogged";
-            }
-            else
-            {
-                userType = "notlogged";
-            }
-
             try
             {
+                userType = accControl.GetUserType();
+
+                if (userType == "Admin")
+                    return RedirectToAction("AdminDashboard", "Account");
+                else if (userType == "Seller")
+                    return RedirectToAction("LogOut", "Account");
+
                 var ProductList = new List<ProductDetails>();
                 ViewBag.FilterCategoryList = GetCategoryList();
-                ProductList = GetProductDetails(userType.ToLower(), "shop");
+                ProductList = GetProductDetails(userType);
                 return View(ProductList);
             }
             catch (Exception ex)
@@ -122,7 +85,7 @@ namespace WebUI.Controllers
 
             string path = "";
             Random random = new Random();
-            int rnd = random.Next(1000,9999);
+            int rnd = random.Next(1000, 9999);
             if (imgFile != null && imgFile.ContentLength > 0)
             {
                 string ext = Path.GetExtension(imgFile.FileName);
@@ -131,7 +94,7 @@ namespace WebUI.Controllers
                     {
                         try
                         {
-                            string tempFileName = User.Identity.Name + "-" + obj.PName.Replace(" ","") + "-" + rnd + ext;
+                            string tempFileName = User.Identity.Name + "-" + obj.PName.Replace(" ", "") + "-" + rnd + ext;
                             path = Path.Combine(Server.MapPath(constants.ProductImagePath), tempFileName);
                             imgFile.SaveAs(path);
                             path = constants.ProductImagePath + "/" + tempFileName;
@@ -179,7 +142,7 @@ namespace WebUI.Controllers
             ViewBag.Message = "Product Additon Failed.!";
             return View("AddProduct");
         }
-        
+
         [Authorize(Roles = "Admin, Seller")]
         public ActionResult EditProduct(int id)
         {
@@ -223,7 +186,7 @@ namespace WebUI.Controllers
                     }
                 }
                 obj.ImgPath = path;
-            }            
+            }
 
             var responseTask = hc.PostAsJsonAsync<ProductDetails>("API/UpdateProduct", obj);
             responseTask.Wait();
@@ -319,7 +282,7 @@ namespace WebUI.Controllers
             return View();
         }
 
-        public List<ProductDetails> GetProductDetails(string userType, string type)
+        public List<ProductDetails> GetProductDetails(string userType)
         {
             var listProducts = new List<ProductDetails>();
 
@@ -330,10 +293,10 @@ namespace WebUI.Controllers
             }
             else
             {
-                userName = "notlogged";
+                userName = userType;
             }
 
-            var responseTask = hc.GetAsync("API/GetProductDetails/" + userType + "/" + userName + "/" + type);
+            var responseTask = hc.GetAsync("API/GetProductDetails/" + userType + "/" + userName);
             responseTask.Wait();
             var result = responseTask.Result;
 
@@ -397,6 +360,7 @@ namespace WebUI.Controllers
             return listOrdStatusList;
         }
 
+        [Authorize(Roles= "Buyer")]
         public ActionResult AddReview(string orderID, int pID, string pName)
         {
             ProductReview obj = new ProductReview
@@ -411,6 +375,7 @@ namespace WebUI.Controllers
             return PartialView(obj);
         }
 
+        [Authorize(Roles = "Buyer")]
         [HttpPost]
         public ActionResult AddReview(ProductReview obj, HttpPostedFileBase imgFile)
         {
@@ -427,7 +392,7 @@ namespace WebUI.Controllers
                     {
                         try
                         {
-                            string tempFileName =obj.PName.Replace(" ", "") + "-" + rnd + ext;
+                            string tempFileName = obj.PName.Replace(" ", "") + "-" + rnd + ext;
                             path = Path.Combine(Server.MapPath(constants.ProductReviewImagePath), tempFileName);
                             imgFile.SaveAs(path);
                             path = constants.ProductReviewImagePath + "/" + tempFileName;

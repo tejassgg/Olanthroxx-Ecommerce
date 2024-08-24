@@ -22,35 +22,17 @@ namespace WebAPI.Controllers
         Constants constants = new Constants();
 
         [HttpGet]
-        [Route("API/GetProductDetails/{userType}/{userName}/{type}")]
-        public IHttpActionResult GetProductDetails(string userType, string userName, string type)
+        [Route("API/GetProductDetails/{userType}/{userName}")]
+        public IHttpActionResult GetProductDetails(string userType, string userName)
         {
             var list = new List<tblProduct>();
 
             try
             {
-                if (type == "index")
-                {
-                    if (userType == "seller")
-                    {
-                        list = entities.tblProducts.OrderByDescending(a => a.ProductID).Where(a => a.SellerName == userName).ToList();
-                    }
-                    else if (userType == "admin")
-                    {
-                        list = entities.tblProducts.OrderByDescending(a => a.ProductID).ToList();
-                    }
-                }
-                else if (type == "shop")
-                {
-                    if (userType == "admin")
-                    {
-                        list = entities.tblProducts.Where(a => a.SellerName != userName).OrderByDescending(a => a.ProductID).ToList();
-                    }
-                    else if (userType == "buyer")
-                    {
-                        list = entities.tblProducts.OrderByDescending(a => a.ProductID).ToList();
-                    }
-                }
+                if (userType == "Seller")
+                    list = entities.tblProducts.OrderByDescending(a => a.ProductID).Where(a => a.SellerName == userName).ToList();
+                else if (userType == "Buyer" || userType == "notlogged")
+                    list = entities.tblProducts.OrderByDescending(a => a.ProductID).ToList();
             }
             catch (Exception ex)
             {
