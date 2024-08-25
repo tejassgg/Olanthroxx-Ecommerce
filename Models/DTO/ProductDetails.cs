@@ -22,7 +22,7 @@ namespace Models.DTO
 
         public string Category { get; set; }
         public int CategoryID_FK { get; set; }
-        public int Quantity { get; set; }
+        public int Quantity { get; set; }        
         public int Price { get; set; }
         [DisplayName("Placed On")]
         public DateTime CreatedDate { get; set; }
@@ -31,6 +31,7 @@ namespace Models.DTO
         public string SellerName { get; set; }
         public string ImgPath { get; set; }
         public double OverallRating { get; set; }
+        public int ItemsSold { get; set; }
         public List<ProductReview> lstProductReviews { get; set; }
         public List<ProductDetails> LstOtherProducts { get; set; }
     }

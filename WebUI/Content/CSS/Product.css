@@ -502,13 +502,14 @@ option {
 }
 
 .product_list_Container{
+    width: 100%;
     display:flex;
     flex-direction:column;
     align-items: center;
 }
 
 .product_List_Table {
-    width: 100%;
+    width: 90%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -519,6 +520,16 @@ option {
 }
 
 .product_List_Table tr {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 23% 20% 10% 12% 15% 20%;
+    border-radius: 12px;
+}
+
+.adminDash_ProductList {
+    width: 100%;
+}
+.adminDash_ProductList tr {
     width: 100%;
     display: grid;
     grid-template-columns: 25% 30% 10% 15% 20%;
@@ -778,6 +789,13 @@ table thead tr {
 .userDetailList_Table tr {
     width: 100%;
     display: grid;
+    grid-template-columns: 15% 25% 10% 15% 20% 15%;
+    border-radius: 12px;
+}
+
+.adminDash_UserList tr {
+    width: 100%;
+    display: grid;
     grid-template-columns: 40% 30% 30%;
     border-radius: 12px;
 }
@@ -1009,24 +1027,25 @@ table thead tr {
     border-radius: 8px;
 }
 
-.product_List_Table tbody, .userDetailList_Table tbody{
+/*Issue with the height as it hides few rows*/
+.adminDash_ProductList tbody, .userDetailList_Table tbody{ 
     margin-top:15px;
     height: 380px;
     overflow-y:auto;
 }
 
-.product_List_Table tbody::-webkit-scrollbar-track, .userDetailList_Table tbody::-webkit-scrollbar-track  {
+.customScrollBar::-webkit-scrollbar-track {
     border-radius: 8px;
     background-color: transparent;
 }
 
-.product_List_Table tbody::-webkit-scrollbar, .userDetailList_Table tbody::-webkit-scrollbar {
+.customScrollBar::-webkit-scrollbar{
     width: 8px;
     border-radius: 8px;
     background-color: #F5F5F5;
 }
 
-.product_List_Table tbody::-webkit-scrollbar-thumb, .userDetailList_Table tbody::-webkit-scrollbar-thumb {
+.customScrollBar::-webkit-scrollbar-thumb{
     border-radius: 8px;
     background-color: #383838;
     opacity: 0.8;

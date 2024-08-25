@@ -546,12 +546,13 @@ namespace WebAPI.Controllers
                                     OrderStatus = entities.tblMasCommonTypes.Where(a => a.MasterType == "OrderStatus" && a.Code == obj.OrderStatus).FirstOrDefault().Description,
                                     ModifiedDate = obj.ModifiedDate,
                                     ShippingAddressID = obj.ShippingAddressID_FK,
-                                    BilllingAddressID = obj.BillingAddressID_FK
+                                    BilllingAddressID = obj.BillingAddressID_FK,
                                 }).OrderByDescending(a => a.OrderStatus).ToList();
 
                 adminData.TotalSales = orderDetails.Count();
                 adminData.TotalSalesQuantity = orderDetails.Sum(a => a.Quantity);
                 adminData.TotalSalesAmount = orderDetails.Sum(a => a.Amount);
+
                 adminData.TotalProducts = adminData.productList.Count();
                 adminData.ActiveUsersCount = entities.tblUsers.Where(a => a.IsActive == true).Count();
 
@@ -564,6 +565,21 @@ namespace WebAPI.Controllers
                     OrderDate = obj.Max(a => a.OrderDate),
                 }).ToList();
 
+                adminData.monthwiseSales = new List<MonthWiseSales>();
+
+                adminData.monthwiseSales = orderDetails.GroupBy(a => a.OrderDate.Month).Select(obj => new MonthWiseSales
+                {
+                    Month = obj.Max(a => a.OrderDate).Month, //.ToString("MMM")
+                    MonthQuantity = obj.Sum(a => a.Quantity),
+                    MonthAmount = obj.Sum(a => a.Amount),
+                    MonthOrders = obj.Count()
+                }).ToList();
+                adminData.monthwiseSales = adminData.monthwiseSales.OrderByDescending(a => a.Month).ToList();
+
+                adminData.Month = JsonConvert.SerializeObject(adminData.monthwiseSales.Select(a => a.Month).ToList());
+                adminData.MonthAmount = JsonConvert.SerializeObject(adminData.monthwiseSales.Select(a => a.MonthAmount).ToList());
+                adminData.MonthQuantity = JsonConvert.SerializeObject(adminData.monthwiseSales.Select(a => a.MonthQuantity).ToList());
+                adminData.MonthOrders = JsonConvert.SerializeObject(adminData.monthwiseSales.Select(a => a.MonthOrders).ToList());
 
 
                 return Ok(adminData);

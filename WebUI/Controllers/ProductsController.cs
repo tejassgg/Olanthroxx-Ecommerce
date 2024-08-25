@@ -35,7 +35,8 @@ namespace WebUI.Controllers
             }
             else
             {
-                if (User.IsInRole("Admin"))
+                userType = accControl.GetUserType();
+                if (userType == "Admin")
                     return RedirectToAction("AdminDashboard", "Account");
                 else { //Seller
                     var ProductList = GetProductDetails(userType);

@@ -53,6 +53,8 @@ public partial class tblProduct
 
     public Nullable<int> DiscountPer { get; set; }
 
+    public Nullable<int> ItemsSold { get; set; }
+
 
 
     public virtual tblCategory tblCategory { get; set; }

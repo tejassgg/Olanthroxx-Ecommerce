@@ -613,7 +613,7 @@ function ViewProductDetails(productID) {
 }
 
 function DeleteProduct(id) {
-    var con = confirm("Are you Sure?");
+    var con = confirm("Are you Sure? Do you want to delete this product?");
     if (con) {
         $.ajax({
             type: "GET",

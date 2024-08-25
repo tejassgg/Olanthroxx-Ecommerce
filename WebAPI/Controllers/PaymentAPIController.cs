@@ -47,6 +47,7 @@ namespace WebAPI.Controllers
                     var objProduct = entities.tblProducts.Where(a => a.ProductID == order.ProductID).FirstOrDefault();
                     objProduct.Quantity -= order.Quantity;
                     objProduct.ModifiedDate = DateTime.Now;
+                    objProduct.ItemsSold += order.Quantity;
                 }
             }
             else if(paymentDetail.PaymentOf == "MovieTickets" && paymentDetail.movieBooking != null)

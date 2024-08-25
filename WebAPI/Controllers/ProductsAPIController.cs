@@ -57,6 +57,7 @@ namespace WebAPI.Controllers
                     obj.Price = item.Price;
                     obj.SellerName = item.SellerName;
                     obj.ImgPath = item.ImgPath;
+                    obj.ItemsSold = Convert.ToInt32(item.ItemsSold);
 
                     var ratingData = entities.tblProductReviews.Where(a => a.ProductID_FK == obj.ProductID).ToList();
                     if (ratingData != null && ratingData.Count > 0)

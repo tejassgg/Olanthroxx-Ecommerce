@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Manage - Products";
+    var MostSold = Model.ToList().Max(a => a.ItemsSold);
 }
 
 @if (User.IsInRole("Admin"))
@@ -12,6 +13,7 @@ else
 {
     <h2 class="page_Header">Manage - Products(@Model.ToList().Count())</h2>
 }
+
 <div>
     <hr />
     <dl class="dl-horizontal">
@@ -41,6 +43,9 @@ else
                 <th>
                     Quantity
                 </th>
+                <th>
+                    Items Sold
+                </th>
                 <th class="mobile_Hidden">
                     Price (&#8377;)
                 </th>
@@ -50,7 +55,7 @@ else
             </tr>
         </thead>
 
-        <tbody>
+        <tbody class="customScrollBar">
             @foreach (var item in Model.OrderBy(a => a.Quantity))
             {
                 <tr>
@@ -69,6 +74,18 @@ else
                     <td class="mobile_Hidden">
                         @Html.DisplayFor(modelItem => item.Quantity)
                     </td>
+                    @if (item.ItemsSold == MostSold)
+                    {
+                        <td class="mobile_Hidden" style="color:green">
+                            @Html.DisplayFor(modelItem => item.ItemsSold) (Most Sold)
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="mobile_Hidden">
+                            @Html.DisplayFor(modelItem => item.ItemsSold)
+                        </td>
+                    }
                     <td>
                         @Html.DisplayFor(modelItem => item.Price)
                     </td>
@@ -81,6 +98,8 @@ else
             }
         </tbody>
     </table>
+    <br />
+    <br />
 </div>
 
 

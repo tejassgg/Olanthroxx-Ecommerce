@@ -233,6 +233,7 @@
           <Property Name="SellerName" Type="nvarchar" MaxLength="50" />
           <Property Name="ImgPath" Type="nvarchar(max)" />
           <Property Name="DiscountPer" Type="int" />
+          <Property Name="ItemsSold" Type="int" />
         </EntityType>
         <EntityType Name="tblProductReview">
           <Key>
@@ -828,6 +829,7 @@
           <NavigationProperty Name="tblProductReviews" Relationship="OlanthroxxModel.FK_tblProductReview_tblProduct" FromRole="tblProduct" ToRole="tblProductReview" />
           <NavigationProperty Name="tblOrderDetails" Relationship="OlanthroxxModel.FK_tblOrderDetails_tblProduct" FromRole="tblProduct" ToRole="tblOrderDetail" />
           <Property Name="DiscountPer" Type="Int32" />
+          <Property Name="ItemsSold" Type="Int32" />
         </EntityType>
         <Association Name="FK_tblProduct_tblCategory">
           <End Type="OlanthroxxModel.tblCategory" Role="tblCategory" Multiplicity="1" />
@@ -1289,6 +1291,7 @@
           <EntitySetMapping Name="tblProducts">
             <EntityTypeMapping TypeName="OlanthroxxModel.tblProduct">
               <MappingFragment StoreEntitySet="tblProduct">
+                <ScalarProperty Name="ItemsSold" ColumnName="ItemsSold" />
                 <ScalarProperty Name="DiscountPer" ColumnName="DiscountPer" />
                 <ScalarProperty Name="ImgPath" ColumnName="ImgPath" />
                 <ScalarProperty Name="SellerName" ColumnName="SellerName" />

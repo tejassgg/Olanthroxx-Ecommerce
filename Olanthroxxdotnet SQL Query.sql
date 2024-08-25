@@ -13,7 +13,9 @@ select  * From tblProduct where SellerName = 'cooldude69'
 
 --INSERT into tblUserDetails values (10008, 'walmart', '', '', '6504047707', 'tejassgg1@gmail.com', '', 'Maharashtra', 'Thane', '400072', 'Type H1,Build No. 15,5th Floor,Udaygiri  IIT Campus.Powai, Mumbai-76', '2023-01-22', null )
 
---UPDATE tblUser SET LoginType = 'Admin' where AccountID IN (10012, 10035)
+--UPDATE tblProduct SET ItemsSold = 25 where ProductID = 1
+
+select SUM(Quantity) from tblOrderDetails where ProductID = 24
 
 Select * from tblOrderDetails
 select * from tblTempCartDetails
@@ -43,6 +45,7 @@ select a.Address1, a.Address2 from tblAddress as a INNER JOIN tblOrderDetails as
 --Alter TABLE tblTheaterDetails ADD ImgPath nvarchar(200); 
 --ALTER TABLE tblOrderDetails ADD OTP int
 --ALTER TABLE tblOrderDetails ADD OTPToBeShown bit
+--ALTER TABLE tblProduct ADD ItemsSold int
 	
 
 select * from tblOrderDetails as a 
