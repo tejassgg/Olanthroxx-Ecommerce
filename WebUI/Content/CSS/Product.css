@@ -801,16 +801,15 @@ table thead tr {
 }
 
 .seller_Blocks {
-    height: 100px;
+    color: #000;
+    height: 90%;
+    cursor: pointer;
     padding: 5px 15px;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     background-color: azure;
-    box-shadow: 5px 10px 30px rgba(0,0,0,0.2);
-    cursor: pointer;
-    color: #000;
     box-shadow: 5px 20px 30px rgba(0, 0, 0, 0.18);
     transition: 0.5s cubic-bezier(0.6, 0.03, 0.28, 0.98);
 }
@@ -1051,7 +1050,29 @@ table thead tr {
     opacity: 0.8;
 }
 
+.graphs_Container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 49% 49%;
+    column-gap: 2%;
+    align-items: center;
+}
 
+.seller_Blocks_Container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    column-gap: 20px;
+    row-gap: 10px;
+    align-items:center;
+}
+
+.graphs {
+    height: fit-content;
+    padding: 20px;
+    background-color: azure;
+    border-radius: 12px;
+}
 
 @media screen and (max-width: 530px) {
     .notifications {

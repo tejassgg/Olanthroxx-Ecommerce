@@ -15,34 +15,42 @@
 <div class="main-container">
     <div class="main-left-conatiner">
         <div class="left-container">
-            <!--<a class="seller_Blocks" href="~/Account/SellerProfile">
-        <h4>Total Orders &nbsp;<i class="fas fa-refresh"></i></h4>
-        <h5><strong>@Model.TotalSales</strong></h5>
-    </a>-->
-            <canvas id="orderPlacesxItemsSoldChart" style="max-width: 300px; max-height: 300px;"></canvas>
-            <canvas id="totalMonthlySalesChart" style="max-width: 300px; max-height: 300px; "></canvas>
+            <div class="graphs_Container">
+                <div class="graphs">
+                    <canvas id="orderPlacesxItemsSoldChart"></canvas>
+                </div>
+                <div class="graphs">
+                    <canvas id="totalMonthlySalesChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="seller_Blocks_Container">
+                <a class="seller_Blocks" href="~/Account/SellerProfile">
+                    <h4>Total Orders &nbsp;<i class="fas fa-refresh"></i></h4>
+                    <h5><strong>@Model.TotalSales</strong></h5>
+                </a>
+                <a class="seller_Blocks">
+                    <h4>Total Sales Amount &nbsp;<i class="fas fa-refresh"></i></h4>
+                    <h5><strong>&#x20B9;@Model.TotalSalesAmount</strong></h5>
+                </a>
+                <a class="seller_Blocks">
+                    <h4>Total Items Sold &nbsp;<i class="fas fa-refresh"></i></h4>
+                    <h5><strong>@Model.TotalSalesQuantity</strong></h5>
+                </a>
 
-            <a class="seller_Blocks">
-                <h4>Total Sales Amount &nbsp;<i class="fas fa-refresh"></i></h4>
-                <h5><strong>&#x20B9;@Model.TotalSalesAmount</strong></h5>
-            </a>
-            <a class="seller_Blocks">
-                <h4>Total Items Sold &nbsp;<i class="fas fa-refresh"></i></h4>
-                <h5><strong>@Model.TotalSalesQuantity</strong></h5>
-            </a>
-
-            <a class="seller_Blocks" href="~/Products/Index">
-                <h4>Total Products &nbsp;<i class="fas fa-refresh"></i></h4>
-                <h5><strong>@Model.TotalProducts</strong></h5>
-            </a>
-            <a class="seller_Blocks">
-                <h4>Total Returns &nbsp;<i class="fas fa-refresh"></i></h4>
-                <h5><strong>0</strong></h5>
-            </a>
-            <a class="seller_Blocks" href="~/Account/UserManagement">
-                <h4>Active Users &nbsp;<i class="fas fa-refresh"></i></h4>
-                <h5><strong>@Model.ActiveUsersCount  </strong></h5>
-            </a>
+                <a class="seller_Blocks" href="~/Products/Index">
+                    <h4>Total Products &nbsp;<i class="fas fa-refresh"></i></h4>
+                    <h5><strong>@Model.TotalProducts</strong></h5>
+                </a>
+                <a class="seller_Blocks">
+                    <h4>Total Returns &nbsp;<i class="fas fa-refresh"></i></h4>
+                    <h5><strong>0</strong></h5>
+                </a>
+                <a class="seller_Blocks" href="~/Account/UserManagement">
+                    <h4>Active Users &nbsp;<i class="fas fa-refresh"></i></h4>
+                    <h5><strong>@Model.ActiveUsersCount  </strong></h5>
+                </a>
+            </div>
         </div>
     </div>
 
@@ -202,7 +210,7 @@
 
     const ctx1 = document.getElementById('totalMonthlySalesChart');
     new Chart(ctx1, {
-    type: 'bar',  //line, pie, doughnut
+    type: 'line',  //bar, line, pie, doughnut
     data: {
         labels: JSON.parse('@Model.Month').map(month => months[month-1]),
         datasets: [{

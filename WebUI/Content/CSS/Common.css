@@ -269,12 +269,12 @@ label {
 }
 
 .left-container {
-    width: 90%;
+    width: 100%;
     display: grid;
-    grid-template-columns: auto auto auto auto auto auto;
-    column-gap: 1%;
-    border-radius: 10px;
-    padding: 8px;
+    grid-template-columns: 49% 50%;
+    column-gap:1%;
+    border-radius: 12px;
+    padding: 20px;
     background-color: aliceblue;
 }
 
