@@ -1,134 +1,123 @@
 ﻿@model Models.DTO.CartDetails
 
 @{
-    ViewBag.Title = " Order Details";
+    ViewBag.Title = "Order Details";
     var Quantity = Model.lstOrderDetails.Sum(a => a.Quantity);
 }
 
-<h2 class="page_Header">@ViewBag.Title</h2>
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-    </dl>
-</div>
-
-@using (Html.BeginForm("SellerOrderDetails", "Products", FormMethod.Post, new { @class = "register-form" }))
-{
-    @Html.AntiForgeryToken()
-
-<div class="buyerOrderDetails_Div">
-
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @{
-        if (ViewBag.From == "Payment")
+<div class="order-details-card-container">
+    <div class="order-details-card">
+        <div class="order-details-header">
+            <i class="fas fa-receipt"></i>
+            <h2>Order Details</h2>
+        </div>
+        @if (ViewBag.From == "Payment")
         {
-            <div class="row_Input orderPlaced">
+            <div class="order-placed-banner">
                 <img src="~/Content/Images/Successful.gif" width="45px" />
                 <h2>Order Placed Successfully</h2>
             </div>
         }
-    }
-    <div class="row_Input">
-        <div class="form_Input">
-            @Html.LabelFor(model => model.OrderID, htmlAttributes: new { @class = "form_Control" })
-            @Html.EditorFor(model => model.OrderID, new { htmlAttributes = new { @class = "form_Control", @readonly = "true" } })
+        <div class="order-summary-section">
+            <div class="order-summary-row">
+                <div class="order-summary-item">
+                    <span class="order-summary-label">Order ID</span>
+                    <span class="order-summary-value">@Model.OrderID</span>
+                </div>
+                <div class="order-summary-item">
+                    <span class="order-summary-label">Order Date</span>
+                    <span class="order-summary-value">@Model.OrderDate</span>
+                </div>
+                <div class="order-summary-item">
+                    <span class="order-summary-label">Last Updated</span>
+                    <span class="order-summary-value">@Model.ModifiedDate</span>
+                </div>
+            </div>
+            <div class="order-summary-row">
+                <div class="order-summary-item">
+                    <span class="order-summary-label">Total Amount</span>
+                    <span class="order-summary-value">@Model.TotalAmount</span>
+                </div>
+                <div class="order-summary-item">
+                    <span class="order-summary-label">Total Quantity</span>
+                    <span class="order-summary-value">@Quantity</span>
+                </div>
+            </div>
+        </div>
+        <h3 class="order-section-title">Item Details</h3>
+        @if (Model.lstOrderDetails != null && Model.lstOrderDetails.Count > 0)
+        {
+            <div class="order-items-table-wrapper">
+                <table class="order-items-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Last Updated</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var cart in Model.lstOrderDetails)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="order-product-info">
+                                        @if (!string.IsNullOrEmpty(cart.ImgPath))
+                                        {
+                                            <img src="@Url.Content(cart.ImgPath)" width="60px" height="60px">
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Content/Images/Product.png" width="60px" height="60px">
+                                        }
+                                        <span class="order-product-name">@cart.ProductName</span>
+                                    </div>
+                                </td>
+                                <td>@cart.Quantity</td>
+                                <td>@cart.Amount</td>
+                                <td>@cart.OrderStatus</td>
+                                <td>
+                                    @if (cart.ModifiedDate != null)
+                                    {
+                                        @Convert.ToDateTime(Model.ModifiedDate)
+                                    }
+                                    else
+                                    {
+                                        <span>--</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (cart.IsReviewed)
+                                    {
+                                        <span class="reviewed-label">Reviewed</span>
+                                    }
+                                    else if (cart.OrderStatus == "Delivered")
+                                    {
+                                        <button class="btn review-btn" onclick="AddReview('@Model.OrderID', '@cart.ProductID', '@cart.ProductName')"><i class="fa-solid fa-pen-nib"></i> Review</button>
+                                    }
+                                    else
+                                    {
+                                        <button disabled class="btn review-btn disabled" style="cursor:not-allowed; opacity:0.8"><i class="fa-solid fa-pen-nib"></i> Review</button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <button class="btn print-btn" onclick="PrintOrderSummary(event)"><i class="fa-solid fa-print"></i> Order Summary</button>
+        }
+        else
+        {
+            <p>No Order Details Found for the OrderID</p>
+        }
+        <div class="order-details-footer">
+            @Html.ActionLink("Back", "Index", null, new { @class = "btn back-btn" })
         </div>
     </div>
-
-    <div class="row_Input">
-        <div class="form_Input">
-            @Html.LabelFor(model => model.OrderDate, htmlAttributes: new { @class = "form_Control" })
-            @Html.EditorFor(model => model.OrderDate, new { htmlAttributes = new { @class = "form_Control", @readonly = "true" } })
-        </div>
-        <div class="form_Input">
-            @Html.LabelFor(model => model.ModifiedDate, htmlAttributes: new { @class = "form_Control" })
-            @Html.EditorFor(model => model.ModifiedDate, new { htmlAttributes = new { @class = "form_Control", @readonly = "true" } })
-        </div>
-    </div>
-
-    <div class="row_Input">
-        <div class="form_Input">
-            <label class="form_Control">Amount</label>
-            @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new { @class = "form_Control", @readonly = "true" } })
-        </div>
-        <div class="form_Input">
-            @Html.LabelFor(model => Quantity, htmlAttributes: new { @class = "form_Control" })
-            @Html.EditorFor(model => Quantity, new { htmlAttributes = new { @class = "form_Control", @readonly = "true" } })
-        </div>
-    </div>
-
-    <h2 class="page_Header">Item Details</h2>
-    @if (Model.lstOrderDetails != null && Model.lstOrderDetails.Count > 0)
-    {
-        <table class="orderDetails_Buyer">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                    <th>Last Updated</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var cart in Model.lstOrderDetails)
-                {
-                    <tr>
-                        <td>
-                            @if (!string.IsNullOrEmpty(cart.ImgPath))
-                            {
-                                <img src="@Url.Content(cart.ImgPath)" width="60px" height="60px">
-                            }
-                            else
-                            {
-                                <img src="~/Content/Images/Product.png" width="60px" height="60px">
-                            }
-                            &nbsp; @cart.ProductName
-                        </td>
-                        <td>@cart.Quantity</td>
-                        <td>@cart.Amount</td>
-                        <td>@cart.OrderStatus</td>
-                        @if (cart.ModifiedDate != null)
-                        {
-                            <td>@Convert.ToDateTime(Model.ModifiedDate)</td>
-                        }
-                        else
-                        {
-                            <td>--</td>
-                        }
-                        @if (cart.IsReviewed)
-                        {
-                            <td>Reviewed</td>
-                        }
-                        else if (cart.OrderStatus == "Delivered")
-                        {
-                            <td>
-                                <button class="btn-warning writeReviewBtn" onclick="AddReview('@Model.OrderID', '@cart.ProductID', '@cart.ProductName')"><i class="fa-solid fa-pen-nib"></i> Review</button>
-                            </td>
-                        }
-                        else
-                        {
-                            <td>
-                                <button disabled class="btn-warning writeReviewBtn" style="cursor:not-allowed; opacity:0.8" onclick="AddReview('@Model.OrderID', '@cart.ProductID', '@cart.ProductName')"><i class="fa-solid fa-pen-nib"></i> Review</button>
-                            </td>
-                        }
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <button class="login_Submit addProduct_Btn" onclick="PrintOrderSummary(event)"><i class="fa-solid fa-print"></i> Order Summary</button>
-    }
-    else
-    {
-        <p>No Order Details Found for the OrderID</p>
-    }
-</div>
-}
-
-<div>
-    @Html.ActionLink("Back", "Index")
 </div>
 
 <!--Add Review Modal-->
@@ -144,3 +133,215 @@
     </center>
 </div>
 <!--Add Review Modal-->
+
+<style>
+.order-details-card-container {
+    width: 94%;
+    margin: 40px auto;
+    padding: 0 10px;
+}
+.order-details-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    overflow: hidden;
+    padding-bottom: 24px;
+}
+.order-details-header {
+    background: linear-gradient(135deg, #252525, #34495e);
+    color: #fff;
+    padding: 32px 32px 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+.order-details-header i {
+    font-size: 32px;
+    color: #3498db;
+}
+.order-details-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+.order-placed-banner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #eafaf1;
+    color: #27ae60;
+    padding: 18px 32px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-bottom: 1px solid #e9ecef;
+}
+.order-summary-section {
+    padding: 32px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+.order-summary-row {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 12px;
+}
+.order-summary-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.order-summary-label {
+    font-size: 13px;
+    color: #7f8c8d;
+    font-weight: 600;
+}
+.order-summary-value {
+    font-size: 16px;
+    color: #2c3e50;
+    font-weight: 700;
+}
+.order-section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 32px 0 16px 32px;
+}
+.order-items-table-wrapper {
+    padding: 0 32px;
+}
+.order-items-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.order-items-table th {
+    background: linear-gradient(135deg, #252525, #34495e);
+    color: #fff;
+    font-weight: 600;
+    padding: 14px 10px;
+    font-size: 15px;
+    border: none;
+}
+.order-items-table td {
+    padding: 14px 10px;
+    font-size: 15px;
+    color: #2c3e50;
+    border-bottom: 1px solid #e9ecef;
+    background: #fff;
+    vertical-align: middle;
+}
+.order-items-table tr:last-child td {
+    border-bottom: none;
+}
+.order-product-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.order-product-name {
+    font-weight: 600;
+    color: #34495e;
+    font-size: 15px;
+}
+.review-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.12);
+}
+.review-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #2980b9, #1f5f8b);
+    transform: translateY(-2px);
+}
+.review-btn.disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+.reviewed-label {
+    color: #27ae60;
+    font-weight: 700;
+    font-size: 14px;
+}
+.print-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    margin: 24px 32px 0 32px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.15);
+}
+.print-btn:hover {
+    background: linear-gradient(135deg, #2980b9, #1f5f8b);
+    transform: translateY(-2px);
+}
+.order-details-footer {
+    padding: 24px 32px 0 32px;
+    display: flex;
+    justify-content: flex-end;
+}
+.back-btn {
+    background: #f8f9fa;
+    color: #3498db;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.12);
+    text-decoration: none;
+}
+.back-btn:hover {
+    background: #3498db;
+    color: #fff;
+}
+@@media (max-width: 700px) {
+    .order-details-header {
+        padding: 18px 18px 12px 18px;
+    }
+    .order-summary-section, .order-items-table-wrapper, .order-details-footer {
+        padding: 12px;
+    }
+    .order-section-title {
+        margin: 24px 0 12px 12px;
+        font-size: 17px;
+    }
+    .print-btn {
+        margin: 18px 12px 0 12px;
+    }
+}
+@@media (max-width: 480px) {
+    .order-details-header h2 {
+        font-size: 1.2rem;
+    }
+    .order-details-card {
+        border-radius: 10px;
+    }
+    .order-summary-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+</style>

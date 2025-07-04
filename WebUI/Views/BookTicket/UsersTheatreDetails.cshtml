@@ -5,43 +5,195 @@
     var i = 0;
 }
 
-<h2 class="page_Header">@ViewBag.Title</h2>
-<div class="all_Theatre">
-    <div class="all_theatreDetails">
+<div class="theatre-main-container">
+    <div class="theatre-header">
+        <h2><i class="fa fa-film"></i> @ViewBag.Title</h2>
+    </div>
+    <div class="theatre-cards-grid">
         @foreach (var item in Model)
         {
             i++;
-            <div class="addTheatre-card" id='img_@item.TheaterID'>
+            <div class="theatre-card" id='img_@item.TheaterID'>
                 @Html.HiddenFor(modelItem => item.TheaterID)
-                <div class="heart_Icon">
+                <div class="theatre-card-edit">
                     <i class='bx bx-edit bx-md'></i>
                 </div>
-                @if (!string.IsNullOrEmpty(item.ImgPath))
-                {
-                    <center><a href="../BookTicket/TheatreDetails/@item.TheaterID.ToString()"><img src="@Url.Content(@item.ImgPath)"></a></center>
-                }
-                else
-                {
-                    <center><a href="../BookTicket/TheatreDetails/@item.TheaterID.ToString()"><img src="~/Content/Images/Product.png"></a></center>
-                }
-                <hr />
-                <div class="prod_Desc">
-                    <strong>@Html.ActionLink(item.Name, "TheatreDetails", new { id = item.TheaterID.ToString() })</strong> | @Html.DisplayFor(modelItem => item.Location)
+                <div class="theatre-card-img">
+                    @if (!string.IsNullOrEmpty(item.ImgPath))
+                    {
+                        <a href="../BookTicket/TheatreDetails/@item.TheaterID.ToString()"><img src="@Url.Content(@item.ImgPath)" alt="@item.Name"></a>
+                    }
+                    else
+                    {
+                        <a href="../BookTicket/TheatreDetails/@item.TheaterID.ToString()"><img src="~/Content/Images/Product.png" alt="@item.Name"></a>
+                    }
                 </div>
-                @Html.DisplayFor(modelItem => item.Landmark)
+                <div class="theatre-card-body">
+                    <div class="theatre-card-title">
+                        <strong>@Html.ActionLink(item.Name, "TheatreDetails", new { id = item.TheaterID.ToString() })</strong>
+                        <span class="theatre-card-location">| @Html.DisplayFor(modelItem => item.Location)</span>
+                    </div>
+                    <div class="theatre-card-landmark">@Html.DisplayFor(modelItem => item.Landmark)</div>
+                </div>
             </div>
         }
-        <div class="addTheatre-card">
-            <center><a href="../BookTicket/AddTheatreDetails"><img style="width:150px; aspect-ratio:1/1;" src="~/Content/Images/AddTheatre.png"></a></center>
-            <hr />
-            <div class="prod_Desc">
-                <strong>Add New Theatre</strong>
-            </div>
+        <div class="theatre-card add-new-theatre">
+            <a href="../BookTicket/AddTheatreDetails">
+                <div class="theatre-card-img add-img">
+                    <img src="~/Content/Images/AddTheatre.png" alt="Add New Theatre">
+                </div>
+                <div class="theatre-card-body">
+                    <div class="theatre-card-title">
+                        <strong>Add New Theatre</strong>
+                    </div>
+                </div>
+            </a>
         </div>
+    </div>
+    <div class="theatre-footer">
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "back-btn" })
     </div>
 </div>
 
-
-<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<style>
+.theatre-main-container {
+    width: 94%;
+    margin: 40px auto;
+    padding: 0 10px;
+}
+.theatre-header {
+    background: linear-gradient(135deg, #252525, #34495e);
+    color: #fff;
+    border-radius: 18px 18px 0 0;
+    padding: 32px 32px 20px 32px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.theatre-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.theatre-header i {
+    color: #3498db;
+}
+.theatre-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 28px;
+    margin-bottom: 32px;
+}
+.theatre-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    padding: 0 0 18px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    transition: box-shadow 0.2s, transform 0.2s;
+    border: 1.5px solid #e9ecef;
+    min-width: 0;
+}
+.theatre-card:hover {
+    box-shadow: 0 8px 32px rgba(52, 152, 219, 0.15);
+    transform: translateY(-4px) scale(1.02);
+    border-color: #3498db;
+}
+.theatre-card-edit {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    color: #3498db;
+    cursor: pointer;
+    z-index: 2;
+    font-size: 1.2rem;
+}
+.theatre-card-img {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 0 0 0;
+}
+.theatre-card-img img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.10);
+    background: #f8f9fa;
+}
+.add-new-theatre .theatre-card-img.add-img img {
+    background: #eaf6fb;
+    border: 2px dashed #3498db;
+    object-fit: contain;
+}
+.theatre-card-body {
+    width: 100%;
+    padding: 12px 18px 0 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+.theatre-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.theatre-card-location {
+    font-size: 0.98rem;
+    color: #7f8c8d;
+    font-weight: 500;
+}
+.theatre-card-landmark {
+    font-size: 0.98rem;
+    color: #34495e;
+    font-weight: 500;
+}
+.back-btn {
+    background: #f8f9fa;
+    color: #3498db;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.12);
+    text-decoration: none;
+    margin-top: 12px;
+}
+.back-btn:hover {
+    background: #3498db;
+    color: #fff;
+}
+.theatre-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 24px;
+}
+@@media (max-width: 700px) {
+    .theatre-header {
+        padding: 18px 10px 10px 10px;
+        font-size: 1.1rem;
+    }
+    .theatre-header h2 {
+        font-size: 1.1rem;
+    }
+    .theatre-card-img img {
+        width: 100px;
+        height: 100px;
+    }
+}
+</style>

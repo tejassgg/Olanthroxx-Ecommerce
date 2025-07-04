@@ -14,77 +14,57 @@
     {
         ViewBag.lstBudgetTypes = Model.lstBudgetTypes;
     }
-
 }
 
-<div class="text-left" style=" display: flex; justify-content: flex-start; align-items: center; ">
-    <h2 style="font-size:25px">Welcome Back, </h2><h1 style="color:cyan;">@User.Identity.Name</h1>
-</div>
+<div class="budget-main-container">
+    <div class="budget-header">
+        <h2>Welcome Back, <span class="username">@User.Identity.Name</span></h2>
+    </div>
 
-<div class="">
-    <div class="row" style=" display: flex; flex-direction: row; justify-content: center; column-gap: 120px; ">
-        <div class="col-sm-5" style="width: 500px; height: 270px; background-color:aliceblue; border-radius: 15px">
+    <div class="budget-forms-row">
+        <div class="budget-form-card">
             @Html.Partial("AddBudget", objBud)
         </div>
-        <div class="col-sm-5" style="width: 500px; height: 270px; background-color: aliceblue; border-radius: 15px">
+        <div class="budget-form-card">
             @Html.Partial("AddExpense", objExp)
         </div>
     </div>
-    <hr />
-    <div>
-        <h3>Existing Budgets</h3>
-        <div style=" display: grid; grid-template-columns: 30% 30% 30%; ">
+
+    <div class="budget-section">
+        <h3 class="section-title">Existing Budgets</h3>
+        <div class="budget-cards-grid">
             @if (Model.lstBudget != null && Model.lstBudget.Count > 0)
             {
-
                 var i = 1;
                 foreach (var budget in Model.lstBudget)
                 {
-                    if (i % 2 == 0)
-                    {
-                        <div style="border: 2px solid red; border-radius:10px; width:300px; height: auto; padding:10px; margin:5px">
-                            <div style=" display: flex; flex-direction: row; justify-content: space-between; ">
-                                <h4>@budget.Name</h4>
-                                <h6>Rs. @budget.Amount Budgeted</h6>
-                            </div>
-                            <div class="slidecontainer" style="pointer-events:none">
-                                <input type="range" min="-@budget.Amount" max="0" value="-@budget.Balance" class="slider-color" id="myRange">
-                            </div>
-                            <div style=" display: flex; flex-direction: row; justify-content: space-between; ">
-                                <h6>Rs. @Calculate(Convert.ToInt32(budget.Amount), Convert.ToInt32(budget.Balance)) spent</h6>
-                                <h6>Rs. @budget.Balance remaining</h6>
+                    <div class="budget-card @(i % 2 == 0 ? "accent-red" : "accent-orange")">
+                        <div class="budget-card-header">
+                            <h4>@budget.Name</h4>
+                            <span class="budget-amount">₹@budget.Amount</span>
+                        </div>
+                        <div class="budget-progress-bar">
+                            <div class="progress-track">
+                                <div class="progress-fill" style="width:@(((1.0m - ((decimal)budget.Balance / (decimal)budget.Amount)) * 100))%"></div>
                             </div>
                         </div>
-                    }
-                    else
-                    {
-                        <div style="border: 2px solid orange; border-radius:10px; width:300px; height: auto; padding:10px; margin:5px">
-                            <div style=" display: flex; flex-direction: row; justify-content: space-between; ">
-                                <h4>@budget.Name</h4>
-                                <h6>Rs. @budget.Amount Budgeted</h6>
-                            </div>
-                            <div class="slidecontainer" style="pointer-events:none">
-                                <input type="range" min="-@budget.Amount" max="0" value="-@budget.Balance" class="slider-color" id="myRange">
-                            </div>
-                            <div style=" display: flex; flex-direction: row; justify-content: space-between; ">
-                                <h6>Rs. @Calculate(Convert.ToInt32(budget.Amount), Convert.ToInt32(budget.Balance)) spent</h6>
-                                <h6>Rs. @budget.Balance remaining</h6>
-                            </div>
+                        <div class="budget-card-footer">
+                            <span class="spent">₹@Calculate(Convert.ToInt32(budget.Amount), Convert.ToInt32(budget.Balance)) spent</span>
+                            <span class="remaining">₹@budget.Balance left</span>
                         </div>
-                    }
-
+                    </div>
                     i++;
                 }
             }
         </div>
     </div>
-    <hr />
-    <div>
-        <h3>Recent Expenses</h3>
-        <center>
-            @if (Model.lstExpense != null && Model.lstExpense.Count > 0)
-            {
-                <table class="table table-responsive table-striped" style=" width: 70%; background-color: aliceblue; border-radius: 10px; ">
+
+    <div class="budget-section">
+        <h3 class="section-title">Recent Expenses</h3>
+        @if (Model.lstExpense != null && Model.lstExpense.Count > 0)
+        {
+            <div class="expenses-table-wrapper">
+                <table class="expenses-table">
                     <thead>
                         <tr>
                             <th>Expense</th>
@@ -99,69 +79,209 @@
                         {
                             <tr>
                                 <td>@exp.ExpName</td>
-                                <td>@exp.Amount</td>
+                                <td>₹@exp.Amount</td>
                                 <td>@exp.CreatedDate.ToShortDateString()</td>
                                 <td>@exp.Budget</td>
-                                <td style="text-align:center"><a class="text-center"><i class="fas fa-trash"></i></a></td>
+                                <td style="text-align:center"><a class="delete-expense"><i class="fas fa-trash"></i></a></td>
                             </tr>
                         }
                     </tbody>
                 </table>
-            }
-        </center>
-    </div>
-    <div style="height:50px">
-
+            </div>
+        }
     </div>
 </div>
 
 <style>
-    hr {
-        border: 1.25px solid black;
-    }
-    h6 {
-        font-size: 10px;
-    }
+.budget-main-container {
+    width: 94%;
+    margin: 40px auto;
+    padding: 0 10px;
+}
 
-    .slidecontainer {
-        width: 100%; /* Width of the outside container */
-    }
+.budget-header {
+    background: linear-gradient(135deg, #252525, #34495e);
+    color: #fff;
+    border-radius: 18px 18px 0 0;
+    padding: 32px 32px 20px 32px;
+    margin-bottom: 32px;
+}
+.budget-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+.budget-header .username {
+    color: #00e6ff;
+    font-weight: 700;
+}
 
-    /* The slider itself */
-    .slider {
-        -webkit-appearance: none; /* Override default CSS styles */
-        appearance: none;
-        width: 100%; /* Full-width */
-        height: 25px; /* Specified height */
-        background: #d3d3d3; /* Grey background */
-        outline: none; /* Remove outline */
-        opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-        -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-        transition: opacity .2s;
-    }
-        /* Mouse-over effects */
-        .slider:hover {
-            opacity: 1; /* Fully shown on mouse-over */
-        }
+.budget-forms-row {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+}
+.budget-form-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    padding: 24px 18px;
+    min-width: 320px;
+    max-width: 420px;
+    width: 100%;
+}
 
-        /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none; /* Override default look */
-            appearance: none;
-            width: 25px; /* Set a specific slider handle width */
-            height: 25px; /* Slider handle height */
-            background: #04AA6D; /* Green background */
-            cursor: pointer; /* Cursor on hover */
-        }
+.budget-section {
+    margin-bottom: 40px;
+}
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 24px;
+}
 
-        .slider::-moz-range-thumb {
-            width: 25px; /* Set a specific slider handle width */
-            height: 25px; /* Slider handle height */
-            background: #04AA6D; /* Green background */
-            cursor: pointer; /* Cursor on hover */
-        }
-    .addBudget{
-        display: flex;
+.budget-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+}
+.budget-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 22px 20px 18px 20px;
+    border-left: 6px solid #f39c12;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+.budget-card.accent-red { border-left-color: #e74c3c; }
+.budget-card.accent-orange { border-left-color: #f39c12; }
+.budget-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.budget-card-header h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0;
+}
+.budget-amount {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #3498db;
+}
+.budget-progress-bar {
+    margin: 10px 0 6px 0;
+}
+.progress-track {
+    background: #e9ecef;
+    border-radius: 8px;
+    height: 12px;
+    width: 100%;
+    overflow: hidden;
+}
+.progress-fill {
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    height: 100%;
+    border-radius: 8px 0 0 8px;
+    transition: width 0.4s cubic-bezier(.4,2,.6,1);
+}
+.budget-card-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.98rem;
+    color: #7f8c8d;
+}
+.spent {
+    color: #e74c3c;
+    font-weight: 600;
+}
+.remaining {
+    color: #27ae60;
+    font-weight: 600;
+}
+
+.expenses-table-wrapper {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 18px 12px;
+    width: 100%;
+    overflow-x: auto;
+}
+.expenses-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.expenses-table th {
+    background: linear-gradient(135deg, #252525, #34495e);
+    color: #fff;
+    font-weight: 600;
+    padding: 12px 8px;
+    font-size: 15px;
+    border: none;
+    white-space: nowrap;
+}
+.expenses-table td {
+    padding: 12px 8px;
+    font-size: 15px;
+    color: #2c3e50;
+    border-bottom: 1px solid #e9ecef;
+    background: #fff;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.expenses-table tr:last-child td {
+    border-bottom: none;
+}
+.delete-expense i {
+    color: #e74c3c;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.delete-expense i:hover {
+    color: #c0392b;
+}
+
+@@media (max-width: 900px) {
+    .budget-forms-row {
+        flex-direction: column;
+        gap: 20px;
         align-items: center;
     }
+    .budget-cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
+@@media (max-width: 600px) {
+    .budget-main-container {
+        width: 98%;
+        margin: 10px auto;
+        padding: 0 2px;
+    }
+    .budget-header {
+        padding: 16px 8px 10px 8px;
+        font-size: 1.1rem;
+    }
+    .budget-form-card {
+        min-width: 0;
+        max-width: 100%;
+        padding: 12px 6px;
+    }
+    .section-title {
+        font-size: 1.1rem;
+    }
+}
 </style>

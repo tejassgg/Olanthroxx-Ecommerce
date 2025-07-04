@@ -13,168 +13,331 @@
     }
 }
 
-<h2 class="page_Header">Payment Details</h2>
+<div class="payment-horizontal-container">
+    <div class="payment-card payment-form-section">
+        <div class="payment-card-header">
+            <i class="fas fa-credit-card"></i>
+            <h2>Payment Details</h2>
+        </div>
+        <form id="paymentPageForm" action="../Payment/ProceedToPayment" method="POST">
+            <div class="payment-card-body">
+                @Html.HiddenFor(model => model.PaymentID)
+                @Html.HiddenFor(model => model.PaymentOf)
+                @Html.HiddenFor(model => model.UserName)
+                @Html.HiddenFor(model => model.PaymentModeDetails.PaymentStatus)
+                @Html.HiddenFor(model => model.PaymentModeDetails.PaymentDetails)
+                @Html.HiddenFor(model => model.CreatedDate)
+                @Html.HiddenFor(model => model.HdnCartDetails)
+                @Html.HiddenFor(model => model.HdnMovieBooking)
 
-<form id="paymentPageForm" action="../Payment/ProceedToPayment" method="POST">
-
-    <div class="paymentDetailsDiv">
-        <div class="form-horizontal paymentHeaderDetails">
-            <hr />
-
-            @Html.HiddenFor(model => model.PaymentID, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.HiddenFor(model => model.PaymentOf)
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.OrderID, htmlAttributes: new { @class = "control-label col-md-2"})
-                <div class="col-md-10">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.OrderID)
                     @Html.EditorFor(model => model.OrderID, new { htmlAttributes = new { @class = "form-control", @readonly = "true", @id = "txtOrderID" } })
                 </div>
-            </div>
-
-            @Html.HiddenFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.TotalPayableAmount, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TotalPayableAmount)
                     @Html.TextBoxFor(model => model.TotalPayableAmount, new { @class = "form-control", @readonly = "true" })
                 </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.PaymentModeDetails.PaymentMode, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PaymentModeDetails.PaymentMode)
                     @Html.DropDownListFor(model => model.PaymentModeDetails.PaymentMode, new SelectList(ViewBag.lstPaymentMode, "Text", "Text"), new { @class = "form-control", @onChange = "OnChangePaymentMode(this)" })
                 </div>
-            </div>
 
-            <div id="PaymentModeDiv" class="form-horizontal">
-
-                <div id="divUPIPayment" class="displayNone">
-                    <hr />
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.PaymentModeDetails.UPIID, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
+                <div id="PaymentModeDiv">
+                    <div id="divUPIPayment" class="displayNone">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PaymentModeDetails.UPIID)
                             @Html.TextBoxFor(model => model.PaymentModeDetails.UPIID, new { @class = "form-control" })
                         </div>
                     </div>
-                </div>
-
-                <div id="divChequePayment" class="displayNone">
-                    <hr />
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.PaymentModeDetails.Bankname, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
+                    <div id="divChequePayment" class="displayNone">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PaymentModeDetails.Bankname)
                             @Html.TextBoxFor(model => model.PaymentModeDetails.Bankname, new { @class = "form-control" })
                         </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.PaymentModeDetails.IFSC_Code, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PaymentModeDetails.IFSC_Code)
                             @Html.TextBoxFor(model => model.PaymentModeDetails.IFSC_Code, new { @class = "form-control", @type = "text", @placeholder = "Please Provide IFSC Code.", @maxLength = "9" })
                         </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.PaymentModeDetails.AccountNo, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PaymentModeDetails.AccountNo)
                             @Html.TextBoxFor(model => model.PaymentModeDetails.AccountNo, new { @class = "form-control", @type = "number", @maxLength = "12", @placeholder = "Please Provide AccountNo." })
                         </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.PaymentModeDetails.ChequeNo, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PaymentModeDetails.ChequeNo)
                             @Html.TextBoxFor(model => model.PaymentModeDetails.ChequeNo, new { @class = "form-control", @type = "number", @maxLength = "7", @placeholder = "Please Provide ChequeNo." })
                         </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.PaymentModeDetails.ChequeDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PaymentModeDetails.ChequeDate)
                             @Html.TextBoxFor(model => model.PaymentModeDetails.ChequeDate, new { @class = "form-control", @type = "date", @placeholder = "Please Provide Date of Cheque." })
                         </div>
                     </div>
                 </div>
 
+                <button class="btn payment-btn" id="proceedToPaymentBtn" onclick="ProceedToPayment(event)">
+                    <i class="fas fa-arrow-right"></i> Proceed To Payment
+                </button>
             </div>
+        </form>
+    </div>
 
-            @Html.HiddenFor(model => model.PaymentModeDetails.PaymentStatus)
-            @Html.HiddenFor(model => model.PaymentModeDetails.PaymentDetails)
-            @Html.HiddenFor(model => model.CreatedDate)
-            @Html.HiddenFor(model => model.HdnCartDetails)
-            @Html.HiddenFor(model => model.HdnMovieBooking)
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <button class="btn btn-primary" id="proceedToPaymentBtn" onclick="ProceedToPayment(event)">Proceed To Payment</button>
-                </div>
-            </div>
-        </div>
-        @if (Model.LstAddress != null && Model.LstAddress.Count() > 0)
-        {
-            <div style="margin-top: -100px; padding: 10px;">
-                <hr />
-                <h4>Please Select  Billing Address</h4>
-                <div id="billingAddress">
+    @if (Model.LstAddress != null && Model.LstAddress.Count() > 0)
+    {
+        <div class="payment-card address-section">
+            <div class="address-section-inner">
+                <h4>Billing Address</h4>
+                <div class="address-list">
                     @if (BillingAddresses != null && BillingAddresses.Count > 0)
                     {
                         foreach (var add in BillingAddresses)
                         {
-                            <div class="addressCart">
-                                <div>
-                                    <input name="BillingAddressID" type="radio" value="@add.AddressID" required="required" />
-                                </div>
-                                <div style="border-radius:10px; width:400px ">
-                                    <div style=" display: flex; flex-direction: row; justify-content: space-between; align-items:center ">
-                                        <h5>@add.Name</h5>
-                                        <h6>@add.City - @add.State</h6>
+                            <div class="address-card">
+                                <input name="BillingAddressID" type="radio" value="@add.AddressID" required />
+                                <div class="address-info">
+                                    <div class="address-header">
+                                        <span class="address-name">@add.Name</span>
+                                        <span class="address-city">@add.City - @add.State</span>
                                     </div>
-                                    <div style=" display: flex; flex-direction: row; justify-content: space-between; align-items: center ">
-                                        <h6>@add.FullAddress</h6>
+                                    <div class="address-body">
+                                        <span class="address-full">@add.FullAddress</span>
                                     </div>
                                 </div>
                             </div>
                         }
                     }
                 </div>
+                <button type="button" class="btn address-btn" onclick="AddAddress('Billing')">
+                    <i class="fa fa-plus"></i> Add Billing Address
+                </button>
 
-                <center>
-                    <button type="button" style="width: 150px;" class="writeReviewBtn btn-success" onclick="AddAddress('Billing')"><i class="fa fa-plus"></i> Add Billing Address </button>
-                </center>
-
-                <hr />
-                <h4>Please Select Shipping Address</h4>
-                <div id="shippingAddress">
+                <h4>Shipping Address</h4>
+                <div class="address-list">
                     @if (ShippingAddresses != null && ShippingAddresses.Count > 0)
                     {
                         foreach (var add in ShippingAddresses)
                         {
-                            <div class="addressCart" style="border-color:red">
-                                <div>
-                                    <input name="ShippingAddressID" type="radio" value="@add.AddressID" required="required" />
-                                </div>
-                                <div style="border-radius:10px; width:400px ">
-                                    <div style=" display: flex; flex-direction: row; justify-content: space-between; align-items: center ">
-                                        <h5>@add.Name</h5>
-                                        <h6>@add.City - @add.State</h6>
+                            <div class="address-card shipping">
+                                <input name="ShippingAddressID" type="radio" value="@add.AddressID" required />
+                                <div class="address-info">
+                                    <div class="address-header">
+                                        <span class="address-name">@add.Name</span>
+                                        <span class="address-city">@add.City - @add.State</span>
                                     </div>
-                                    <div style=" display: flex; flex-direction: row; justify-content: space-between; align-items: center ">
-                                        <h6>@add.FullAddress</h6>
+                                    <div class="address-body">
+                                        <span class="address-full">@add.FullAddress</span>
                                     </div>
                                 </div>
                             </div>
                         }
                     }
                 </div>
-                <center>
-                    <button type="button" style="width: 160px;" class="writeReviewBtn btn-success" onclick="AddAddress('Shipping')"><i class="fa fa-plus"></i> Add Shipping Address </button>
-                </center>
+                <button type="button" class="btn address-btn" onclick="AddAddress('Shipping')">
+                    <i class="fa fa-plus"></i> Add Shipping Address
+                </button>
             </div>
-        }
-    </div>
-</form>
+        </div>
+    }
+</div>
 
 <style>
-    .readOnly {
-        pointer-events: none;
+.payment-horizontal-container {
+    display: flex;
+    gap: 32px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 10px;
+    align-items: flex-start;
+}
+.payment-form-section {
+    flex: 1 1 350px;
+    min-width: 320px;
+}
+.address-section {
+    flex: 1 1 350px;
+    min-width: 320px;
+    background: #f8f9fa;
+    border-left: 1.5px solid #e9ecef;
+    box-shadow: none;
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+}
+.address-section-inner {
+    padding: 32px;
+    width: 100%;
+}
+.payment-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.payment-card-header {
+    background: linear-gradient(135deg, #252525, #34495e);
+    color: #fff;
+    padding: 32px 32px 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+.payment-card-header i {
+    font-size: 32px;
+    color: #3498db;
+}
+.payment-card-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+.payment-card-body {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.form-group label {
+    font-weight: 600;
+    color: #34495e;
+    font-size: 15px;
+}
+.form-control {
+    border-radius: 8px;
+    border: 1.5px solid #e9ecef;
+    padding: 10px 14px;
+    font-size: 15px;
+    color: #2c3e50;
+    background: #f8f9fa;
+    transition: border 0.2s;
+}
+.form-control:focus {
+    border: 1.5px solid #3498db;
+    outline: none;
+}
+.payment-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: #fff;
+    border: none;
+    padding: 14px 0;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 10px;
+    width: 100%;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.15);
+}
+.payment-btn:hover {
+    background: linear-gradient(135deg, #2980b9, #1f5f8b);
+    transform: translateY(-2px);
+}
+.address-section h4 {
+    margin-top: 24px;
+    font-size: 18px;
+    color: #2c3e50;
+    font-weight: 700;
+}
+.address-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+.address-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    padding: 16px 20px;
+    border-left: 4px solid #3498db;
+}
+.address-card.shipping {
+    border-left: 4px solid #e74c3c;
+}
+.address-info {
+    flex: 1;
+}
+.address-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+.address-name {
+    font-weight: 600;
+    color: #34495e;
+    font-size: 15px;
+}
+.address-city {
+    font-size: 13px;
+    color: #7f8c8d;
+}
+.address-body {
+    font-size: 14px;
+    color: #555;
+}
+.address-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 12px 0 24px 0;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.12);
+}
+.address-btn:hover {
+    background: linear-gradient(135deg, #2980b9, #1f5f8b);
+    transform: translateY(-2px);
+}
+@@media(max-width: 1000px) {
+    .payment-horizontal-container {
+        flex-direction: column;
+        gap: 24px;
     }
+    .address-section, .payment-form-section {
+        min-width: 0;
+    }
+    .address-section-inner {
+        padding: 18px;
+    }
+    .payment-card-body {
+        padding: 18px;
+    }
+    .payment-card-header {
+        padding: 18px 18px 12px 18px;
+    }
+}
+@@media (max-width: 480px) {
+    .payment-card-header h2 {
+        font-size: 1.2rem;
+    }
+    .payment-card {
+        border-radius: 10px;
+    }
+}
+.payment-container {
+    width: 94%;
+    margin: 40px auto;
+    padding: 0 10px;
+}
 </style>
 
 <!--Add Address Modal-->

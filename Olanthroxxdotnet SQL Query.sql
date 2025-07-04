@@ -1,6 +1,7 @@
 USE Olanthroxxx
 
 select * from tblUserSessionDetails
+select * from tblLogs
 
 select  * From tblProduct
 Select * from tblForgotPasswordHistory

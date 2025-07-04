@@ -4,68 +4,241 @@
     ViewBag.Title = "Add Product";
 }
 
-<h2 class="page_Header">@ViewBag.Title</h2>
-
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-    </dl>
-</div>
-
-@using (Html.BeginForm("AddProduct", "Products", FormMethod.Post, new { enctype = "multipart/form-data", @class = "addProduct_Form" }))
-{
-    @Html.AntiForgeryToken()
-
-    <div class="addProduct_Form_Div">
-        <h2>Add Product</h2>
-        @Html.ValidationSummary(true, "", new { @class = "text-danger", @id = "txtValidationSummary" })
-
-        <div class="row_Input">
-            <div class="form_Input">
-                @Html.EditorFor(model => model.PName, new { htmlAttributes = new { @class = "form_Control", @placeholder = "Name", @required = "required" } })
-            </div>
-
-            <div class="form_Input">
-                @Html.EditorFor(model => model.PTitle, new { htmlAttributes = new { @class = "form_Control", @placeholder = "Title", @required = "required" } })
-            </div>
-        </div>
-
-        <div class="row_Input">
-            <div class="form_Input full_Address">
-                @Html.TextAreaFor(model => model.PDescription, new { @class = "form_Control", @rows = "4", @cols = "100", @placeholder = "Description", @required = "required" })
-            </div>
-        </div>
-
-        <div class="row_Input">
-            <div class="form_Input">
-                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form_Control", @placeholder = "Quantity", @required = "required" } })
-            </div>
-
-            <div class="form_Input">
-                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form_Control", @placeholder = "Price", @required = "required" } })
-            </div>
-        </div>
-
-        <div class="row_Input">
-            <input type="file" name="imgFile" class="login_Submit" onchange="getImagePreview(event)" />
-            <div class="form_Input">
-                @Html.DropDownListFor(model => model.CategoryID_FK, new SelectList(ViewBag.CategoryList, "Value", "Text"), "Please Select Category", new { @class = "form_Control", @placeholder = "Select Category", @required = "required" })
-            </div>
-        </div>
-
-        <div class="row_Input">
-            <div class="form_Input hidden" id="imgPreview"></div>
-        </div>
-
-        <button type="submit" class="login_Submit">Add Product</button>
+<div class="add-product-container">
+    <div class="add-product-header">
+        <h2><i class="fas fa-plus-circle"></i> Add New Product</h2>
     </div>
-}
+    <div class="add-product-card">
+        @using (Html.BeginForm("AddProduct", "Products", FormMethod.Post, new { enctype = "multipart/form-data", @class = "add-product-form" }))
+        {
+            @Html.AntiForgeryToken()
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+            <div class="add-product-form-content">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger", @id = "txtValidationSummary" })
+
+                <div class="form-row">
+                    <div class="form-group">
+                        @Html.EditorFor(model => model.PName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Product Name", @required = "required" } })
+                    </div>
+                    <div class="form-group">
+                        @Html.EditorFor(model => model.PTitle, new { htmlAttributes = new { @class = "form-control", @placeholder = "Product Title", @required = "required" } })
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        @Html.TextAreaFor(model => model.PDescription, new { @class = "form-control", @rows = "4", @cols = "100", @placeholder = "Product Description", @required = "required" })
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", @placeholder = "Quantity", @required = "required" } })
+                    </div>
+                    <div class="form-group">
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", @placeholder = "Price", @required = "required" } })
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Product Image</label>
+                        <input type="file" name="imgFile" class="form-control file-input" onchange="getImagePreview(event)" />
+                    </div>
+                    <div class="form-group">
+                        @Html.DropDownListFor(model => model.CategoryID_FK, new SelectList(ViewBag.CategoryList, "Value", "Text"), "Please Select Category", new { @class = "form-control", @placeholder = "Select Category", @required = "required" })
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group hidden full-width" id="imgPreview"></div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Add Product</button>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="add-product-footer">
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "back-btn" })
+    </div>
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-
 }
+
+<style>
+.add-product-container {
+    width: 94%;
+    margin: 40px auto;
+    padding: 0 10px;
+}
+.add-product-header {
+    background: linear-gradient(135deg, #252525, #34495e);
+    color: #fff;
+    border-radius: 18px 18px 0 0;
+    padding: 32px 32px 20px 32px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.add-product-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.add-product-header i {
+    color: #3498db;
+}
+.add-product-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 32px 24px 24px 24px;
+    margin-bottom: 32px;
+}
+.add-product-form-content {
+    max-width: 100%;
+}
+.form-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+.form-group {
+    flex: 1 1 300px;
+    min-width: 0;
+}
+.form-group.full-width {
+    flex: 1 1 100%;
+}
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 15px;
+}
+.form-control {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #e1e8ed;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background: #fafbfc;
+    color: #2c3e50;
+    font-weight: 500;
+    position: relative;
+}
+.form-control:focus {
+    outline: none;
+    border-color: #3498db;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.15);
+    transform: translateY(-1px);
+}
+.form-control:hover {
+    border-color: #bdc3c7;
+    background: #fff;
+}
+.form-control::placeholder {
+    color: #95a5a6;
+    font-weight: 400;
+}
+.form-control.file-input {
+    padding: 14px 20px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border: 2px dashed #cbd5e0;
+    cursor: pointer;
+    text-align: center;
+    font-weight: 600;
+    color: #3498db;
+}
+.form-control.file-input:hover {
+    border-color: #3498db;
+    background: linear-gradient(135deg, #f1f8ff, #e3f2fd);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+.form-control.file-input:focus {
+    border-color: #3498db;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.15);
+}
+.form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #e9ecef;
+}
+.btn-primary {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, #2980b9, #1f5f8b);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+}
+.back-btn {
+    background: #f8f9fa;
+    color: #3498db;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.12);
+    text-decoration: none;
+    margin-top: 12px;
+}
+.back-btn:hover {
+    background: #3498db;
+    color: #fff;
+}
+.add-product-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 24px;
+}
+@@media (max-width: 700px) {
+    .add-product-header {
+        padding: 18px 10px 10px 10px;
+    }
+    .add-product-header h2 {
+        font-size: 1.1rem;
+    }
+    .add-product-card {
+        padding: 16px 12px 12px 12px;
+    }
+    .form-row {
+        flex-direction: column;
+        gap: 16px;
+    }
+    .form-group {
+        flex: 1 1 100%;
+    }
+    .btn-primary {
+        width: 100%;
+        padding: 12px 24px;
+    }
+}
+</style>

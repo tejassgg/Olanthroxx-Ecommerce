@@ -3,112 +3,94 @@
     ViewBag.Title = "Admin Dashboard - Analytics";
 }
 
-<h2 class="page_Header">@ViewBag.Title</h2>
+<div class="admin-dashboard-container">
+    <div class="admin-dashboard-header">
+        <h2><i class="fas fa-chart-line"></i> @ViewBag.Title</h2>
+    </div>
 
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-    </dl>
-</div>
-
-
-<div class="main-container">
-    <div class="main-left-conatiner">
-        <div class="left-container">
-            <div class="graphs_Container">
-                <div class="graphs">
-                    <canvas id="orderPlacesxItemsSoldChart"></canvas>
-                </div>
-                <div class="graphs">
-                    <canvas id="totalMonthlySalesChart"></canvas>
-                </div>
+    <div class="admin-dashboard-stats-row">
+        <div class="admin-dashboard-stat-card accent-blue">
+            <div class="stat-icon"><i class="fas fa-shopping-cart"></i></div>
+            <div class="stat-info">
+                <span class="stat-label">Total Orders</span>
+                <span class="stat-value">@Model.TotalSales</span>
             </div>
-            
-            <div class="seller_Blocks_Container">
-                <a class="seller_Blocks" href="~/Account/SellerProfile">
-                    <h4>Total Orders &nbsp;<i class="fas fa-refresh"></i></h4>
-                    <h5><strong>@Model.TotalSales</strong></h5>
-                </a>
-                <a class="seller_Blocks">
-                    <h4>Total Sales Amount &nbsp;<i class="fas fa-refresh"></i></h4>
-                    <h5><strong>&#x20B9;@Model.TotalSalesAmount</strong></h5>
-                </a>
-                <a class="seller_Blocks">
-                    <h4>Total Items Sold &nbsp;<i class="fas fa-refresh"></i></h4>
-                    <h5><strong>@Model.TotalSalesQuantity</strong></h5>
-                </a>
-
-                <a class="seller_Blocks" href="~/Products/Index">
-                    <h4>Total Products &nbsp;<i class="fas fa-refresh"></i></h4>
-                    <h5><strong>@Model.TotalProducts</strong></h5>
-                </a>
-                <a class="seller_Blocks">
-                    <h4>Total Returns &nbsp;<i class="fas fa-refresh"></i></h4>
-                    <h5><strong>0</strong></h5>
-                </a>
-                <a class="seller_Blocks" href="~/Account/UserManagement">
-                    <h4>Active Users &nbsp;<i class="fas fa-refresh"></i></h4>
-                    <h5><strong>@Model.ActiveUsersCount  </strong></h5>
-                </a>
+        </div>
+        <div class="admin-dashboard-stat-card accent-green">
+            <div class="stat-icon"><i class="fas fa-rupee-sign"></i></div>
+            <div class="stat-info">
+                <span class="stat-label">Total Sales Amount</span>
+                <span class="stat-value">₹@Model.TotalSalesAmount</span>
+            </div>
+        </div>
+        <div class="admin-dashboard-stat-card accent-orange">
+            <div class="stat-icon"><i class="fas fa-cubes"></i></div>
+            <div class="stat-info">
+                <span class="stat-label">Total Items Sold</span>
+                <span class="stat-value">@Model.TotalSalesQuantity</span>
+            </div>
+        </div>
+        <div class="admin-dashboard-stat-card accent-purple">
+            <div class="stat-icon"><i class="fas fa-box"></i></div>
+            <div class="stat-info">
+                <span class="stat-label">Total Products</span>
+                <span class="stat-value">@Model.TotalProducts</span>
+            </div>
+        </div>
+        <div class="admin-dashboard-stat-card accent-red">
+            <div class="stat-icon"><i class="fas fa-undo"></i></div>
+            <div class="stat-info">
+                <span class="stat-label">Total Returns</span>
+                <span class="stat-value">0</span>
+            </div>
+        </div>
+        <div class="admin-dashboard-stat-card accent-teal">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <div class="stat-info">
+                <span class="stat-label">Active Users</span>
+                <span class="stat-value">@Model.ActiveUsersCount</span>
             </div>
         </div>
     </div>
 
-    <br />
+    <div class="admin-dashboard-graphs-row">
+        <div class="admin-dashboard-graph-card">
+            <div class="graph-header"><i class="fas fa-chart-bar"></i> Orders vs Items Sold</div>
+            <canvas id="orderPlacesxItemsSoldChart"></canvas>
+        </div>
+        <div class="admin-dashboard-graph-card">
+            <div class="graph-header"><i class="fas fa-chart-area"></i> Monthly Sales</div>
+            <canvas id="totalMonthlySalesChart"></canvas>
+        </div>
+    </div>
 
-    <div class="bottom_Container">
-        <div class="bottom_Left">
-            <table class="product_List_Table adminDash_ProductList">
+    <div class="admin-dashboard-tables-row">
+        <div class="admin-dashboard-table-card">
+            <div class="table-header"><i class="fas fa-box"></i> Product List</div>
+            <table class="admin-table">
                 <thead>
                     <tr>
-                        <th style="display: none;">
-                            ProductID
-                        </th>
-                        <th style="display:none;">
-                            Category ID
-                        </th>
-                        <th>
-                            Name
-                        </th>
-                        <th class="mobile_Hidden">
-                            Category
-                        </th>
-                        <th>
-                            Quantity
-                        </th>
-                        <th class="mobile_Hidden">
-                            Price (&#8377;)
-                        </th>
-                        <th>
-                            Action
-                        </th>
+                        <th style="display: none;">ProductID</th>
+                        <th style="display:none;">Category ID</th>
+                        <th>Name</th>
+                        <th class="mobile_Hidden">Category</th>
+                        <th>Quantity</th>
+                        <th class="mobile_Hidden">Price (&#8377;)</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
-
                 <tbody class="customScrollBar">
                     @foreach (var item in Model.productList.OrderBy(a => a.Quantity))
                     {
                         <tr>
-                            <td style="display:none;">
-                                @Html.HiddenFor(modelItem => item.ProductID)
-                            </td>
-                            <td style="display:none;">
-                                @Html.DisplayFor(modelItem => item.CategoryID_FK)
-                            </td>
+                            <td style="display:none;">@Html.HiddenFor(modelItem => item.ProductID)</td>
+                            <td style="display:none;">@Html.DisplayFor(modelItem => item.CategoryID_FK)</td>
+                            <td>@item.PName</td>
+                            <td class="mobile_Hidden">@Html.DisplayFor(modelItem => item.Category)</td>
+                            <td class="mobile_Hidden">@Html.DisplayFor(modelItem => item.Quantity)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Price)</td>
                             <td>
-                                @item.PName
-                            </td>
-                            <td class="mobile_Hidden">
-                                @Html.DisplayFor(modelItem => item.Category)
-                            </td>
-                            <td class="mobile_Hidden">
-                                @Html.DisplayFor(modelItem => item.Quantity)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Price)
-                            </td>
-                            <td>
-                                <a href="@Url.Action("EditProduct", new { id = item.ProductID })"><i class="fas fa-pen"></i></a> &nbsp; |
+                                <a href="@Url.Action("EditProduct", "Products", new { id = item.ProductID })"><i class="fas fa-pen"></i></a> &nbsp; |
                                 <a onclick="ViewProductDetails(@item.ProductID)"><i class="fas fa-info"></i></a> &nbsp; |
                                 <a onclick="DeleteProduct(@item.ProductID)"><i class="fas fa-trash"></i></a>
                             </td>
@@ -117,10 +99,11 @@
                 </tbody>
             </table>
         </div>
-        <div class="bottom_Right">
+        <div class="admin-dashboard-table-card">
+            <div class="table-header"><i class="fas fa-users"></i> User List</div>
             @if (Model.userList != null && Model.userList.Count > 0)
             {
-                <table class="userDetailList_Table adminDash_UserList">
+                <table class="admin-table">
                     <thead>
                         <tr>
                             <th>UserName</th>
@@ -140,13 +123,11 @@
                                     @if (usrDet.IsActive)
                                     {
                                         <td><button class="btn-success writeReviewBtn" id="@usrDet.UserName" onclick="UpdateUserStatus('@usrDet.UserName')"><i class="fas fa-edit"></i> Active</button></td>
-
                                     }
                                     else
                                     {
                                         <td><button class="btn-primary writeReviewBtn" id="@usrDet.UserName" onclick="UpdateUserStatus('@usrDet.UserName')"><i class="fas fa-edit"></i> In Active</button></td>
                                     }
-
                                 </tr>
                             }
                         }
@@ -159,24 +140,217 @@
             }
         </div>
     </div>
+    <div class="admin-dashboard-footer">
+        @Html.ActionLink("Back", "Index", "Products", null, new { @class = "back-btn" })
+    </div>
 </div>
 
-
-<p>
-    @Html.ActionLink("Back", "Index", "Products")
-</p>
-
-
 <style>
+.admin-dashboard-container {
+    width: 94%;
+    margin: 40px auto;
+    padding: 0 10px;
+}
+.admin-dashboard-header {
+    background: linear-gradient(135deg, #252525, #34495e);
+    color: #fff;
+    border-radius: 18px 18px 0 0;
+    padding: 32px 32px 20px 32px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.admin-dashboard-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.admin-dashboard-header i {
+    color: #3498db;
+}
+.admin-dashboard-stats-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-bottom: 32px;
+    justify-content: space-between;
+}
+.admin-dashboard-stat-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 22px 20px 18px 20px;
+    min-width: 180px;
+    flex: 1 1 180px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-left: 6px solid #3498db;
+}
+.admin-dashboard-stat-card .stat-icon {
+    font-size: 2rem;
+    color: #fff;
+    background: #3498db;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.admin-dashboard-stat-card .stat-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.stat-label {
+    font-size: 1rem;
+    color: #7f8c8d;
+    font-weight: 600;
+}
+.stat-value {
+    font-size: 1.3rem;
+    color: #2c3e50;
+    font-weight: 700;
+}
+.admin-dashboard-stat-card.accent-blue { border-left-color: #3498db; }
+.admin-dashboard-stat-card.accent-green { border-left-color: #27ae60; }
+.admin-dashboard-stat-card.accent-orange { border-left-color: #f39c12; }
+.admin-dashboard-stat-card.accent-purple { border-left-color: #8e44ad; }
+.admin-dashboard-stat-card.accent-red { border-left-color: #e74c3c; }
+.admin-dashboard-stat-card.accent-teal { border-left-color: #1abc9c; }
 
-    hr {
-        border: 1.25px solid black;
-    }
+.admin-dashboard-graphs-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+}
+.admin-dashboard-graph-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 24px 18px 18px 18px;
+    flex: 1 1 400px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.graph-header {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #34495e;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
-    .right-container h2 {
-        margin-top: 5px;
-        padding: 5px;
+.admin-dashboard-tables-row {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    gap: 24px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+}
+.admin-dashboard-table-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 24px 18px 18px 18px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.table-header {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #34495e;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.admin-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.admin-table th {
+    background: linear-gradient(135deg, #252525, #34495e);
+    color: #fff;
+    font-weight: 600;
+    padding: 12px 8px;
+    font-size: 15px;
+    border: none;
+    white-space: nowrap;
+}
+.admin-table td {
+    padding: 12px 8px;
+    font-size: 15px;
+    color: #2c3e50;
+    border-bottom: 1px solid #e9ecef;
+    background: #fff;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+.back-btn {
+    background: #f8f9fa;
+    color: #3498db;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.12);
+    text-decoration: none;
+    margin-top: 12px;
+}
+.back-btn:hover {
+    background: #3498db;
+    color: #fff;
+}
+.admin-dashboard-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 24px;
+}
+@@media (max-width: 1100px) {
+    .admin-dashboard-tables-row {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
     }
+}
+@@media (max-width: 700px) {
+    .admin-dashboard-header {
+        padding: 18px 10px 10px 10px;
+        font-size: 1.1rem;
+    }
+    .admin-dashboard-stat-card, .admin-dashboard-graph-card, .admin-dashboard-table-card {
+        min-width: 0;
+        max-width: 100%;
+        padding: 12px 6px;
+    }
+    .admin-dashboard-header h2 {
+        font-size: 1.1rem;
+    }
+    .graph-header, .table-header {
+        font-size: 1rem;
+    }
+}
 </style>
 
 <script>

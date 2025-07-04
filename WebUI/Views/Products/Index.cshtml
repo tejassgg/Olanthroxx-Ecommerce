@@ -5,106 +5,287 @@
     var MostSold = Model.ToList().Max(a => a.ItemsSold);
 }
 
-@if (User.IsInRole("Admin"))
-{
-    <h2 class="page_Header">Manage - All Products(@Model.ToList().Count())</h2>
-}
-else
-{
-    <h2 class="page_Header">Manage - Products(@Model.ToList().Count())</h2>
-}
-
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-    </dl>
-</div>
-
-<div class="product_list_Container">
-    <div class="addnewProduct-Container">
-        <a class="login_Submit addProduct_Btn" href="@Url.Action("/AddProduct")"><i class="fas fa-plus"></i> &nbsp; Add New</a>
+<div class="products-manage-container">
+    <div class="products-manage-header">
+        @if (User.IsInRole("Admin"))
+        {
+            <h2><i class="fas fa-boxes"></i> Manage - All Products (@Model.ToList().Count())</h2>
+        }
+        else
+        {
+            <h2><i class="fas fa-boxes"></i> Manage - Products (@Model.ToList().Count())</h2>
+        }
     </div>
+    
+    <div class="products-manage-card">
+        <div class="products-manage-actions">
+            <a class="btn-primary" href="@Url.Action("/AddProduct")">
+                <i class="fas fa-plus"></i> Add New Product
+            </a>
+        </div>
 
-    <table class="product_List_Table">
-        <thead>
-            <tr>
-                <th style="display: none;">
-                    ProductID
-                </th>
-                <th style="display:none;">
-                    Category ID
-                </th>
-                <th>
-                    Name
-                </th>
-                <th class="mobile_Hidden">
-                    Category
-                </th>
-                <th>
-                    Quantity
-                </th>
-                <th>
-                    Items Sold
-                </th>
-                <th class="mobile_Hidden">
-                    Price (&#8377;)
-                </th>
-                <th>
-                    Action
-                </th>
-            </tr>
-        </thead>
+        <div class="products-table-container">
+            <table class="products-manage-table">
+                <thead>
+                    <tr>
+                        <th style="display: none;">
+                            ProductID
+                        </th>
+                        <th style="display:none;">
+                            Category ID
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th class="mobile_Hidden">
+                            Category
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Items Sold
+                        </th>
+                        <th class="mobile_Hidden">
+                            Price (₹)
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
 
-        <tbody class="customScrollBar">
-            @foreach (var item in Model.OrderBy(a => a.Quantity))
-            {
-                <tr>
-                    <td style="display:none;">
-                        @Html.HiddenFor(modelItem => item.ProductID)
-                    </td>
-                    <td style="display:none;">
-                        @Html.DisplayFor(modelItem => item.CategoryID_FK)
-                    </td>
-                    <td>
-                        @item.PName
-                    </td>
-                    <td class="mobile_Hidden">
-                        @Html.DisplayFor(modelItem => item.Category)
-                    </td>
-                    <td class="mobile_Hidden">
-                        @Html.DisplayFor(modelItem => item.Quantity)
-                    </td>
-                    @if (item.ItemsSold == MostSold)
+                <tbody class="customScrollBar">
+                    @foreach (var item in Model.OrderBy(a => a.Quantity))
                     {
-                        <td class="mobile_Hidden" style="color:green">
-                            @Html.DisplayFor(modelItem => item.ItemsSold) (Most Sold)
-                        </td>
+                        <tr>
+                            <td style="display:none;">
+                                @Html.HiddenFor(modelItem => item.ProductID)
+                            </td>
+                            <td style="display:none;">
+                                @Html.DisplayFor(modelItem => item.CategoryID_FK)
+                            </td>
+                            <td>
+                                @item.PName
+                            </td>
+                            <td class="mobile_Hidden">
+                                @Html.DisplayFor(modelItem => item.Category)
+                            </td>
+                            <td class="mobile_Hidden">
+                                @Html.DisplayFor(modelItem => item.Quantity)
+                            </td>
+                            @if (item.ItemsSold == MostSold)
+                            {
+                                <td class="mobile_Hidden" style="color:green">
+                                    @Html.DisplayFor(modelItem => item.ItemsSold) (Most Sold)
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="mobile_Hidden">
+                                    @Html.DisplayFor(modelItem => item.ItemsSold)
+                                </td>
+                            }
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="@Url.Action("EditProduct", new { id = item.ProductID })" class="action-btn edit-btn" title="Edit">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
+                                    <a onclick="ViewProductDetails(@item.ProductID)" class="action-btn view-btn" title="View Details">
+                                        <i class="fas fa-info"></i>
+                                    </a>
+                                    <a onclick="DeleteProduct(@item.ProductID)" class="action-btn delete-btn" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
                     }
-                    else
-                    {
-                        <td class="mobile_Hidden">
-                            @Html.DisplayFor(modelItem => item.ItemsSold)
-                        </td>
-                    }
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        <a href="@Url.Action("EditProduct", new { id = item.ProductID })"><i class="fas fa-pen"></i></a> &nbsp; |
-                        <a onclick="ViewProductDetails(@item.ProductID)"><i class="fas fa-info"></i></a> &nbsp; |
-                        <a onclick="DeleteProduct(@item.ProductID)"><i class="fas fa-trash"></i></a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    <br />
-    <br />
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-
 
 <div class="ModalDad">
     <dialog id="viewProductModal" style="display:none;" class="viewProductModal">
     </dialog>
 </div>
+
+<style>
+.products-manage-container {
+    width: 94%;
+    margin: 40px auto;
+    padding: 0 10px;
+}
+.products-manage-header {
+    background: linear-gradient(135deg, #252525, #34495e);
+    color: #fff;
+    border-radius: 18px 18px 0 0;
+    padding: 32px 32px 20px 32px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.products-manage-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.products-manage-header i {
+    color: #3498db;
+}
+.products-manage-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 32px 24px 24px 24px;
+    margin-bottom: 32px;
+}
+.products-manage-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e9ecef;
+}
+.btn-primary {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, #2980b9, #1f5f8b);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+    color: #fff;
+    text-decoration: none;
+}
+.products-table-container {
+    overflow-x: auto;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.products-manage-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.products-manage-table th {
+    background: linear-gradient(135deg, #252525, #34495e);
+    color: #fff;
+    font-weight: 600;
+    padding: 16px 12px;
+    font-size: 15px;
+    border: none;
+    white-space: nowrap;
+    text-align: left;
+}
+.products-manage-table td {
+    padding: 16px 12px;
+    font-size: 15px;
+    color: #2c3e50;
+    border-bottom: 1px solid #e9ecef;
+    background: #fff;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.products-manage-table tr:last-child td {
+    border-bottom: none;
+}
+.products-manage-table tr:hover {
+    background: #f8f9fa;
+}
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+.action-btn.edit-btn {
+    background: #3498db;
+    color: #fff;
+}
+.action-btn.edit-btn:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
+}
+.action-btn.view-btn {
+    background: #27ae60;
+    color: #fff;
+}
+.action-btn.view-btn:hover {
+    background: #229954;
+    transform: translateY(-1px);
+}
+.action-btn.delete-btn {
+    background: #e74c3c;
+    color: #fff;
+}
+.action-btn.delete-btn:hover {
+    background: #c0392b;
+    transform: translateY(-1px);
+}
+@@media (max-width: 700px) {
+    .products-manage-header {
+        padding: 18px 10px 10px 10px;
+    }
+    .products-manage-header h2 {
+        font-size: 1.1rem;
+    }
+    .products-manage-card {
+        padding: 16px 12px 12px 12px;
+    }
+    .products-manage-actions {
+        justify-content: center;
+    }
+    .btn-primary {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 24px;
+    }
+    .action-buttons {
+        flex-direction: column;
+        gap: 4px;
+    }
+    .action-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+}
+</style>
 

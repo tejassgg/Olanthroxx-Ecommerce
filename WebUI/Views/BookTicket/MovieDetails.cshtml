@@ -4,96 +4,339 @@
     ViewBag.Title = Model.MovieName + " - Details | Reviews";
 }
 
-<h2>@Model.MovieName</h2>
+<div class="movie-details-container">
+    <div class="movie-details-card">
+        <div class="movie-details-header">
+            <i class="fas fa-film"></i>
+            <h2>@Model.MovieName</h2>
+        </div>
 
+        <div class="movie-details-content">
+            <div class="movie-poster-section">
+                @if (!string.IsNullOrEmpty(Model.ImgPath))
+                {
+                    <img src="@Url.Content(Model.ImgPath)" alt="@Model.MovieName" class="movie-poster">
+                }
+                else
+                {
+                    <img src="~/Content/Images/Product.png" alt="@Model.MovieName" class="movie-poster">
+                }
+                
+                <div class="movie-status">
+                    @if (!Model.IsOutOfTheater)
+                    {
+                        <span class="status-badge in-cinemas">
+                            <i class="fas fa-ticket-alt"></i> In Cinemas
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="status-badge out-cinemas">
+                            <i class="fas fa-times-circle"></i> Out Of Cinemas
+                        </span>
+                    }
+                </div>
+            </div>
 
-<form action="~/BookTicket/BookTicket?MovieID=@Model.MovieID">
-    <hr />
-    <dl class="dl-horizontal">
+            <div class="movie-info-section">
+                <div class="movie-info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Duration</span>
+                        <span class="info-value">@Model.Duration mins</span>
+                    </div>
+                    
+                    <div class="info-item">
+                        <span class="info-label">Language</span>
+                        <span class="info-value">@Model.Language</span>
+                    </div>
+                    
+                    <div class="info-item">
+                        <span class="info-label">Certificate</span>
+                        <span class="info-value">@(Model.IsAdult ? "A" : "UA")</span>
+                    </div>
+                    
+                    <div class="info-item">
+                        <span class="info-label">Star Cast</span>
+                        <span class="info-value">@Model.StarCast</span>
+                    </div>
+                </div>
 
-        @Html.HiddenFor(a => a.MovieID)
+                <div class="movie-description-section">
+                    <h4 class="description-title">Synopsis</h4>
+                    <p class="description-text">@Model.Description</p>
+                </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Duration)
-        </dt>
+                @if (!Model.IsOutOfTheater)
+                {
+                    <form action="/BookTicket/BookTicket?MovieID=@Model.MovieID" class="booking-form">
+                        @Html.HiddenFor(a => a.MovieID)
+                        <button type="submit" class="book-tickets-btn">
+                            <i class="fas fa-ticket-alt"></i> Book Tickets Now
+                        </button>
+                    </form>
+                }
+            </div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Duration) Mins
-        </dd>
+        <div class="movie-details-footer">
+            @Html.ActionLink("Back to Movies", "Index", null, new { @class = "back-btn" })
+        </div>
+    </div>
+</div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.StarCast)
-        </dt>
+<style>
+.movie-details-container {
+    width: 94%;
+    margin: 40px auto;
+    padding: 0 10px;
+}
 
-        <dd>
-            @Html.DisplayFor(model => model.StarCast)
-        </dd>
+.movie-details-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    overflow: hidden;
+}
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+.movie-details-header {
+    background: linear-gradient(135deg, #252525, #34495e);
+    color: #fff;
+    padding: 32px 32px 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
+.movie-details-header i {
+    font-size: 32px;
+    color: #3498db;
+}
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Language)
-        </dt>
+.movie-details-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+}
 
-        <dd>
-            @Html.DisplayFor(model => model.Language)
-        </dd>
+.movie-details-content {
+    padding: 32px;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 32px;
+    align-items: start;
+}
 
-        @if (Model.IsAdult)
-        {
-            <dd>
-                A
-            </dd>
-        }
-        else
-        {
-            <dd>
-                UA
-            </dd>
-        }
+.movie-poster-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
 
-        <dd>
-            @if (!Model.IsOutOfTheater)
-            {
-                <strong class="text-warning">In Cinemas</strong>
-            }
-            else
-            {
-                <strong class="text-warning">Out Of Cinemas</strong>
-            }
-        </dd>
-        <dd>
-            @if (!string.IsNullOrEmpty(Model.ImgPath))
-            {
-                <center><img src="@Url.Content(Model.ImgPath)" width="200px" height="200px"></center>
-            }
-            else
-            {
-                <center><img src="~/Content/Images/Product.png" width="200px" height="200px"></center>
-            }
-        </dd>
+.movie-poster {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
 
-        @*<dt>
-                @Html.DisplayNameFor(model => model.IsActive)
-            </dt>
+.movie-status {
+    display: flex;
+    justify-content: center;
+}
 
-            <dd>
-                @Html.DisplayFor(model => model.IsActive)
-            </dd>*@
-        <dd>
-            @if (!Model.IsOutOfTheater)
-            {
-                <button type="submit" class="btn btn-danger"> Book Tickets</button>
-            }
-        </dd>
-    </dl>
-</form>
-<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>
+.status-badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.status-badge.in-cinemas {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    color: #fff;
+}
+
+.status-badge.out-cinemas {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: #fff;
+}
+
+.movie-info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.movie-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.info-item {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 16px;
+    border: 1px solid #e9ecef;
+}
+
+.info-label {
+    display: block;
+    font-size: 13px;
+    color: #7f8c8d;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.info-value {
+    display: block;
+    font-size: 16px;
+    color: #2c3e50;
+    font-weight: 700;
+}
+
+.movie-description-section {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+}
+
+.description-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0 0 12px 0;
+}
+
+.description-text {
+    font-size: 15px;
+    color: #34495e;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.booking-form {
+    margin-top: 8px;
+}
+
+.book-tickets-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: #fff;
+    border: none;
+    padding: 16px 32px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 16px rgba(52, 152, 219, 0.3);
+    width: 100%;
+    justify-content: center;
+}
+
+.book-tickets-btn:hover {
+    background: linear-gradient(135deg, #2980b9, #1f5f8b);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+.back-btn {
+    background: #f8f9fa;
+    color: #3498db;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.12);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.back-btn:hover {
+    background: #3498db;
+    color: #fff;
+}
+
+.movie-details-footer {
+    padding: 24px 32px 32px 32px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+@@media (max-width: 900px) {
+    .movie-details-content {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    
+    .movie-poster {
+        height: 350px;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+}
+
+@@media (max-width: 768px) {
+    .movie-details-header {
+        padding: 20px 20px 12px 20px;
+    }
+    
+    .movie-details-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .movie-details-content {
+        padding: 20px;
+    }
+    
+    .movie-info-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .movie-poster {
+        height: 300px;
+    }
+}
+
+@@media (max-width: 480px) {
+    .movie-details-container {
+        width: 96%;
+        margin: 20px auto;
+    }
+    
+    .movie-details-header {
+        padding: 16px 16px 8px 16px;
+    }
+    
+    .movie-details-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    .movie-details-content {
+        padding: 16px;
+    }
+    
+    .movie-poster {
+        height: 250px;
+    }
+    
+    .book-tickets-btn {
+        padding: 14px 24px;
+        font-size: 16px;
+    }
+}
+</style>

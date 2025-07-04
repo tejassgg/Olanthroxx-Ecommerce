@@ -4,55 +4,200 @@
     ViewBag.Title = "Add Theatre Details";
 }
 
-@using (Html.BeginForm("AddTheatreDetails", "BookTicket", FormMethod.Post, new {enctype = "multipart/form-data", @class = "addProduct_Form" }))
-{
-    @Html.AntiForgeryToken()
-
-<div class="addProduct_Form_Div">
-    <h2>Add Theatre</h2>
-    @Html.ValidationSummary(true, "", new { @class = "text-danger", @id = "txtValidationSummary" })
-
-    <div class="row_Input">
-        <div class="form_Input">
-            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form_Control", @placeholder = "Name", @required = "required" } })
+<div class="add-theatre-main-container">
+    <div class="add-theatre-card">
+        <div class="add-theatre-header">
+            <i class="fa fa-film"></i>
+            <h2>Add Theatre</h2>
         </div>
-
-        <div class="form_Input">
-            @Html.EditorFor(model => model.NoOfScreens, new { htmlAttributes = new { @class = "form_Control", @placeholder = "NoOfScreens", @required = "required", @type = "number" } })
+        @using (Html.BeginForm("AddTheatreDetails", "BookTicket", FormMethod.Post, new {enctype = "multipart/form-data", @class = "add-theatre-form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger", @id = "txtValidationSummary" })
+            <div class="add-theatre-form-grid">
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-input", @placeholder = "Name", @required = "required" } })
+                </div>
+                <div class="form-group">
+                    @Html.EditorFor(model => model.NoOfScreens, new { htmlAttributes = new { @class = "form-input", @placeholder = "No. of Screens", @required = "required", @type = "number" } })
+                </div>
+                <div class="form-group full-width">
+                    @Html.TextAreaFor(model => model.Location, new { @class = "form-input", @rows = "3", @placeholder = "Location", @required = "required" })
+                </div>
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Landmark, new { htmlAttributes = new { @class = "form-input", @placeholder = "Landmark", @required = "required" } })
+                </div>
+                <div class="form-group">
+                    @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-input", @placeholder = "Pincode", @required = "required", @type = "number" } })
+                </div>
+                <div class="form-group full-width">
+                    <input type="file" name="imgFile" class="form-input file-input" onchange="getImagePreview(event)" />
+                </div>
+                <div class="form-group full-width">
+                    <div class="form-input hidden" id="imgPreview"></div>
+                </div>
+            </div>
+            <button type="submit" class="add-theatre-btn"><i class="fas fa-plus-circle"></i> Add Theatre</button>
+        }
+        <div class="add-theatre-footer">
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "back-btn" })
         </div>
     </div>
-
-    <div class="row_Input">
-        <div class="form_Input full_Address">
-            @Html.TextAreaFor(model => model.Location, new { @class = "form_Control", @rows = "4", @cols = "100", @placeholder = "Location", @required = "required" })
-        </div>
-    </div>
-
-    <div class="row_Input">
-        <div class="form_Input">
-            @Html.EditorFor(model => model.Landmark, new { htmlAttributes = new { @class = "form_Control", @placeholder = "Landmark", @required = "required" } })
-        </div>
-
-        <div class="form_Input">
-            @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form_Control", @placeholder = "Pincode", @required = "required", @type = "number" } })
-        </div>
-    </div>
-
-    <div class="row_Input">
-        <input type="file" name="imgFile" class="login_Submit" onchange="getImagePreview(event)" />
-    </div>
-
-    <div class="row_Input">
-        <div class="form_Input hidden" id="imgPreview"></div>
-    </div>
-
-    <button type="submit" class="login_Submit">Add Theatre</button>
 </div>
+
+<style>
+.add-theatre-main-container {
+    width: 94%;
+    margin: 40px auto;
+    padding: 0 10px;
+    display: flex;
+    justify-content: center;
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+.add-theatre-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    padding: 0 0 32px 0;
+    max-width: 520px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+.add-theatre-header {
+    background: linear-gradient(135deg, #252525, #34495e);
+    color: #fff;
+    border-radius: 18px 18px 0 0;
+    padding: 32px 32px 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.add-theatre-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.add-theatre-header i {
+    color: #3498db;
+    font-size: 2rem;
+}
+.add-theatre-form {
+    width: 100%;
+    padding: 32px 32px 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.add-theatre-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 18px;
+    margin-bottom: 18px;
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.full-width {
+    grid-column: 1 / -1;
+}
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: #fff;
+    margin-bottom: 4px;
+}
+.form-input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+.file-input {
+    padding: 8px 0 8px 0;
+    background: #f8f9fa;
+    border: none;
+}
+.add-theatre-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: #fff;
+    border: none;
+    padding: 14px 0;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.12);
+    margin: 0 32px;
+}
+.add-theatre-btn:hover {
+    background: linear-gradient(135deg, #2980b9, #1f5f8b);
+    transform: translateY(-2px);
+}
+.back-btn {
+    background: #f8f9fa;
+    color: #3498db;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.12);
+    text-decoration: none;
+    margin-top: 18px;
+    margin-left: 32px;
+    width: fit-content;
+}
+.back-btn:hover {
+    background: #3498db;
+    color: #fff;
+}
+.add-theatre-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+@@media (max-width: 700px) {
+    .add-theatre-header {
+        padding: 18px 10px 10px 10px;
+        font-size: 1.1rem;
+    }
+    .add-theatre-header h2 {
+        font-size: 1.1rem;
+    }
+    .add-theatre-form {
+        padding: 16px 8px 0 8px;
+    }
+    .add-theatre-card {
+        padding: 0 0 12px 0;
+    }
+    .add-theatre-btn {
+        margin: 0 8px;
+        font-size: 16px;
+    }
+    .back-btn {
+        margin-left: 8px;
+    }
+    .add-theatre-form-grid {
+        grid-template-columns: 1fr;
+        gap: 12px 0;
+    }
+}
+</style>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -9,30 +9,6 @@
 }
 
 <div class="ProductPage">
-    <div class="Search_Bar">
-        <div class="Search_Bar_Items">
-            <div class="input_Search_Block input">
-                <input class="input_Search" type="text" id="txtSearch" placeholder="Search Olanthroxx" /><i class="fas fa-search fa-lg"></i>
-            </div>
-
-            <div class="input_Search_Block select">
-                <select class="input_Search" type="text" id="txtFilterInbox">
-                    <option value="All">Filter By Category</option>
-                    @foreach (var cat in ViewBag.FilterCategoryList)
-                    {
-                        <option value="@cat.Value">@cat.Text</option>
-                    }
-                </select>
-            </div>
-        </div>
-        <form id="formYourCart" class="displayNone">
-            <input type="hidden" id="hdnCartDetails" />
-            <div class="yourCart">
-                <a onclick="OpenCart()">Cart<i class="fa fa-shopping-cart" style="font-size:22px"></i></a><a id="txtCartCount"></a>
-            </div>
-        </form>
-    </div>
-
     <div class="displayNone" id="productPageMsgs">
 
     </div>
@@ -48,22 +24,32 @@
                 </div>
                 @if (!string.IsNullOrEmpty(item.ImgPath))
                 {
-                    <center><a href="../Products/ViewProductDetails/@item.ProductID"><img src="@Url.Content(@item.ImgPath)"></a></center>
+                    <a href="../Products/ViewProductDetails/@item.ProductID">
+                        <img src="@Url.Content(@item.ImgPath)" alt="@item.PName">
+                    </a>
                 }
                 else
                 {
-                    <center><a href="../Products/ViewProductDetails/@item.ProductID"><img src="~/Content/Images/Product.png"></a></center>
+                    <a href="../Products/ViewProductDetails/@item.ProductID">
+                        <img src="~/Content/Images/Product.png" alt="@item.PName">
+                    </a>
                 }
-                <hr />
+                
                 <div class="prod_Desc">
-                    <strong>@Html.ActionLink(item.PName, "ViewProductDetails", new { id = item.ProductID})</strong> | @Html.DisplayFor(modelItem => item.PTitle)
+                    <strong>@Html.ActionLink(item.PName, "ViewProductDetails", new { id = item.ProductID})</strong>
+                    <span style="color: #7f8c8d; font-weight: normal;"> | @Html.DisplayFor(modelItem => item.PTitle)</span>
                 </div>
-                <div>
-                    <ul>
-                        <li class="prod_Desc">@item.PDescription.Split('|')[0]</li>
-                    </ul>
-                </div>
-                <div style="text-align: right; margin: -10px 0px;">
+                
+                @if (!string.IsNullOrEmpty(item.PDescription))
+                {
+                    <div>
+                        <ul>
+                            <li class="prod_Desc">@item.PDescription.Split('|')[0]</li>
+                        </ul>
+                    </div>
+                }
+                
+                <div style="text-align: right; margin: 0;">
                     @if (item.OverallRating > 0)
                     {
                         for (var j = 1; j <= 5; j++)
@@ -83,6 +69,7 @@
                         <h6><strong>(0 Ratings)</strong></h6>
                     }
                 </div>
+                
                 @if (item.Quantity >= 5)
                 {
                     <div class="priceCategory">
@@ -92,9 +79,9 @@
                         <button class="add_Cart add_Cart_@item.ProductID" href="#" data-attr-MaxQuantity="@item.Quantity" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">Add To Cart</button>
 
                         <div class="cart_Count_@item.ProductID displayNone">
-                            <button class="cart_Count"onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">+</button>
-                            <input class="cart_Count cart_Count_Inverse" id="item_Counter_@item.ProductID" value="0"/>
                             <button class="cart_Count" onclick="removeItem(@item.ProductID, 1, @item.Price)">-</button>
+                            <input class="cart_Count cart_Count_Inverse" id="item_Counter_@item.ProductID" value="0"/>
+                            <button class="cart_Count" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">+</button>
                         </div>                        
                         
                     </div>
@@ -102,30 +89,32 @@
                 else if (item.Quantity < 5 && item.Quantity > 0)
                 {
                     <div class="priceCategory">
-                        <h6 class="priceData" data-attr-price="@item.Price"><strong>Rs. @item.Price</strong></h6><h6 style="color: red; margin: -5px 0px;"> (Only @item.Quantity unit(s) available..)</h6>
+                        <h6 class="priceData" data-attr-price="@item.Price"><strong>Rs. @item.Price</strong></h6>
+                        <h6 style="color: red; margin: 4px 0 0 0;"> (Only @item.Quantity unit(s) available..)</h6>
                     </div>
                     <div class="card_Footer">
                         <button class="add_Cart add_Cart_@item.ProductID" href="#" data-attr-MaxQuantity="@item.Quantity" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">Add To Cart</button>
                         
                         <div class="cart_Count_@item.ProductID displayNone">
-                            <button class="cart_Count" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">+</button>
-                            <input class="cart_Count cart_Count_Inverse" id="item_Counter_@item.ProductID" value="0" />
                             <button class="cart_Count" onclick="removeItem(@item.ProductID, 1, @item.Price)">-</button>
+                            <input class="cart_Count cart_Count_Inverse" id="item_Counter_@item.ProductID" value="0" />
+                            <button class="cart_Count" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">+</button>
                         </div>
                     </div>
                 }
                 else if (item.Quantity == 0)
                 {
                     <div class="priceCategory">
-                        <h6 class="priceData" data-attr-price="@item.Price"><strong>Rs. @item.Price</strong></h6><h6 style="color: red; margin: -5px 0px;">(Out Of Stock)</h6>
+                        <h6 class="priceData" data-attr-price="@item.Price"><strong>Rs. @item.Price</strong></h6>
+                        <h6 style="color: red; margin: 4px 0 0 0;">(Out Of Stock)</h6>
                     </div>
                     <div class="card_Footer" style="pointer-events:none">
                         <button class="btn-warning add_Cart add_Cart_@item.ProductID" href="#" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)" style="background-color:grey">Add To Cart</button>
 
                         <div class="cart_Count_@item.ProductID displayNone">
-                            <button class="cart_Count" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">+</button>
-                            <input class="cart_Count cart_Count_Inverse" id="item_Counter_@item.ProductID" value="0" />
                             <button class="cart_Count" onclick="removeItem(@item.ProductID, 1, @item.Price)">-</button>
+                            <input class="cart_Count cart_Count_Inverse" id="item_Counter_@item.ProductID" value="0" />
+                            <button class="cart_Count" onclick="AddtoCart(this, '@item.PName', '@item.ProductID', 1, @item.Price)">+</button>
                         </div>
                     </div>
                 }
@@ -137,18 +126,39 @@
 </div>
 
 <!--Cart Modal-->
-<div id="cartPopUp" class="main_Modal">
-    <div class="modal_Body">
-        <div class="modal_Headers">
-            <h2 style="text-align: initial;">Your Cart <i class="fa fa-shopping-cart"></i></h2>
-            <span class="closeCartBtn">&times;</span>
-        </div>
-        <div class="modal_Content">
-            <div id="appendCartData"></div>
-        </div>
-        <div class="modal_Footer">
-            <p id="totalCartValue" value="0"></p>
-            <button class="btn-success add_Cart closeModalCart " onclick="ProceedToCheckout('ECommerce')">Checkout</button>
+<div id="cartPopUp" class="cart-modal">
+    <div class="cart-modal-overlay">
+        <div class="cart-modal-container">
+            <div class="cart-modal-header">
+                <div class="cart-modal-title">
+                    <i class="fa fa-shopping-cart"></i>
+                    <h2>Your Cart</h2>
+                </div>
+                <button class="cart-modal-close" onclick="closeCartModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="cart-modal-content">
+                <div id="appendCartData" class="cart-items-container"></div>
+                
+                <div class="cart-empty-state" id="cartEmptyState" style="display: none;">
+                    <i class="fas fa-shopping-bag"></i>
+                    <h3>Your cart is empty</h3>
+                    <p>Add some products to get started!</p>
+                </div>
+            </div>
+            
+            <div class="cart-modal-footer">
+                <div class="cart-total">
+                    <span class="total-label">Total:</span>
+                    <span class="total-amount" id="totalCartValue">Rs. 0</span>
+                </div>
+                <button class="cart-checkout-btn" onclick="ProceedToCheckout('ECommerce')">
+                    <i class="fas fa-credit-card"></i>
+                    Checkout
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -164,58 +174,96 @@
             localStorage.setItem("CartDetails", tempDetails);
         }
 
+        // Populate the filter dropdown in navbar
+        var filterDropdown = $("#txtFilterInbox");
+        filterDropdown.empty();
+        filterDropdown.append('<option value="All">Filter By Category</option>');
+        
+        @if (ViewBag.FilterCategoryList != null)
+        {
+            foreach (var cat in ViewBag.FilterCategoryList)
+            {
+                <text>
+                filterDropdown.append('<option value="@cat.Value">@cat.Text</option>');
+                </text>
+            }
+        }
+
         $("#txtSearch").val();
         $("#txtFilterInbox").val();
         IsAuthenticated = '@IsAuthenticated';
-        $("#txtFilterInbox").on("change", function () {
-            var filterType = $(this).val();
-            if (filterType == "All") {
-                $("div .product_Details .card").each(function (results) {
-                    if (results !== 0) {
-                        $(this).show();
-                    }
-                });
-                return true;
-            }
-            else {
-                $("div .product_Details .card").each(function (results) {
-                    if (results !== 0) {
-                        if (filterType != $(this).find(".filterByCategory").val()) {
-                            $(this).hide();
-                        }
-                        else {
-                            $(this).show();
-                        }
-                    }
-                });
-            }
-        });
-
-        $("#txtSearch").on("keyup", function () {
-            var textEnter = $(this).val();
-            $("div .product_Details .card").each(function (results) {
-                if (results >= 0) {
-                    var id = $(this).find(".prod_Desc").text();
-                    if (id.indexOf(textEnter) !== 0 && id.toLowerCase().indexOf(textEnter.toLowerCase()) < 0) {
-                        $(this).hide();
-                    }
-                    else {
-                        $(this).show();
-                    }                  
-                }
-            });
-            if ($("div .product_Details .card:visible").length <= 0) {
-                $("#productPageMsgs").removeClass("displayNone").html("<h2 class='page_Header'>No products found..!!</h2>");
-            }
-            else {
-                if (!$("#productPageMsgs").hasClass("displayNone")) {
-                    $("#productPageMsgs").addClass("displayNone")
-                }  
-            }
-        });
-
-        $("#formYourCart").removeClass("displayNone");
-
     });
 
+    // Cart modal functions
+    function closeCartModal() {
+        $("#cartPopUp").hide();
+    }
+
+    function updateCartModal() {
+        var cartItems = $("#appendCartData .cart-table");
+        var emptyState = $("#cartEmptyState");
+        
+        if (cartItems.length === 0) {
+            emptyState.show();
+            $("#appendCartData").hide();
+        } else {
+            emptyState.hide();
+            $("#appendCartData").show();
+        }
+    }
+
+    // Override the existing OpenCart function to work with new modal
+    function OpenCart() {    
+        var strMsg = "";
+        if (CartDetails == [] || CartDetails == "[]" || CartDetails == null || CartDetails == undefined || CartDetails.length <= 0) {
+            var colorTheme, popupHeader, btnText;
+            strMsg = "Please Add Items To The Cart..!! ";
+            colorTheme = "fail";
+            popupHeader = "Alert";
+            btnText = "Close";
+            openSuccessModal(strMsg, colorTheme, popupHeader, btnText, "");
+            return false;
+        }
+        $("#cartPopUp").show();
+        updateCartModal();
+    }
+
+    // Update the refreshCart function to work with new modal structure
+    function refreshCart() {
+        var strMsg = "";
+        if (localStorage.getItem("CartDetails") != undefined && localStorage.getItem("CartDetails") != '') {
+            if (JSON.parse(localStorage.getItem("CartDetails")) != null && JSON.parse(localStorage.getItem("CartDetails")) != []) {
+                CartDetails = JSON.parse(localStorage.getItem("CartDetails"));
+                TotalAmount = 0;
+                TotalCartItems = 0;
+                CartDetails.forEach(function (item) {
+                    strMsg += '<div class="cart-table" id="' + item.ProductID + '"><div class="cart_Image"><img src=' + $("#img_" + item.ProductID + " img").attr("src") + '></div><div><strong class="splitData">' + item.Name + '</strong><h6>Rs.' + item.Price + '</h6><p style="text-align:bottom">Qty:- ' + item.Quantity + '</p></div><div class="cart-details-action" ><a href="#" onclick="removeItemFromCart(' + item.ProductID + ',' + item.Quantity + ',' + item.Price + ')"><i class="fas fa-trash"></i></a></div></div>';
+                    TotalAmount += item.Amount;
+                    TotalCartItems += item.Quantity;
+                    $(".add_Cart_" + item.ProductID).addClass("displayNone");
+                    $(".cart_Count_" + item.ProductID).removeClass("displayNone");
+                    $("#item_Counter_" + item.ProductID).val(item.Quantity);
+                });
+
+                $("#appendCartData").empty().append(strMsg);
+                $("#totalCartValue").text('Rs. ' + TotalAmount);
+                
+                if (TotalCartItems > 0) {
+                    $("#txtCartCount").text("(" + TotalCartItems + ")");
+                } else {
+                    $("#txtCartCount").text("");
+                }
+                
+                updateCartModal();
+            }        
+        }
+    }
 </script>
+
+<style>
+    .product-container {
+        width: 94%;
+        margin: 40px auto;
+        padding: 0 10px;
+    }
+</style>

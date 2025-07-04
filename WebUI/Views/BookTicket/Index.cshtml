@@ -3,34 +3,313 @@
     ViewBag.Title = "Movie Tickets";
 }
 
-<h2>Book Movie Tickets</h2>
-<hr />
+<div class="movie-booking-container">
+    <div class="movie-booking-header">
+        <i class="fas fa-film"></i>
+        <h2>Book Movie Tickets</h2>
+    </div>
 
-<div id="divOfferBanner" style="height:250px; background-color:azure">
-
-</div>
-
-<h3>Recommended Movies</h3>
-<div id="divMovieCards" class="movie-card-conatiner">
-    @foreach (var mov in Model)
-    {
-        <div class="movie-card">
-            @Html.HiddenFor(a => mov.MovieID)
-
-            <div class="movie-upper-card">
-                @if (!string.IsNullOrEmpty(mov.ImgPath))
-                {
-                    <center><a href="~/BookTicket/MovieDetails?MovieName=@mov.MovieName"><img src="@Url.Content(mov.ImgPath)" width="200px" height="250px"></a></center>
-                }
-                else
-                {
-                    <center><a href="~/BookTicket/MovieDetails?MovieName=@mov.MovieName"><img src="~/Content/Images/Product.png" width="200px" height="250px"></a></center>
-                }
-            </div>
-            <hr />
-            <p><strong>@mov.MovieName</strong> | @mov.Description</p>
-            <h6>Duration: @mov.Duration mins</h6>
+    <div class="offer-banner">
+        <div class="offer-banner-content">
+            <i class="fas fa-star"></i>
+            <h3>Special Offers</h3>
+            <p>Get the best deals on movie tickets</p>
         </div>
-    }
+    </div>
+
+    <div class="movies-section">
+        <h3 class="section-title">Recommended Movies</h3>
+        <div class="movies-grid">
+            @foreach (var mov in Model)
+            {
+                <div class="movie-card">
+                    @Html.HiddenFor(a => mov.MovieID)
+                    
+                    <div class="movie-image-container">
+                        @if (!string.IsNullOrEmpty(mov.ImgPath))
+                        {
+                            <a href="/BookTicket/MovieDetails?MovieName=@mov.MovieName">
+                                <img src="@Url.Content(mov.ImgPath)" alt="@mov.MovieName" class="movie-image">
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="/BookTicket/MovieDetails?MovieName=@mov.MovieName">
+                                <img src="~/Content/Images/Product.png" alt="@mov.MovieName" class="movie-image">
+                            </a>
+                        }
+                        <div class="movie-overlay">
+                            <button class="book-now-btn" onclick="window.location.href='/BookTicket/MovieDetails?MovieName=@mov.MovieName'">
+                                <i class="fas fa-ticket-alt"></i> Book Now
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="movie-info">
+                        <h4 class="movie-title">@mov.MovieName</h4>
+                        <p class="movie-description">@mov.Description</p>
+                        <div class="movie-duration">
+                            <i class="fas fa-clock"></i>
+                            <span>@mov.Duration mins</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
+
+<style>
+.movie-booking-container {
+    width: 94%;
+    margin: 40px auto;
+    padding: 0 10px;
+}
+
+.movie-booking-header {
+    background: linear-gradient(135deg, #252525, #34495e);
+    color: #fff;
+    padding: 32px 32px 20px 32px;
+    border-radius: 18px 18px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.movie-booking-header i {
+    font-size: 32px;
+    color: #3498db;
+}
+
+.movie-booking-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.offer-banner {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(52, 152, 219, 0.3);
+}
+
+.offer-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.offer-banner-content i {
+    font-size: 24px;
+    color: #f8c146;
+}
+
+.offer-banner-content h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.offer-banner-content p {
+    margin: 4px 0 0 0;
+    opacity: 0.9;
+}
+
+.movies-section {
+    background: #fff;
+    border-radius: 18px;
+    padding: 32px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.section-title::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border-radius: 2px;
+}
+
+.movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.movie-card {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+}
+
+.movie-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+
+.movie-image-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.movie-image {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.movie-card:hover .movie-image {
+    transform: scale(1.05);
+}
+
+.movie-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.movie-card:hover .movie-overlay {
+    opacity: 1;
+}
+
+.book-now-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.book-now-btn:hover {
+    background: linear-gradient(135deg, #2980b9, #1f5f8b);
+    transform: translateY(-2px);
+}
+
+.movie-info {
+    padding: 20px;
+}
+
+.movie-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0 0 8px 0;
+    line-height: 1.3;
+}
+
+.movie-description {
+    font-size: 14px;
+    color: #7f8c8d;
+    margin: 0 0 12px 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.movie-duration {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #3498db;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.movie-duration i {
+    font-size: 12px;
+}
+
+@@media (max-width: 768px) {
+    .movie-booking-header {
+        padding: 20px 20px 12px 20px;
+        border-radius: 12px 12px 0 0;
+    }
+    
+    .movie-booking-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .movies-section {
+        padding: 20px;
+        border-radius: 12px;
+    }
+    
+    .section-title {
+        font-size: 1.4rem;
+    }
+    
+    .movies-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 16px;
+    }
+    
+    .movie-image {
+        height: 280px;
+    }
+}
+
+@@media (max-width: 480px) {
+    .movie-booking-container {
+        width: 96%;
+        margin: 20px auto;
+    }
+    
+    .movie-booking-header {
+        padding: 16px 16px 8px 16px;
+    }
+    
+    .movie-booking-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    .movies-section {
+        padding: 16px;
+    }
+    
+    .movies-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .movie-image {
+        height: 240px;
+    }
+}
+</style>
 

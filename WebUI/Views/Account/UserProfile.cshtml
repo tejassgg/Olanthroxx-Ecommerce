@@ -3,162 +3,321 @@
     ViewBag.Title = "Orders & Returns";
 }
 
-<h2 class="page_Header">@ViewBag.Title</h2>
-
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-    </dl>
-</div>
-
-<div class="main-container">
-    <div class="left-container">
-        <div class="user-form-body">
-            <div style="height:10px">
-
-            </div>
-            <div class="row">
-                <div class="form-grp col-sm-3">
-                    @Html.LabelFor(model => model.UserDetails.FirstName, htmlAttributes: new { @class = "control-label " })
-                    @Html.DisplayTextFor(model => model.UserDetails.FirstName)
+<div class="user-profile-card-container">
+    <div class="user-profile-card">
+        <div class="user-profile-header">
+            <i class="fas fa-user-circle"></i>
+            <h2>My Profile</h2>
+        </div>
+        <div class="user-info-section">
+            <div class="user-info-grid">
+                <div class="user-info-item">
+                    <span class="user-info-label">First Name</span>
+                    <span class="user-info-value">@Model.UserDetails.FirstName</span>
                 </div>
-
-                <div class="form-grp col-sm-3">
-                    @Html.LabelFor(model => model.UserDetails.MidName, htmlAttributes: new { @class = "control-label " })
-                    @Html.DisplayTextFor(model => model.UserDetails.MidName)
+                <div class="user-info-item">
+                    <span class="user-info-label">Middle Name</span>
+                    <span class="user-info-value">@Model.UserDetails.MidName</span>
                 </div>
-
-                <div class="form-grp col-sm-3">
-                    @Html.LabelFor(model => model.UserDetails.LastName, htmlAttributes: new { @class = "control-label " })
-                    @Html.DisplayTextFor(model => model.UserDetails.LastName)
+                <div class="user-info-item">
+                    <span class="user-info-label">Last Name</span>
+                    <span class="user-info-value">@Model.UserDetails.LastName</span>
                 </div>
-            </div>
-
-            <div class="row">
-                <div class="form-grp col-sm-3">
-                    @Html.LabelFor(model => model.UserDetails.MobileNo, htmlAttributes: new { @class = "control-label " })
-                    @Html.DisplayTextFor(model => model.UserDetails.MobileNo)
+                <div class="user-info-item">
+                    <span class="user-info-label">Mobile No</span>
+                    <span class="user-info-value">@Model.UserDetails.MobileNo</span>
                 </div>
-
-                <div class="form-grp col-sm-3">
-                    @Html.LabelFor(model => model.UserDetails.AadharNumber, htmlAttributes: new { @class = "control-label " })
-                    @Html.DisplayTextFor(model => model.UserDetails.AadharNumber)
+                <div class="user-info-item">
+                    <span class="user-info-label">Aadhar Number</span>
+                    <span class="user-info-value">@Model.UserDetails.AadharNumber</span>
                 </div>
-
-                <div class="form-grp col-sm-3">
-                    @Html.LabelFor(model => model.UserDetails.EmailID, htmlAttributes: new { @class = "control-label " })
-                    @Html.DisplayTextFor(model => model.UserDetails.EmailID)
+                <div class="user-info-item">
+                    <span class="user-info-label">Email</span>
+                    <span class="user-info-value">@Model.UserDetails.EmailID</span>
+                </div>
+                <div class="user-info-item">
+                    <span class="user-info-label">State</span>
+                    <span class="user-info-value">@Model.UserDetails.State</span>
+                </div>
+                <div class="user-info-item">
+                    <span class="user-info-label">City</span>
+                    <span class="user-info-value">@Model.UserDetails.City</span>
+                </div>
+                <div class="user-info-item">
+                    <span class="user-info-label">Pin Code</span>
+                    <span class="user-info-value">@Model.UserDetails.PinCode</span>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="form-grp col-sm-3">
-                    @Html.LabelFor(model => model.UserDetails.State, htmlAttributes: new { @class = "control-label " })
-                    @Html.DisplayTextFor(model => model.UserDetails.State)
-                </div>
-
-                <div class="form-grp col-sm-3">
-                    @Html.LabelFor(model => model.UserDetails.City, htmlAttributes: new { @class = "control-label " })
-                    @Html.DisplayTextFor(model => model.UserDetails.City)
-                </div>
-
-                <div class="form-grp col-sm-3">
-                    @Html.LabelFor(model => model.UserDetails.PinCode, htmlAttributes: new { @class = "control-label " })
-                    @Html.DisplayTextFor(model => model.UserDetails.PinCode)
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group col-sm-12">
-                    @Html.LabelFor(model => model.UserDetails.FullAddress, htmlAttributes: new { @class = "control-label" })
-                    @Html.TextAreaFor(model => model.UserDetails.FullAddress, new { @class = "form-control", @rows = "4", @cols = "100", @readonly = "readonly" })
-                </div>
+            <div class="user-info-address">
+                <span class="user-info-label">Full Address</span>
+                <textarea class="user-info-address-box" rows="3" readonly>@Model.UserDetails.FullAddress</textarea>
             </div>
         </div>
-    </div>
-    <h2 class="page_Header"> My Orders</h2>
-    <hr />
-    <div class="userProfile_List_Container">
-        @if (Model.CartDetails != null && Model.CartDetails.Count > 0)
-        {
-            <table class="userProfile_Table">
-                <thead>
-                    <tr>
-                        <th>OrderID</th>
-                        <th>Amount(&#8377;)</th>
-                        <th hidden="hidden"></th>
-                        <th style="cursor: pointer; display: flex; justify-content: center; align-items: center; ">
-                            Placed On &nbsp;
-                            <div class="filterArrow">
-                                <i id="sortAscDate" class="fa-solid fa-angle-up"></i>
-                                <i id="sortDescDate" class="fa-solid fa-angle-down"></i>
-                            </div>
-                        </th>
-                        <th style="cursor: pointer; display: flex; justify-content: center; align-items: center; ">
-                            Status &nbsp;
-                            <div class="filterArrow">
-                                <i id="sortAscStatus" class="fa-solid fa-angle-up"></i>
-                                <i id="sortDescStatus" class="fa-solid fa-angle-down"></i>
-                            </div>
-                        </th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        int i = 0;
-                        foreach (var cartDetails in Model.CartDetails)
-                        {
-                            i++;
+        <div class="user-orders-section">
+            <h3 class="user-section-title">My Orders</h3>
+            @if (Model.CartDetails != null && Model.CartDetails.Count > 0)
+            {
+                <div class="user-orders-table-wrapper">
+                    <table class="user-orders-table">
+                        <thead>
                             <tr>
-                                <td>@cartDetails.OrderID</td>
-                                <td>@cartDetails.TotalAmount</td>
-                                <td hidden="hidden">@cartDetails.OrderDate</td>
-                                <td>@cartDetails.OrderDate.ToString("MMMM dd, yyyy")</td>
-                                <td data-val="@cartDetails.OrderStatusID">@cartDetails.OrderStatus</td>
-                                <td>
-                                    @if (cartDetails.OrderStatus == "Delivered")
-                                    {
-                                        <button class="btn-success writeReviewBtn" onclick='window.location.href = "/Products/BuyerOrderDetails?orderID=@cartDetails.OrderID"'><i class="fas fa-eye"></i> View</button>
-                                    }
-                                    else
-                                    {
-                                        <button class="btn-warning writeReviewBtn" onclick='window.location.href = "/Products/BuyerOrderDetails?orderID=@cartDetails.OrderID"'><i class="fas fa-eye"></i> View</button>
-                                    }
-
-                                </td>
+                                <th>Order ID</th>
+                                <th>Amount (&#8377;)</th>
+                                <th>Placed On
+                                    <span class="filterArrow">
+                                        <i id="sortAscDate" class="fa-solid fa-angle-up"></i>
+                                        <i id="sortDescDate" class="fa-solid fa-angle-down"></i>
+                                    </span>
+                                </th>
+                                <th>Status
+                                    <span class="filterArrow">
+                                        <i id="sortAscStatus" class="fa-solid fa-angle-up"></i>
+                                        <i id="sortDescStatus" class="fa-solid fa-angle-down"></i>
+                                    </span>
+                                </th>
+                                <th>Action</th>
                             </tr>
-                        }
-                    }
-                </tbody>
-            </table>
-        }
-        else
-        {
-            if (User.IsInRole("Admin") || User.IsInRole("Seller"))
-            {
-                <center><p>No Orders, <a href="~/Products/Index">Click Here</a> Check Your Products</p></center>
+                        </thead>
+                        <tbody>
+                            @{
+                                int i = 0;
+                                foreach (var cartDetails in Model.CartDetails)
+                                {
+                                    i++;
+                                    <tr>
+                                        <td>@cartDetails.OrderID</td>
+                                        <td>@cartDetails.TotalAmount</td>
+                                        <td data-val="@cartDetails.OrderDate">@cartDetails.OrderDate.ToString("MMMM dd, yyyy")</td>
+                                        <td data-val="@cartDetails.OrderStatusID">@cartDetails.OrderStatus</td>
+                                        <td>
+                                            @if (cartDetails.OrderStatus == "Delivered")
+                                            {
+                                                <button class="btn view-btn" onclick='window.location.href = "/Products/BuyerOrderDetails?orderID=@cartDetails.OrderID"'><i class="fas fa-eye"></i> View</button>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn view-btn alt" onclick='window.location.href = "/Products/BuyerOrderDetails?orderID=@cartDetails.OrderID"'><i class="fas fa-eye"></i> View</button>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
             }
-            else if (User.IsInRole("Buyer") || User.IsInRole("Admin"))
+            else
             {
-                <center><p>No Orders, <a href="~/Products/userIndex">Click Here</a> to shop Now.</p></center>
+                if (User.IsInRole("Admin") || User.IsInRole("Seller"))
+                {
+                    <center><p>No Orders, <a href="~/Products/Index">Click Here</a> Check Your Products</p></center>
+                }
+                else if (User.IsInRole("Buyer") || User.IsInRole("Admin"))
+                {
+                    <center><p>No Orders, <a href="~/Products/userIndex">Click Here</a> to shop Now.</p></center>
+                }
             }
-
-        }
+        </div>
+        <div class="user-profile-footer">
+            @Html.ActionLink("Back to List", "Index","Products", null, new { @class = "btn back-btn" })
+        </div>
     </div>
 </div>
 
-<p>
-    @Html.ActionLink("Back to List", "Index","Products")
-</p>
-
-
 <style>
-    .right-container h2 {
-        margin-top: 5px;
-        margin-bottom: -10px;
-        padding: 5px;
+.user-profile-card-container {
+    width: 94%;
+    margin: 40px auto;
+    padding: 0 10px;
+}
+.user-profile-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    overflow: hidden;
+    padding-bottom: 24px;
+}
+.user-profile-header {
+    background: linear-gradient(135deg, #252525, #34495e);
+    color: #fff;
+    padding: 32px 32px 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+.user-profile-header i {
+    font-size: 32px;
+    color: #3498db;
+}
+.user-profile-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+.user-info-section {
+    padding: 32px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+.user-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    margin-bottom: 18px;
+}
+.user-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 12px 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid #e9ecef;
+}
+.user-info-label {
+    font-size: 13px;
+    color: #7f8c8d;
+    font-weight: 600;
+}
+.user-info-value {
+    font-size: 15px;
+    color: #2c3e50;
+    font-weight: 700;
+}
+.user-info-address {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.user-info-address-box {
+    border-radius: 8px;
+    border: 1.5px solid #e9ecef;
+    padding: 10px 14px;
+    font-size: 15px;
+    color: #2c3e50;
+    background: #fff;
+    resize: none;
+}
+.user-orders-section {
+    padding: 32px;
+}
+.user-section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 18px;
+}
+.user-orders-table-wrapper {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    overflow-x: auto;
+}
+.user-orders-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.user-orders-table th {
+    background: linear-gradient(135deg, #252525, #34495e);
+    color: #fff;
+    font-weight: 600;
+    padding: 14px 10px;
+    font-size: 15px;
+    border: none;
+    white-space: nowrap;
+}
+.user-orders-table td {
+    padding: 14px 10px;
+    font-size: 15px;
+    color: #2c3e50;
+    border-bottom: 1px solid #e9ecef;
+    background: #fff;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.user-orders-table tr:last-child td {
+    border-bottom: none;
+}
+.filterArrow {
+    display: inline-flex;
+    flex-direction: column;
+    margin-left: 4px;
+    color: #3498db;
+    font-size: 13px;
+    cursor: pointer;
+}
+.view-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.12);
+}
+.view-btn.alt {
+    background: #f8c146;
+    color: #fff;
+}
+.view-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #2980b9, #1f5f8b);
+    transform: translateY(-2px);
+}
+.back-btn {
+    background: #f8f9fa;
+    color: #3498db;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.12);
+    text-decoration: none;
+}
+.back-btn:hover {
+    background: #3498db;
+    color: #fff;
+}
+.user-profile-footer {
+    padding: 24px 32px 0 32px;
+    display: flex;
+    justify-content: flex-end;
+}
+@@media (max-width: 700px) {
+    .user-profile-header {
+        padding: 18px 18px 12px 18px;
     }
+    .user-info-section, .user-orders-section, .user-profile-footer {
+        padding: 12px;
+    }
+    .user-section-title {
+        font-size: 17px;
+    }
+}
+@@media (max-width: 480px) {
+    .user-profile-header h2 {
+        font-size: 1.2rem;
+    }
+    .user-profile-card {
+        border-radius: 10px;
+    }
+    .user-info-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+}
 </style>
 
 <script type="text/javascript">
@@ -167,7 +326,7 @@
         $("#sortAscStatus").attr("disabled", true).css("opacity", "0.7");
 
         function sortTable(order, type) {
-            var rows = $('.userProfile_Table tbody tr').get();
+            var rows = $('.user-orders-table tbody tr').get();
             rows.sort(function (a, b) {
                 var A;
                 var B;
@@ -186,7 +345,7 @@
                 }
             });
             $.each(rows, function (index, row) {
-                $('.userProfile_Table').children('tbody').append(row);
+                $('.user-orders-table').children('tbody').append(row);
             });
         }
 

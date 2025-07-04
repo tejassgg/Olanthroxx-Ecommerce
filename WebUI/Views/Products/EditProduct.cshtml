@@ -4,106 +4,280 @@
     ViewBag.Title = "Edit - " + Model.PName;
 }
 
-<h2 class="page_Header">Update - @Model.PName</h2>
-
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-    </dl>
-</div>
-
-@using (Html.BeginForm("EditProduct", "Products", FormMethod.Post, new { enctype = "multipart/form-data", @class = "addProduct_Form" }))
-{
-    @Html.AntiForgeryToken()
-
-    <div class="addProduct_Form_Div">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger", @id = "txtValidationSummary" })
-        @Html.HiddenFor(model => model.ProductID)
-        <div class="row_Input">
-            <div class="form_Input">
-                @Html.LabelFor(model => model.PName, htmlAttributes: new { @class = "form_Control" })
-                @Html.EditorFor(model => model.PName, new { htmlAttributes = new { @class = "form_Control" } })
-            </div>
-            <div class="form_Input">
-                @Html.LabelFor(model => model.PTitle, htmlAttributes: new { @class = "form_Control" })
-                @Html.EditorFor(model => model.PTitle, new { htmlAttributes = new { @class = "form_Control" } })
-            </div>
-        </div>
-
-        <div class="row_Input">
-            <div class="form_Input full_Address">
-                @Html.LabelFor(model => model.PDescription, htmlAttributes: new { @class = "form_Control" })
-                @Html.TextAreaFor(model => model.PDescription, new { @class = "form_Control", @rows = "4", @cols = "100", @placeholder = "Description", @required = "required" })
-            </div>
-        </div>
-
-        <div class="row_Input">
-            <div class="form_Input">
-                @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "form_Control" })
-                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form_Control" } })
-            </div>
-            <div class="form_Input">
-                @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "form_Control" })
-                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form_Control" } })
-            </div>
-        </div>
-
-        <div class="row_Input">
-            <input type="file" name="imgFile" class="login_Submit" value="@Model.ImgPath" onchange="getImagePreview(event)" />
-            <div class="form_Input">
-                @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "form_Control" })
-                <select name="CategoryID_FK" class="form_Control">
-                    @foreach (var item in ViewBag.CategoryList)
-                    {
-                        if (item.Value == Model.CategoryID_FK)
-                        {
-                            <option value="@item.Value" selected="selected">@item.Text </option>
-                        }
-                        else
-                        {
-                            <option value="@item.Value">@item.Text</option>
-                        }
-                    }
-                </select>
-            </div>
-        </div>
-
-        @Html.HiddenFor(a => a.ImgPath)
-
-        @if (!string.IsNullOrEmpty(Model.ImgPath))
-        {
-            <div class="row_Input">
-                <div class="form_Input" id="imgPreview">
-                    <img src="@Url.Content(Model.ImgPath)" width="250px" />
-                </div>
-
-            </div>
-        }
-        else
-        {
-            <div class="row_Input">
-                <div class="form_Input" id="imgPreview">
-                    <img src="~/Content/Images/Product.png" width="250px" />
-                </div>
-
-            </div>
-        }
-
-        <div class="row_Input">
-            <div class="form_Input hidden" id="imgPreview"></div>
-        </div>
-
-        @Html.HiddenFor(model => model.ImgPath)
-
-        <button type="submit" class="login_Submit addProduct_Btn">Update</button>
-
+<div class="edit-product-container">
+    <div class="edit-product-header">
+        <h2><i class="fas fa-edit"></i> Update - @Model.PName</h2>
     </div>
-}
+    <div class="edit-product-card">
+        @using (Html.BeginForm("EditProduct", "Products", FormMethod.Post, new { enctype = "multipart/form-data", @class = "edit-product-form" }))
+        {
+            @Html.AntiForgeryToken()
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+            <div class="edit-product-form-content">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger", @id = "txtValidationSummary" })
+                @Html.HiddenFor(model => model.ProductID)
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PName, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.PName, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PTitle, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.PTitle, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        @Html.LabelFor(model => model.PDescription, htmlAttributes: new { @class = "form-label" })
+                        @Html.TextAreaFor(model => model.PDescription, new { @class = "form-control", @rows = "4", @cols = "100", @placeholder = "Description", @required = "required" })
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Product Image</label>
+                        <input type="file" name="imgFile" class="form-control file-input" value="@Model.ImgPath" onchange="getImagePreview(event)" />
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "form-label" })
+                        <select name="CategoryID_FK" class="form-control">
+                            @foreach (var item in ViewBag.CategoryList)
+                            {
+                                if (item.Value == Model.CategoryID_FK)
+                                {
+                                    <option value="@item.Value" selected="selected">@item.Text </option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                @Html.HiddenFor(a => a.ImgPath)
+
+                @if (!string.IsNullOrEmpty(Model.ImgPath))
+                {
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label class="form-label">Current Image</label>
+                            <div class="image-preview" id="imgPreview">
+                                <img src="@Url.Content(Model.ImgPath)" alt="Product Image" />
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label class="form-label">Current Image</label>
+                            <div class="image-preview" id="imgPreview">
+                                <img src="~/Content/Images/Product.png" alt="Default Product Image" />
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="form-row">
+                    <div class="form-group hidden full-width" id="imgPreview"></div>
+                </div>
+
+                @Html.HiddenFor(model => model.ImgPath)
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Update Product</button>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="edit-product-footer">
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "back-btn" })
+    </div>
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<style>
+.edit-product-container {
+    width: 94%;
+    margin: 40px auto;
+    padding: 0 10px;
+}
+.edit-product-header {
+    background: linear-gradient(135deg, #252525, #34495e);
+    color: #fff;
+    border-radius: 18px 18px 0 0;
+    padding: 32px 32px 20px 32px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.edit-product-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.edit-product-header i {
+    color: #3498db;
+}
+.edit-product-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 32px 24px 24px 24px;
+    margin-bottom: 32px;
+}
+.edit-product-form-content {
+    max-width: 100%;
+}
+.form-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+.form-group {
+    flex: 1 1 300px;
+    min-width: 0;
+}
+.form-group.full-width {
+    flex: 1 1 100%;
+}
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 15px;
+}
+.form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.2s;
+    background: #fff;
+    color: #2c3e50;
+}
+.form-control:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+.form-control.file-input {
+    padding: 10px 16px;
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    cursor: pointer;
+}
+.form-control.file-input:hover {
+    border-color: #3498db;
+    background: #f1f8ff;
+}
+.image-preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px dashed #dee2e6;
+}
+.image-preview img {
+    max-width: 250px;
+    max-height: 200px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #e9ecef;
+}
+.btn-primary {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, #2980b9, #1f5f8b);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+}
+.back-btn {
+    background: #f8f9fa;
+    color: #3498db;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.12);
+    text-decoration: none;
+    margin-top: 12px;
+}
+.back-btn:hover {
+    background: #3498db;
+    color: #fff;
+}
+.edit-product-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 24px;
+}
+@@media (max-width: 700px) {
+    .edit-product-header {
+        padding: 18px 10px 10px 10px;
+    }
+    .edit-product-header h2 {
+        font-size: 1.1rem;
+    }
+    .edit-product-card {
+        padding: 16px 12px 12px 12px;
+    }
+    .form-row {
+        flex-direction: column;
+        gap: 16px;
+    }
+    .form-group {
+        flex: 1 1 100%;
+    }
+    .btn-primary {
+        width: 100%;
+        padding: 12px 24px;
+    }
+}
+</style>

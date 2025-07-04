@@ -16,415 +16,384 @@
         rating5 = Model.lstProductReviews.Where(a => a.Rating == 5).ToList();
     }
 }
-<div>
-    <div class="page_Header">
-        <h2 style=" font-weight: 600;">@Model.PName - @Model.PTitle</h2>
+
+<style>
+    .product-details-container {
+        width: 94%;
+        margin: 40px auto;
+        padding: 0 10px;
+    }
+</style>
+
+<div class="product-details-container">
+    <!-- Product Header -->
+    <div class="product-header">
+        <div class="breadcrumb-nav">
+            <a href="../" class="breadcrumb-link">
+                <i class="fas fa-arrow-left"></i> Back to Shop
+            </a>
+        </div>
+        <h1 class="product-title">@Model.PName</h1>
+        <p class="product-subtitle">@Model.PTitle</p>
     </div>
-    <hr />
-    <dl class="dl-horizontal">
 
-        @if (!string.IsNullOrEmpty(Model.ImgPath))
-        {
-            <center><img src="@Url.Content(Model.ImgPath)" width="200px" height="200px" style="border-radius:10px"></center>
-        }
-        else
-        {
-            <center><img src="~/Content/Images/Product.png" width="200px" height="200px"></center>
-        }
-        <dd style="display:none;">
-            @Html.HiddenFor(model => model.ProductID)
-        </dd>
-        <dt>
-            Description
-        </dt>
-
-        <dd>
-            @Model.PDescription
-        </dd>
-
-        <dt>
-            Category
-        </dt>
-
-        <dd>
-            @Model.Category
-        </dd>
-
-        <dt>
-            Quantity
-        </dt>
-
-        <dd>
-            @Model.Quantity
-        </dd>
-
-        <dt>
-            Price
-        </dt>
-
-        <dd>
-            @Model.Price
-        </dd>
-
-        @if (Model.CreatedDate != null)
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </dt>
-
-            <dd>
-                @Model.CreatedDate.ToShortDateString()
-            </dd>
-        }
-        @if (Model.ModifiedDate != null)
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.ModifiedDate)
-            </dt>
-
-            <dd>
-                @Convert.ToDateTime(Model.ModifiedDate).ToShortDateString()
-            </dd>
-        }
-        @if (Model.lstProductReviews != null && Model.lstProductReviews.Count > 0)
-        {
-            <dt>
-                Customer reviews
-            </dt>
-
-            <dd class="tooltips" style="display: flex; z-index:20">
-                <div>
-                    @for (var j = 1; j <= 5; j++)
-                    {
-                        if (j <= Model.OverallRating)
-                        {
-                            <span class="fas fa-star checked"></span>
-                        }
-                        else
-                        {
-                            <span class="far fa-star"></span>
-                        }
-                    }
-                </div> &nbsp;&nbsp; <a href="#productReviews" style="text-decoration:underline">@Model.lstProductReviews.Count ratings</a>
-
-                <div class="tooltiptext">
-                    <div class="rating">
-                        @if (rating1 != null)
-                        {
-                            <div>
-                                <span class="fas fa-star checked"></span>
-                                <span class="far fa-star"></span>
-                                <span class="far fa-star"></span>
-                                <span class="far fa-star"></span>
-                                <span class="far fa-star"></span>
-                            </div> <a href="#rating1" style="text-decoration:underline">@rating1.Count ratings</a>
-                        }
-                    </div>
-                    <div class="rating">
-                        @if (rating2 != null)
-                        {
-                            <div>
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                                <span class="far fa-star"></span>
-                                <span class="far fa-star"></span>
-                                <span class="far fa-star"></span>
-                            </div> <a href="#rating2" style="text-decoration:underline">@rating2.Count ratings</a>
-                        }
-                    </div>
-                    <div class="rating">
-                        @if (rating3 != null)
-                        {
-                            <div>
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                                <span class="far fa-star"></span>
-                                <span class="far fa-star"></span>
-                            </div> <a href="#rating3" style="text-decoration:underline">@rating3.Count ratings</a>
-                        }
-                    </div>
-                    <div class="rating">
-                        @if (rating4 != null)
-                        {
-                            <div>
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                                <span class="far fa-star"></span>
-                            </div> <a href="#rating4" style="text-decoration:underline">@rating4.Count ratings</a>
-                        }
-                    </div>
-                    <div class="rating">
-                        @if (rating5 != null)
-                        {
-                            <div>
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                            </div> <a href="#rating5" style="text-decoration:underline">@rating5.Count ratings</a>
-                        }
-                    </div>
-                </div>
-
-            </dd>
-        }
-    </dl>
-
-    @if (Model.LstOtherProducts != null && Model.LstOtherProducts.Count > 0)
-    {
-        <hr />
-        <h4><strong>Other Products by Seller</strong></h4>
-
-        <div class="swiper mySwiper swiper-Container">
-            <div class="swiper-wrapper">
-                @foreach (var prod in Model.LstOtherProducts)
+    <!-- Main Product Section -->
+    <div class="product-main">
+        <div class="product-gallery">
+            <div class="product-image-container">
+                @if (!string.IsNullOrEmpty(Model.ImgPath))
                 {
-                    <div class="swiper-slide">
-                        <div class="slider-Data">
-                            @if (!string.IsNullOrEmpty(prod.ImgPath))
+                    <img src="@Url.Content(Model.ImgPath)" alt="@Model.PName" class="product-image">
+                }
+                else
+                {
+                    <img src="~/Content/Images/Product.png" alt="@Model.PName" class="product-image">
+                }
+            </div>
+        </div>
+
+        <div class="product-info">
+            <div class="product-rating-section">
+                @if (Model.lstProductReviews != null && Model.lstProductReviews.Count > 0)
+                {
+                    <div class="rating-display">
+                        <div class="stars">
+                            @for (var j = 1; j <= 5; j++)
                             {
-                                <a href="../ViewProductDetails/@prod.ProductID"><img src="@Url.Content(prod.ImgPath)"></a>
-                            }
-                            else
-                            {
-                                <a href="../ViewProductDetails/@prod.ProductID"><img src="~/Content/Images/Product.png"></a>
-                            }
-                            <div>
-                                <h5><strong>@prod.PName</strong></h5>
-                                <div>
-                                    <ul>
-                                        <li class="splitData">@prod.PDescription.Split('|')[0]</li>
-                                    </ul>
-                                </div>
-                                @if (prod.OverallRating > 0)
+                                if (j <= Model.OverallRating)
                                 {
-                                    for (var j = 1; j <= 5; j++)
-                                    {
-                                        if (j <= prod.OverallRating)
-                                        {
-                                            <span class="fas fa-star checked"></span>
-                                        }
-                                        else
-                                        {
-                                            <span class="far fa-star"></span>
-                                        }
-                                    }
+                                    <span class="fas fa-star checked"></span>
                                 }
                                 else
                                 {
-                                    <h6><strong>(0 Ratings)</strong></h6>
+                                    <span class="far fa-star"></span>
                                 }
-                                <p><strong>Rs. </strong>@prod.Price</p>
-                            </div>
+                            }
                         </div>
-                        <div style="height:50px">
-
-                        </div>
+                        <span class="rating-count">@Model.lstProductReviews.Count ratings</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="rating-display">
+                        <span class="no-ratings">No ratings yet</span>
                     </div>
                 }
             </div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-pagination"></div>
+
+            <div class="product-price-section">
+                <div class="price-display">
+                    <span class="currency">Rs.</span>
+                    <span class="price-amount">@Model.Price</span>
+                </div>
+                <div class="stock-status">
+                    @if (Model.Quantity >= 5)
+                    {
+                        <span class="in-stock">In Stock</span>
+                    }
+                    else if (Model.Quantity > 0)
+                    {
+                        <span class="low-stock">Only @Model.Quantity left</span>
+                    }
+                    else
+                    {
+                        <span class="out-of-stock">Out of Stock</span>
+                    }
+                </div>
+            </div>
+
+            <div class="product-description">
+                <h3>Description</h3>
+                <p>@Model.PDescription</p>
+            </div>
+
+            <div class="product-details-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Category:</span>
+                    <span class="detail-value">@Model.Category</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Available:</span>
+                    <span class="detail-value">@Model.Quantity units</span>
+                </div>
+                @if (Model.CreatedDate != null)
+                {
+                    <div class="detail-item">
+                        <span class="detail-label">Listed:</span>
+                        <span class="detail-value">@Model.CreatedDate.ToShortDateString()</span>
+                    </div>
+                }
+            </div>
+
+            <!-- Add to Cart Section -->
+            <div class="add-to-cart-section">
+                @if (Model.Quantity > 0)
+                {
+                    <div class="quantity-selector">
+                        <button class="qty-btn" onclick="decreaseQuantity()">-</button>
+                        <input type="number" id="productQuantity" value="1" min="1" max="@Model.Quantity" class="qty-input">
+                        <button class="qty-btn" onclick="increaseQuantity()">+</button>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="addToCart()">
+                        <i class="fas fa-shopping-cart"></i>
+                        Add to Cart
+                    </button>
+                }
+                else
+                {
+                    <button class="add-to-cart-btn disabled" disabled>
+                        <i class="fas fa-times"></i>
+                        Out of Stock
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Other Products Section -->
+    @if (Model.LstOtherProducts != null && Model.LstOtherProducts.Count > 0)
+    {
+        <div class="other-products-section">
+            <h2 class="section-title">Other Products by Seller</h2>
+            <div class="swiper mySwiper swiper-Container">
+                <div class="swiper-wrapper">
+                    @foreach (var prod in Model.LstOtherProducts)
+                    {
+                        <div class="swiper-slide">
+                            <div class="product-card">
+                                <div class="product-card-image">
+                                    @if (!string.IsNullOrEmpty(prod.ImgPath))
+                                    {
+                                        <a href="../ViewProductDetails/@prod.ProductID">
+                                            <img src="@Url.Content(prod.ImgPath)" alt="@prod.PName">
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="../ViewProductDetails/@prod.ProductID">
+                                            <img src="~/Content/Images/Product.png" alt="@prod.PName">
+                                        </a>
+                                    }
+                                </div>
+                                <div class="product-card-content">
+                                    <h5 class="product-card-title">
+                                        <a href="../ViewProductDetails/@prod.ProductID">@prod.PName</a>
+                                    </h5>
+                                    <p class="product-card-desc">@prod.PDescription.Split('|')[0]</p>
+                                    <div class="product-card-rating">
+                                        @if (prod.OverallRating > 0)
+                                        {
+                                            for (var j = 1; j <= 5; j++)
+                                            {
+                                                if (j <= prod.OverallRating)
+                                                {
+                                                    <span class="fas fa-star checked"></span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="far fa-star"></span>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="no-rating">No ratings</span>
+                                        }
+                                    </div>
+                                    <div class="product-card-price">
+                                        <strong>Rs. @prod.Price</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
         </div>
     }
 
+    <!-- Reviews Section -->
     @if (Model.lstProductReviews != null && Model.lstProductReviews.Count > 0)
     {
-        <hr />
-        <h4><strong>Ratings & Reviews</strong></h4>
-        <div style="display: flex; justify-content: center;">
-            <section id="productReviews" class="productReviews">
-                @if (rating5 != null)
+        <div class="reviews-section">
+            <h2 class="section-title">Customer Reviews</h2>
+            <div class="reviews-container">
+                @if (rating5 != null && rating5.Count > 0)
                 {
-                    <section id="rating5">
+                    <div class="rating-group">
+                        <h3 class="rating-group-title">5 Star Reviews</h3>
                         @foreach (var rev in rating5)
                         {
-                            <div class="reviewContainer">
+                            <div class="review-card">
                                 <div class="review-header">
-                                    <h6 style="color:darkred"><strong>@rev.ReviewerName</strong></h6>
-                                    <hr style="margin:0px" />
-                                </div>
-                                <div class="review-body">
-                                    <p>@rev.Review</p>
-                                    <div style="text-align: right; margin: -30px 0px -5px 0px">
-                                        @for (var i = 1; i <= 5; i++)
-                                        {
-                                            if (i <= rev.Rating)
+                                    <div class="reviewer-info">
+                                        <h4 class="reviewer-name">@rev.ReviewerName</h4>
+                                        <div class="review-stars">
+                                            @for (var i = 1; i <= 5; i++)
                                             {
-                                                <span class="fas fa-star checked"></span>
+                                                if (i <= rev.Rating)
+                                                {
+                                                    <span class="fas fa-star checked"></span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="far fa-star"></span>
+                                                }
                                             }
-                                            else
-                                            {
-                                                <span class="far fa-star"></span>
-                                            }
-                                        }
-
+                                        </div>
                                     </div>
+                                    <span class="review-date">@rev.CreatedDate.ToShortDateString()</span>
                                 </div>
-                                <div class="review-footer text-right">
-                                    <h6>@rev.CreatedDate.ToShortDateString()</h6>
+                                <div class="review-content">
+                                    <p>@rev.Review</p>
                                 </div>
                             </div>
                         }
-                    </section>
+                    </div>
                 }
-                @if (rating4 != null)
+
+                @if (rating4 != null && rating4.Count > 0)
                 {
-                    <section id="rating4">
+                    <div class="rating-group">
+                        <h3 class="rating-group-title">4 Star Reviews</h3>
                         @foreach (var rev in rating4)
                         {
-                            <div class="reviewContainer">
+                            <div class="review-card">
                                 <div class="review-header">
-                                    <h6 style="color:darkred"><strong>@rev.ReviewerName</strong></h6>
-                                    <hr style="margin:0px" />
-                                </div>
-                                <div class="review-body">
-                                    <p>@rev.Review</p>
-                                    <div style="text-align: right; margin: -30px 0px -5px 0px">
-                                        @for (var i = 1; i <= 5; i++)
-                                        {
-                                            if (i <= rev.Rating)
+                                    <div class="reviewer-info">
+                                        <h4 class="reviewer-name">@rev.ReviewerName</h4>
+                                        <div class="review-stars">
+                                            @for (var i = 1; i <= 5; i++)
                                             {
-                                                <span class="fas fa-star checked"></span>
+                                                if (i <= rev.Rating)
+                                                {
+                                                    <span class="fas fa-star checked"></span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="far fa-star"></span>
+                                                }
                                             }
-                                            else
-                                            {
-                                                <span class="far fa-star"></span>
-                                            }
-                                        }
-
+                                        </div>
                                     </div>
+                                    <span class="review-date">@rev.CreatedDate.ToShortDateString()</span>
                                 </div>
-                                <div class="review-footer text-right">
-                                    <h6>@rev.CreatedDate.ToShortDateString()</h6>
+                                <div class="review-content">
+                                    <p>@rev.Review</p>
                                 </div>
                             </div>
                         }
-                    </section>
+                    </div>
                 }
-                @if (rating3 != null)
+
+                @if (rating3 != null && rating3.Count > 0)
                 {
-                    <section id="rating3">
+                    <div class="rating-group">
+                        <h3 class="rating-group-title">3 Star Reviews</h3>
                         @foreach (var rev in rating3)
                         {
-                            <div class="reviewContainer">
+                            <div class="review-card">
                                 <div class="review-header">
-                                    <h6 style="color:darkred"><strong>@rev.ReviewerName</strong></h6>
-                                    <hr style="margin:0px" />
-                                </div>
-                                <div class="review-body">
-                                    <p>@rev.Review</p>
-                                    <div style="text-align: right; margin: -30px 0px -5px 0px">
-                                        @for (var i = 1; i <= 5; i++)
-                                        {
-                                            if (i <= rev.Rating)
+                                    <div class="reviewer-info">
+                                        <h4 class="reviewer-name">@rev.ReviewerName</h4>
+                                        <div class="review-stars">
+                                            @for (var i = 1; i <= 5; i++)
                                             {
-                                                <span class="fas fa-star checked"></span>
+                                                if (i <= rev.Rating)
+                                                {
+                                                    <span class="fas fa-star checked"></span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="far fa-star"></span>
+                                                }
                                             }
-                                            else
-                                            {
-                                                <span class="far fa-star"></span>
-                                            }
-                                        }
-
+                                        </div>
                                     </div>
+                                    <span class="review-date">@rev.CreatedDate.ToShortDateString()</span>
                                 </div>
-                                <div class="review-footer text-right">
-                                    <h6>@rev.CreatedDate.ToShortDateString()</h6>
+                                <div class="review-content">
+                                    <p>@rev.Review</p>
                                 </div>
                             </div>
                         }
-                    </section>
+                    </div>
                 }
-                @if (rating2 != null)
+
+                @if (rating2 != null && rating2.Count > 0)
                 {
-                    <section id="rating2">
+                    <div class="rating-group">
+                        <h3 class="rating-group-title">2 Star Reviews</h3>
                         @foreach (var rev in rating2)
                         {
-                            <div class="reviewContainer">
+                            <div class="review-card">
                                 <div class="review-header">
-                                    <h6 style="color:darkred"><strong>@rev.ReviewerName</strong></h6>
-                                    <hr style="margin:0px" />
-                                </div>
-                                <div class="review-body">
-                                    <p>@rev.Review</p>
-                                    <div style="text-align: right; margin: -30px 0px -5px 0px">
-                                        @for (var i = 1; i <= 5; i++)
-                                        {
-                                            if (i <= rev.Rating)
+                                    <div class="reviewer-info">
+                                        <h4 class="reviewer-name">@rev.ReviewerName</h4>
+                                        <div class="review-stars">
+                                            @for (var i = 1; i <= 5; i++)
                                             {
-                                                <span class="fas fa-star checked"></span>
+                                                if (i <= rev.Rating)
+                                                {
+                                                    <span class="fas fa-star checked"></span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="far fa-star"></span>
+                                                }
                                             }
-                                            else
-                                            {
-                                                <span class="far fa-star"></span>
-                                            }
-                                        }
-
+                                        </div>
                                     </div>
+                                    <span class="review-date">@rev.CreatedDate.ToShortDateString()</span>
                                 </div>
-                                <div class="review-footer text-right">
-                                    <h6>@rev.CreatedDate.ToShortDateString()</h6>
+                                <div class="review-content">
+                                    <p>@rev.Review</p>
                                 </div>
                             </div>
                         }
-                    </section>
+                    </div>
                 }
-                @if (rating1 != null)
+
+                @if (rating1 != null && rating1.Count > 0)
                 {
-                    <section id="rating1">
+                    <div class="rating-group">
+                        <h3 class="rating-group-title">1 Star Reviews</h3>
                         @foreach (var rev in rating1)
                         {
-                            <div class="reviewContainer">
+                            <div class="review-card">
                                 <div class="review-header">
-                                    <h6 style="color:darkred"><strong>@rev.ReviewerName</strong></h6>
-                                    <hr style="margin:0px" />
-                                </div>
-                                <div class="review-body">
-                                    <p>@rev.Review</p>
-                                    <div style="text-align: right; margin: -30px 0px -5px 0px">
-                                        @for (var i = 1; i <= 5; i++)
-                                        {
-                                            if (i <= rev.Rating)
+                                    <div class="reviewer-info">
+                                        <h4 class="reviewer-name">@rev.ReviewerName</h4>
+                                        <div class="review-stars">
+                                            @for (var i = 1; i <= 5; i++)
                                             {
-                                                <span class="fas fa-star checked"></span>
+                                                if (i <= rev.Rating)
+                                                {
+                                                    <span class="fas fa-star checked"></span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="far fa-star"></span>
+                                                }
                                             }
-                                            else
-                                            {
-                                                <span class="far fa-star"></span>
-                                            }
-                                        }
-
+                                        </div>
                                     </div>
+                                    <span class="review-date">@rev.CreatedDate.ToShortDateString()</span>
                                 </div>
-                                <div class="review-footer text-right">
-                                    <h6>@rev.CreatedDate.ToShortDateString()</h6>
+                                <div class="review-content">
+                                    <p>@rev.Review</p>
                                 </div>
                             </div>
                         }
-                    </section>
+                    </div>
                 }
-            </section>
+            </div>
         </div>
     }
-
 </div>
-<p>
-    @if (User.Identity.IsAuthenticated)
-    {
-        @Html.ActionLink("Back to List", "Index")
-    }
-    else
-    {
-        @Html.ActionLink("Back to List", "UserIndex")
-    }
-
-</p>
 
 <script>
     var swiper = new Swiper(".mySwiper", {
@@ -441,5 +410,40 @@
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
         },
+        breakpoints: {
+            768: {
+                slidesPerView: 2,
+            },
+            1024: {
+                slidesPerView: 3,
+            }
+        }
     });
+
+    function increaseQuantity() {
+        var input = document.getElementById('productQuantity');
+        var max = parseInt(input.getAttribute('max'));
+        var current = parseInt(input.value);
+        if (current < max) {
+            input.value = current + 1;
+        }
+    }
+
+    function decreaseQuantity() {
+        var input = document.getElementById('productQuantity');
+        var current = parseInt(input.value);
+        if (current > 1) {
+            input.value = current - 1;
+        }
+    }
+
+    function addToCart() {
+        var quantity = document.getElementById('productQuantity').value;
+        var productId = '@Model.ProductID';
+        var productName = '@Model.PName';
+        var productPrice = @Model.Price;
+        
+        // Call the existing AddtoCart function
+        AddtoCart(null, productName, productId, parseInt(quantity), productPrice);
+    }
 </script>

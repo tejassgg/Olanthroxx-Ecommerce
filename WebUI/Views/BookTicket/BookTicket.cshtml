@@ -5,29 +5,364 @@
     var Timings = Model.MovieScreenTimingConfigs.OrderByDescending(a => a.ScreenID_FK).ToList();
 }
 
-<h2>@Model.MovieName</h2>
+<div class="book-ticket-container">
+    <div class="book-ticket-card">
+        <div class="book-ticket-header">
+            <i class="fas fa-ticket-alt"></i>
+            <h2>Book Tickets - @Model.MovieName</h2>
+        </div>
 
-@if (Timings != null && Timings.Count() > 0)
-{
-    <div class="movie-lower-card">
-
-        @for (int i = 0; i < Timings.Count(); i++)
+        @if (Timings != null && Timings.Count() > 0)
         {
-            <p><strong>@Convert.ToDateTime(Timings[i].MovieDate).ToString("dd-MMM-yyyy")</strong></p>
-            <button onclick="OpenSelectSeats(this, 'divOpenSelectSeat_@Timings[i].ScreenID_FK')" data-attr-value="@Timings[i].ScreenTimingConfigID" class="btn addToCartBtn">@Timings[i].TimingFrom</button>
-            if ((i > 0 && Timings[i - 1].ScreenID_FK != Timings[i].ScreenID_FK) || Timings.Count() == 1 || Timings.Where(a => a.ScreenID_FK == Timings[i].ScreenID_FK).Count() == 1)
-            {
-                <p><strong>@Timings[i].TheaterName</strong> - @Timings[i].TheaterLandmark</p>
-                <hr />
-                <div class="displayNone divOpenSelectSeat"  id="divOpenSelectSeat_@Timings[i].ScreenID_FK">
-
+            <div class="timings-section">
+                <h3 class="section-title">Available Showtimes</h3>
+                
+                <div class="timings-grid">
+                    @for (int i = 0; i < Timings.Count(); i++)
+                    {
+                        <div class="timing-card">
+                            <div class="timing-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>@Convert.ToDateTime(Timings[i].MovieDate).ToString("dd-MMM-yyyy")</span>
+                            </div>
+                            
+                            <div class="timing-details">
+                                <div class="timing-time">
+                                    <i class="fas fa-clock"></i>
+                                    <span>@Timings[i].TimingFrom</span>
+                                </div>
+                                
+                                <button onclick="OpenSelectSeats(this, 'divOpenSelectSeat_@Timings[i].ScreenID_FK')" 
+                                        data-attr-value="@Timings[i].ScreenTimingConfigID" 
+                                        class="book-slot-btn">
+                                    <i class="fas fa-ticket-alt"></i> Book This Slot
+                                </button>
+                            </div>
+                            
+                            @if ((i > 0 && Timings[i - 1].ScreenID_FK != Timings[i].ScreenID_FK) || Timings.Count() == 1 || Timings.Where(a => a.ScreenID_FK == Timings[i].ScreenID_FK).Count() == 1)
+                            {
+                                <div class="theater-info">
+                                    <div class="theater-name">
+                                        <i class="fas fa-building"></i>
+                                        <span>@Timings[i].TheaterName</span>
+                                    </div>
+                                    <div class="theater-location">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>@Timings[i].TheaterLandmark</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="displayNone divOpenSelectSeat" id="divOpenSelectSeat_@Timings[i].ScreenID_FK">
+                                </div>
+                            }
+                        </div>
+                    }
                 </div>
-            }
+            </div>
         }
-
+        else
+        {
+            <div class="no-slots-section">
+                <div class="no-slots-content">
+                    <i class="fas fa-calendar-times"></i>
+                    <h3>No Slots Available</h3>
+                    <p>Sorry, there are no available showtimes for this movie at the moment.</p>
+                    <a href="/BookTicket/Index" class="back-to-movies-btn">
+                        <i class="fas fa-arrow-left"></i> Back to Movies
+                    </a>
+                </div>
+            </div>
+        }
     </div>
+</div>
+
+<style>
+.book-ticket-container {
+    width: 94%;
+    margin: 40px auto;
+    padding: 0 10px;
 }
-else
-{
-    <h3>No Slots Are Available..!!</h3>
+
+.book-ticket-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    overflow: hidden;
 }
+
+.book-ticket-header {
+    background: linear-gradient(135deg, #252525, #34495e);
+    color: #fff;
+    padding: 32px 32px 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.book-ticket-header i {
+    font-size: 32px;
+    color: #3498db;
+}
+
+.book-ticket-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.timings-section {
+    padding: 32px;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.section-title::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border-radius: 2px;
+}
+
+.timings-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.timing-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.timing-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.timing-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #3498db;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.timing-date i {
+    font-size: 14px;
+}
+
+.timing-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    gap: 16px;
+}
+
+.timing-time {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #2c3e50;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.timing-time i {
+    color: #3498db;
+    font-size: 14px;
+}
+
+.book-slot-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+}
+
+.book-slot-btn:hover {
+    background: linear-gradient(135deg, #2980b9, #1f5f8b);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.theater-info {
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    border: 1px solid #e9ecef;
+    margin-top: 12px;
+}
+
+.theater-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #2c3e50;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.theater-name i {
+    color: #3498db;
+    font-size: 14px;
+}
+
+.theater-location {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+.theater-location i {
+    color: #e74c3c;
+    font-size: 12px;
+}
+
+.no-slots-section {
+    padding: 60px 32px;
+    text-align: center;
+}
+
+.no-slots-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.no-slots-content i {
+    font-size: 64px;
+    color: #bdc3c7;
+}
+
+.no-slots-content h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.no-slots-content p {
+    font-size: 16px;
+    color: #7f8c8d;
+    margin: 0;
+    max-width: 400px;
+}
+
+.back-to-movies-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+    margin-top: 8px;
+}
+
+.back-to-movies-btn:hover {
+    background: linear-gradient(135deg, #2980b9, #1f5f8b);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+    color: #fff;
+    text-decoration: none;
+}
+
+@@media (max-width: 768px) {
+    .book-ticket-header {
+        padding: 20px 20px 12px 20px;
+    }
+    
+    .book-ticket-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .timings-section {
+        padding: 20px;
+    }
+    
+    .section-title {
+        font-size: 1.4rem;
+    }
+    
+    .timing-details {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .book-slot-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@@media (max-width: 480px) {
+    .book-ticket-container {
+        width: 96%;
+        margin: 20px auto;
+    }
+    
+    .book-ticket-header {
+        padding: 16px 16px 8px 16px;
+    }
+    
+    .book-ticket-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    .timings-section {
+        padding: 16px;
+    }
+    
+    .timing-card {
+        padding: 16px;
+    }
+    
+    .no-slots-section {
+        padding: 40px 16px;
+    }
+    
+    .no-slots-content i {
+        font-size: 48px;
+    }
+    
+    .no-slots-content h3 {
+        font-size: 1.4rem;
+    }
+}
+</style>

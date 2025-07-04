@@ -10,6 +10,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Select Seats</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     @using (Html.BeginForm())
@@ -18,105 +19,635 @@
         @Html.HiddenFor(a => a.hdnAlreadySelectedSeats)
         @Html.HiddenFor(a => a.ScreenTimingConfigID_FK, htmlAttributes: new { @id = "hdnScreenTimingConfigID_FK" })
 
-        <div class="BookTicket-Form">
+        <div class="seat-selection-container">
+            <div class="seat-selection-card">
+                <div class="seat-selection-header">
+                    <i class="fas fa-chair"></i>
+                    <h2>Select Your Seats</h2>
+                </div>
 
-            <div id="seatContainer" class="seatContainer" style="opacity: .9; pointer-events: none;" disabled="disabled">
+                <div class="seat-selection-content">
+                    <div id="seatContainer" class="seat-container" style="opacity: .9; pointer-events: none;" disabled="disabled">
 
-                <div id="divParentRecliner">
-                    <div class="row">
-                        <h5 class="col-sm-3">Recliner (Rs. @Model.screenDetail.PriceRecliner)</h5><h6 style="color:red;margin-left: -80px;" class="col-sm-4" id="labelRecliner"></h6>
+                        <!-- Recliner Section -->
+                        <div id="divParentRecliner" class="seat-section">
+                            <div class="section-header">
+                                <div class="section-title">
+                                    <i class="fas fa-couch"></i>
+                                    <h3>Recliner</h3>
+                                    <span class="price">₹@Model.screenDetail.PriceRecliner</span>
                     </div>
-                    <div id="divRecliner">
+                                <div class="availability-status" id="labelRecliner"></div>
+                            </div>
+                            <div id="divRecliner" class="seats-grid">
                         @for (int i = 1; i <= Model.screenDetail.NoOfSeatsRecliner; i++)
                         {
-                            <div class="seat seatRecliner">
-                                <h6 style="margin: 10px 0px 0px 0px;" data-attr-seatNo="R_@i">R @i</h6> <i class="fas fa-couch"></i>
+                                    <div class="seat seat-recliner">
+                                        <span class="seat-number" data-attr-seatNo="R_@i">R @i</span>
+                                        <i class="fas fa-couch"></i>
                             </div>
                         }
                     </div>
                 </div>
 
-                <div id="divParentPlatinum">
-                    <hr />
-                    <div class="row">
-                        <h5 class="col-sm-3">Platinum (Rs. @Model.screenDetail.PricePlatinum)</h5><h6 style="color:red;margin-left: -80px;" class="col-sm-4" id="labelPlatinum"></h6>
+                        <!-- Platinum Section -->
+                        <div id="divParentPlatinum" class="seat-section">
+                            <div class="section-header">
+                                <div class="section-title">
+                                    <i class="fas fa-chair"></i>
+                                    <h3>Platinum</h3>
+                                    <span class="price">₹@Model.screenDetail.PricePlatinum</span>
                     </div>
-                    <div id="divPlatinum">
+                                <div class="availability-status" id="labelPlatinum"></div>
+                            </div>
+                            <div id="divPlatinum" class="seats-grid">
                         @for (int i = 1; i <= Model.screenDetail.NoOfSeatsPlatinum; i++)
                         {
-                            <div class="seat seatPlatinum">
-                                <h6 style="margin: 10px 0px 0px 0px;" data-attr-seatNo="P_@i">P @i</h6> <i class="fas fa-chair"></i>
+                                    <div class="seat seat-platinum">
+                                        <span class="seat-number" data-attr-seatNo="P_@i">P @i</span>
+                                        <i class="fas fa-chair"></i>
                             </div>
                         }
                     </div>
                 </div>
 
-                <div id="divParentGold">
-                    <hr />
-                    <div class="row">
-                        <h5 class="col-sm-3">Gold (Rs. @Model.screenDetail.PriceGold)</h5><h6 style="color:red;margin-left: -80px;" class="col-sm-4" id="labelGold"></h6>
+                        <!-- Gold Section -->
+                        <div id="divParentGold" class="seat-section">
+                            <div class="section-header">
+                                <div class="section-title">
+                                    <i class="fas fa-chair"></i>
+                                    <h3>Gold</h3>
+                                    <span class="price">₹@Model.screenDetail.PriceGold</span>
                     </div>
-                    <div id="divGold">
+                                <div class="availability-status" id="labelGold"></div>
+                            </div>
+                            <div id="divGold" class="seats-grid">
                         @for (int i = 1; i <= Model.screenDetail.NoOfSeatsGold; i++)
                         {
-                            <div class="seat seatGold">
-                                <h6 style="margin: 10px 0px 0px 0px;" data-attr-seatNo="G_@i">G @i</h6> <i class="fas fa-chair"></i>
+                                    <div class="seat seat-gold">
+                                        <span class="seat-number" data-attr-seatNo="G_@i">G @i</span>
+                                        <i class="fas fa-chair"></i>
                             </div>
                         }
                     </div>
                 </div>
 
-                <div id="divParentSilver">
-                    <hr />
-                    <div class="row">
-                        <h5 class="col-sm-3">Silver (Rs. @Model.screenDetail.PriceSilver)</h5><h6 style="color:red;margin-left: -80px;" class="col-sm-4" id="labelSilver"></h6>
+                        <!-- Silver Section -->
+                        <div id="divParentSilver" class="seat-section">
+                            <div class="section-header">
+                                <div class="section-title">
+                                    <i class="fas fa-chair"></i>
+                                    <h3>Silver</h3>
+                                    <span class="price">₹@Model.screenDetail.PriceSilver</span>
                     </div>
-                    <div id="divSilver">
+                                <div class="availability-status" id="labelSilver"></div>
+                            </div>
+                            <div id="divSilver" class="seats-grid">
                         @for (int i = 1; i <= Model.screenDetail.NoOfSeatsSilver; i++)
                         {
-                            <div class="seat seatSilver">
-                                <h6 style="margin: 10px 0px 0px 0px;" data-attr-seatNo="S_@i">S @i</h6> <i class="fas fa-chair"></i>
+                                    <div class="seat seat-silver">
+                                        <span class="seat-number" data-attr-seatNo="S_@i">S @i</span>
+                                        <i class="fas fa-chair"></i>
                             </div>
                         }
                     </div>
                 </div>
 
-                <br /><br />
-
-                <div>
-                    <center>
-                        <p>Screen This Side <i class="fas fa-arrow-down"></i></p>
-                    </center>
-                    <div class="col-sm-12">
-                        <hr style="height:5px; background-color:darkslategray" />
+                        <!-- Screen Indicator -->
+                        <div class="screen-indicator">
+                            <div class="screen-arrow">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>Screen This Side</span>
+                            </div>
+                            <div class="screen-line"></div>
+                        </div>
                     </div>
+
+                    <div class="sidebar-section">
+                        <div class="booking-form-section">
+                            <h3 class="form-title">Complete Your Booking</h3>
+                            
+                            <div class="form-group">
+                                <label for="txtNoOfSeats" class="form-label">Number of Seats</label>
+                                @Html.EditorFor(model => model.NoOfSeats, new { htmlAttributes = new { @class = "form-input", @placeholder = "Max. of 10 seats can be selected", @id = "txtNoOfSeats", @required = "required" } })
+                    </div>
+
+                            <div class="form-group">
+                                <label for="ddlSeatCategory" class="form-label">Seat Category</label>
+                                @Html.DropDownListFor(model => model.SeatCategory, new SelectList(Model.lstSeatCategory, "Value", "Text"), "Select Category", new { @class = "form-select", @required = "required", @onchange = "OnChangeSeatCategory(this)", @id = "ddlSeatCategory" })
                 </div>
 
+                            <button type="button" onclick="ProceedToCheckout('MovieTickets')" class="proceed-btn">
+                                <i class="fas fa-credit-card"></i> Proceed To Payment
+                            </button>
+                        </div>
+                        <div class="seat-legend-section">
+                            <h4 class="legend-title">Seat Status</h4>
+                            <div class="legend-items">
+                                <div class="legend-item">
+                                    <div class="legend-seat available"></div>
+                                    <span>Available</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-seat selected"></div>
+                                    <span>Selected</span>
             </div>
-
-            <div class="form-horizontal">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.NoOfSeats, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-12">
-                        @Html.EditorFor(model => model.NoOfSeats, new { htmlAttributes = new { @class = "form-control", @placeholder = "Max. of 10 seats can be selected", @id = "txtNoOfSeats", @required = "required" } })
+                                <div class="legend-item">
+                                    <div class="legend-seat occupied"></div>
+                                    <span>Occupied</span>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.SeatCategory, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.SeatCategory, new SelectList(Model.lstSeatCategory, "Value", "Text"), "Select Category", new { @class = "form-control", @required = "required", @onchange = "OnChangeSeatCategory(this)", @id = "ddlSeatCategory" })
+                            <h4 class="legend-title">Seat Categories</h4>
+                            <div class="legend-items">
+                                <div class="legend-item">
+                                    <div class="legend-seat recliner"></div>
+                                    <span>Recliner - ₹@Model.screenDetail.PriceRecliner</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-seat platinum"></div>
+                                    <span>Platinum - ₹@Model.screenDetail.PricePlatinum</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-seat gold"></div>
+                                    <span>Gold - ₹@Model.screenDetail.PriceGold</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-seat silver"></div>
+                                    <span>Silver - ₹@Model.screenDetail.PriceSilver</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <center class="form-group" style="margin-top:15px">
-                    <input value="Proceed To Payment" onclick="ProceedToCheckout('MovieTickets')" class="btn btn-success" />
-                </center>
             </div>
         </div>
     }
 
-    <br /><br /><br /><br />
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+    }
 
+    .seat-selection-container {
+        width: 94%;
+        margin: 40px auto;
+        padding: 0 10px;
+    }
+
+    .seat-selection-card {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+        overflow: hidden;
+    }
+
+    .seat-selection-header {
+        background: linear-gradient(135deg, #252525, #34495e);
+        color: #fff;
+        padding: 32px 32px 20px 32px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .seat-selection-header i {
+        font-size: 32px;
+        color: #3498db;
+    }
+
+    .seat-selection-header h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .seat-selection-content {
+        padding: 32px;
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        gap: 32px;
+        align-items: start;
+    }
+
+    .seat-section {
+        margin-bottom: 32px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 24px;
+        border: 1px solid #e9ecef;
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .section-title i {
+        font-size: 20px;
+        color: #3498db;
+    }
+
+    .section-title h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: #2c3e50;
+        margin: 0;
+    }
+
+    .price {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: #fff;
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .availability-status {
+        font-size: 14px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 12px;
+        background: #e8f5e8;
+        color: #27ae60;
+    }
+
+    .seats-grid {
+        display: grid;
+        grid-template-columns: repeat(20, 1fr);
+        gap: 6px;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .seat {
+        background: #fff;
+        border: 2px solid #e9ecef;
+        border-radius: 6px;
+        padding: 6px 4px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        min-height: 45px;
+        justify-content: center;
+        aspect-ratio: 1;
+    }
+
+    .seat:hover {
+        border-color: #3498db;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+    }
+
+    .seat-number {
+        font-size: 10px;
+        font-weight: 700;
+        color: #2c3e50;
+        line-height: 1;
+    }
+
+    .seat i {
+        font-size: 12px;
+        color: #7f8c8d;
+    }
+
+    .seat-recliner {
+        border-color: #e74c3c;
+    }
+
+    .seat-recliner:hover {
+        border-color: #e74c3c;
+        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2);
+    }
+
+    .seat-platinum {
+        border-color: #f39c12;
+    }
+
+    .seat-platinum:hover {
+        border-color: #f39c12;
+        box-shadow: 0 4px 12px rgba(243, 156, 18, 0.2);
+    }
+
+    .seat-gold {
+        border-color: #f1c40f;
+    }
+
+    .seat-gold:hover {
+        border-color: #f1c40f;
+        box-shadow: 0 4px 12px rgba(241, 196, 15, 0.2);
+    }
+
+    .seat-silver {
+        border-color: #95a5a6;
+    }
+
+    .seat-silver:hover {
+        border-color: #95a5a6;
+        box-shadow: 0 4px 12px rgba(149, 165, 166, 0.2);
+    }
+
+    .seatSelected {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        border-color: #3498db;
+        color: #fff;
+    }
+
+    .seatSelected .seat-number,
+    .seatSelected i {
+        color: #fff;
+    }
+
+    .alreadySeatSelected {
+        background: #e74c3c;
+        border-color: #e74c3c;
+        color: #fff;
+        opacity: 0.7;
+    }
+
+    .alreadySeatSelected .seat-number,
+    .alreadySeatSelected i {
+        color: #fff;
+    }
+
+    .screen-indicator {
+        text-align: center;
+        margin: 32px 0;
+    }
+
+    .screen-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: #7f8c8d;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .screen-line {
+        height: 4px;
+        background: linear-gradient(135deg, #34495e, #2c3e50);
+        border-radius: 2px;
+        margin: 0 auto;
+        width: 80%;
+    }
+
+    .sidebar-section {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .booking-form-section, .seat-legend-section {
+        background: #f8f9fa;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        border: 1px solid #e9ecef;
+        padding: 24px;
+    }
+
+    .seat-legend-section {
+        margin-top: 0;
+        padding-top: 20px;
+        border-top: none;
+    }
+
+    .form-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #2c3e50;
+        margin: 0 0 20px 0;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 8px;
+    }
+
+    .form-input,
+    .form-select {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: #fff;
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+
+    .proceed-btn {
+        background: linear-gradient(135deg, #27ae60, #2ecc71);
+        color: #fff;
+        border: none;
+        padding: 16px 32px;
+        border-radius: 12px;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 16px rgba(39, 174, 96, 0.3);
+        width: 100%;
+        justify-content: center;
+    }
+
+    .proceed-btn:hover {
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+    }
+
+    .legend-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #2c3e50;
+        margin: 0 0 12px 0;
+    }
+
+    .legend-items {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        color: #2c3e50;
+    }
+
+    .legend-seat {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        border: 2px solid #e9ecef;
+        flex-shrink: 0;
+    }
+
+    .legend-seat.available {
+        background: #fff;
+        border-color: #e9ecef;
+    }
+
+    .legend-seat.selected {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        border-color: #3498db;
+    }
+
+    .legend-seat.occupied {
+        background: #e74c3c;
+        border-color: #e74c3c;
+        opacity: 0.7;
+    }
+
+    .legend-seat.recliner {
+        background: #fff;
+        border-color: #e74c3c;
+    }
+
+    .legend-seat.platinum {
+        background: #fff;
+        border-color: #f39c12;
+    }
+
+    .legend-seat.gold {
+        background: #fff;
+        border-color: #f1c40f;
+    }
+
+    .legend-seat.silver {
+        background: #fff;
+        border-color: #95a5a6;
+    }
+
+    @@media (max-width: 768px) {
+        .seat-selection-header {
+            padding: 20px 20px 12px 20px;
+        }
+        
+        .seat-selection-header h2 {
+            font-size: 1.5rem;
+        }
+        
+        .seat-selection-content {
+            padding: 20px;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .sidebar-section {
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .seats-grid {
+            grid-template-columns: repeat(15, 1fr);
+            gap: 4px;
+            padding: 0 10px;
+        }
+        
+        .seat {
+            min-height: 40px;
+            padding: 4px 2px;
+        }
+        
+        .seat-number {
+            font-size: 9px;
+        }
+        
+        .seat i {
+            font-size: 10px;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .seat-selection-container {
+            width: 96%;
+            margin: 20px auto;
+        }
+        
+        .seat-selection-header {
+            padding: 16px 16px 8px 16px;
+        }
+        
+        .seat-selection-header h2 {
+            font-size: 1.2rem;
+        }
+        
+        .seat-selection-content {
+            padding: 16px;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+        
+        .seat-section {
+            padding: 16px;
+        }
+        
+        .seats-grid {
+            grid-template-columns: repeat(12, 1fr);
+            gap: 3px;
+            padding: 0 5px;
+        }
+        
+        .seat {
+            min-height: 35px;
+            padding: 3px 1px;
+        }
+        
+        .seat-number {
+            font-size: 8px;
+        }
+        
+        .seat i {
+            font-size: 8px;
+        }
+        
+        .section-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+    }
+    </style>
 
                       <script>
         $(document).ready(function () {
@@ -125,7 +656,7 @@
 
                 if ($(this).hasClass("seatSelected")) {
                     $(this).removeClass("seatSelected");
-                    selectedSeatNo = selectedSeatNo.replace(($(this).find("h6").attr("data-attr-seatNo")), "").replace(" ,", "").replace(", ", "");
+                    selectedSeatNo = selectedSeatNo.replace(($(this).find(".seat-number").attr("data-attr-seatNo")), "").replace(" ,", "").replace(", ", "");
                 }
                 else {
                     var NoOfSeats = $("#txtNoOfSeats").val();
@@ -139,7 +670,7 @@
                             return false;
                         }
 
-                        var seatValue = $(this).find("h6").attr("data-attr-seatNo");
+                        var seatValue = $(this).find(".seat-number").attr("data-attr-seatNo");
 
                         if (selectedSeatNo == null || selectedSeatNo == undefined || selectedSeatNo == "") {
                             selectedSeatNo += (seatValue + ", ");
@@ -167,7 +698,7 @@
                 item = item.replace('"', "").replace(" ", "")
                 var SeatNo = "";
                 $(`.seat`).each(function (inx) {
-                    SeatNo = $(this).find("h6").attr("data-attr-seatno");
+                    SeatNo = $(this).find(".seat-number").attr("data-attr-seatno");
                     if (SeatNo == item) {
                         $(this).addClass("alreadySeatSelected").attr("style", "pointer-events:none;");
                     }
@@ -175,52 +706,50 @@
             });
 
             if (parseInt('@Model.screenDetail.NoOfSeatsRecliner') - parseInt($("#divRecliner > .alreadySeatSelected").length) <= 2) {
-                $("#labelRecliner").text("(Almost Full..!!)");
+                $("#labelRecliner").text("(Almost Full..!!)").css("background", "#ffe6e6").css("color", "#e74c3c");
             }
             else if (parseInt('@Model.screenDetail.NoOfSeatsRecliner') - parseInt($("#divRecliner > .alreadySeatSelected").length) <= 8) {
-                $("#labelRecliner").text("(Filling Up Fast..!!)");
+                $("#labelRecliner").text("(Filling Up Fast..!!)").css("background", "#fff3cd").css("color", "#f39c12");
             }
             else if (parseInt('@Model.screenDetail.NoOfSeatsRecliner') / 2 <= parseInt($("#divRecliner > .alreadySeatSelected").length)) {
-                $("#labelRecliner").text("(50% Full..!!)");
+                $("#labelRecliner").text("(50% Full..!!)").css("background", "#fff3cd").css("color", "#f39c12");
             }
             else {
-                $("#labelRecliner").text("(Available)").attr("style", "color:green; margin-left: -80px;");
+                $("#labelRecliner").text("(Available)").css("background", "#e8f5e8").css("color", "#27ae60");
             }
 
             if (parseInt('@Model.screenDetail.NoOfSeatsPlatinum') - parseInt($("#divPlatinum > .alreadySeatSelected").length) <= 2) {
-                $("#labelPlatinum").text("(Almost Full..!!)");
+                $("#labelPlatinum").text("(Almost Full..!!)").css("background", "#ffe6e6").css("color", "#e74c3c");
             }
             else if (parseInt('@Model.screenDetail.NoOfSeatsPlatinum') - parseInt($("#divPlatinum > .alreadySeatSelected").length) <= 8) {
-                $("#labelPlatinum").text("(Filling Up Fast..!!)");
+                $("#labelPlatinum").text("(Filling Up Fast..!!)").css("background", "#fff3cd").css("color", "#f39c12");
             }
             else {
-                $("#labelPlatinum").text("(Available)").attr("style", "color:green; margin-left: -80px;");
+                $("#labelPlatinum").text("(Available)").css("background", "#e8f5e8").css("color", "#27ae60");
             }
 
             if (parseInt('@Model.screenDetail.NoOfSeatsGold') - parseInt($("#divGold > .alreadySeatSelected").length) <= 2) {
-                $("#labelGold").text("(Almost Full..!!)");
+                $("#labelGold").text("(Almost Full..!!)").css("background", "#ffe6e6").css("color", "#e74c3c");
             }
             else if (parseInt('@Model.screenDetail.NoOfSeatsGold') - parseInt($("#divGold > .alreadySeatSelected").length) <= 8) {
-                $("#labelGold").text("(Filling Up Fast..!!)");
+                $("#labelGold").text("(Filling Up Fast..!!)").css("background", "#fff3cd").css("color", "#f39c12");
             }
             else {
-                $("#labelGold").text("(Available)").attr("style", "color:green; margin-left: -110px;");
+                $("#labelGold").text("(Available)").css("background", "#e8f5e8").css("color", "#27ae60");
             }
 
             if (parseInt('@Model.screenDetail.NoOfSeatsSilver') - parseInt($("#divSilver > .alreadySeatSelected").length) <= 2) {
-                $("#labelSilver").text("(Almost Full..!!)");
+                $("#labelSilver").text("(Almost Full..!!)").css("background", "#ffe6e6").css("color", "#e74c3c");
             }
             else if (parseInt('@Model.screenDetail.NoOfSeatsSilver') - parseInt($("#divSilver > .alreadySeatSelected").length) <= 8) {
-                $("#labelSilver").text("(Filling Up Fast..!!)");
+                $("#labelSilver").text("(Filling Up Fast..!!)").css("background", "#fff3cd").css("color", "#f39c12");
             }
             else {
-                $("#labelSilver").text("(Available)").attr("style", "color:green; margin-left: -100px;");
+                $("#labelSilver").text("(Available)").css("background", "#e8f5e8").css("color", "#27ae60");
             }
-
         }
         var result = AutoSelectSeat();
         window.onload = result;
-
                       </script>
 </body>
 </html>
