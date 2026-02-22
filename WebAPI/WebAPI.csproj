@@ -174,15 +174,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Olanthroxx.Context.cs">
+    <Compile Include="Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Olanthroxx.Context.tt</DependentUpon>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Olanthroxx.cs">
+    <Compile Include="Model1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Olanthroxx.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -190,77 +190,74 @@
       <DependentUpon>Olanthroxx.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="sysdiagram.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
-    </Compile>
     <Compile Include="tblAddress.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblApplicationSetting.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblBudgetDetail.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblCategory.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblExpense.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblForgotPasswordHistory.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblLog.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblMasCity.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblMasCommonType.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblMasState.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblMovieBookingHistory.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblMovieDetail.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblMovieScreenTimingConfig.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblOrderDetail.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblPayment.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblProduct.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblProductReview.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblScreenDetail.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblTempCartDetail.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblTheaterDetail.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblUser.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblUserDetail.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="tblUserSessionDetail.cs">
-      <DependentUpon>Olanthroxx.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -272,15 +269,15 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Olanthroxx.Context.tt">
+    <Content Include="Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Olanthroxx.edmx</DependentUpon>
-      <LastGenOutput>Olanthroxx.Context.cs</LastGenOutput>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Olanthroxx.tt">
+    <Content Include="Model1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Olanthroxx.edmx</DependentUpon>
-      <LastGenOutput>Olanthroxx.cs</LastGenOutput>
+      <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
